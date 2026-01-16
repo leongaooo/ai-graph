@@ -1,0 +1,59 @@
+{
+  "meta": { "version": "0.1", "title": "KPI Ring Spotlight", "lang": "en", "seed": 3 },
+  "canvas": { "width": 960, "height": 540, "viewBox": "0 0 960 540", "bg": "rgba(255,255,255,0)" },
+  "theme": {
+    "palette": {
+      "bg": "rgba(255,255,255,0)",
+      "fg": "rgba(11,18,32,.88)",
+      "primary": "var(--accent)",
+      "accent": "var(--accent2)",
+      "muted": "rgba(11,18,32,.58)"
+    },
+    "typography": { "fontFamily": "ui-sans-serif, system-ui", "baseSize": 16, "weights": { "regular": 850, "bold": 950 } }
+  },
+  "nodes": [
+    {
+      "id": "root",
+      "type": "group",
+      "attrs": { "role": "img", "aria-label": "KPI spotlight" },
+      "children": [
+        { "id": "bg", "type": "rect", "attrs": { "x": 0, "y": 0, "width": 960, "height": 540, "rx": 32 }, "style": { "fill": "rgba(255,255,255,0)" } },
+
+        { "id": "ringBack", "type": "circle", "attrs": { "cx": 720, "cy": 220, "r": 110 }, "style": { "fill": "none", "stroke": "rgba(11,18,32,.10)", "strokeWidth": 18 } },
+        { "id": "ringFront", "type": "circle", "attrs": { "cx": 720, "cy": 220, "r": 110 }, "style": { "fill": "none", "stroke": "rgba(var(--accentRgb), .88)", "strokeWidth": 18, "strokeLinecap": "round" } },
+        { "id": "ringDot", "type": "circle", "attrs": { "cx": 720, "cy": 110, "r": 6 }, "style": { "fill": "var(--accent2)", "opacity": 0.95 } },
+
+        { "id": "kpi", "type": "text", "text": "{{slot:kpi}}", "attrs": { "x": 84, "y": 240 }, "style": { "fontSize": 92, "fontWeight": 950, "fill": "rgba(11,18,32,.92)" } },
+        { "id": "label", "type": "text", "text": "{{slot:label}}", "attrs": { "x": 90, "y": 290 }, "style": { "fontSize": 18, "fontWeight": 900, "fill": "rgba(11,18,32,.62)" } },
+
+        { "id": "captionChip", "type": "rect", "attrs": { "x": 84, "y": 340, "width": 520, "height": 34, "rx": 999 }, "style": { "fill": "rgba(11,18,32,.04)", "stroke": "rgba(11,18,32,.10)" } },
+        { "id": "captionText", "type": "text", "text": "{{slot:caption}}", "attrs": { "x": 104, "y": 363 }, "style": { "fontSize": 13, "fontWeight": 900, "fill": "rgba(11,18,32,.68)" } }
+      ]
+    }
+  ],
+  "animations": [
+    {
+      "id": "intro",
+      "type": "timeline",
+      "durationMs": 1100,
+      "loop": false,
+      "tracks": [
+        { "target": "kpi", "property": "opacity", "keyframes": [{ "t": 0, "value": 0 }, { "t": 0.25, "value": 1, "easing": "power2.out" }] },
+        { "target": "label", "property": "opacity", "keyframes": [{ "t": 0.08, "value": 0 }, { "t": 0.34, "value": 1, "easing": "power2.out" }] },
+        { "target": "captionChip", "property": "opacity", "keyframes": [{ "t": 0.2, "value": 0 }, { "t": 0.45, "value": 1, "easing": "power2.out" }] },
+        { "target": "ringFront", "property": "strokeDashoffset", "keyframes": [{ "t": 0, "value": 720 }, { "t": 0.7, "value": 0, "easing": "power2.out" }] }
+      ]
+    },
+    {
+      "id": "float",
+      "type": "timeline",
+      "durationMs": 1600,
+      "loop": true,
+      "tracks": [
+        { "target": "ringDot", "property": "transform", "keyframes": [{ "t": 0, "value": "scale(1)" }, { "t": 0.5, "value": "scale(1.25)", "easing": "sine.inOut" }, { "t": 1, "value": "scale(1)", "easing": "sine.inOut" }] }
+      ]
+    }
+  ],
+  "a11y": { "title": "KPI spotlight", "desc": "Large number with a ring accent.", "reducedMotion": { "strategy": "fade-only" } }
+}
+

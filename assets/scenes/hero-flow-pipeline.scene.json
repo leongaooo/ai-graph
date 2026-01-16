@@ -1,0 +1,87 @@
+{
+  "meta": { "version": "0.1", "title": "Hero Flow Pipeline", "lang": "en", "seed": 42 },
+  "canvas": { "width": 980, "height": 320, "viewBox": "0 0 980 320", "bg": "rgba(255,255,255,0)" },
+  "theme": {
+    "palette": {
+      "bg": "rgba(255,255,255,0)",
+      "fg": "rgba(11,18,32,.82)",
+      "primary": "var(--accent)",
+      "accent": "var(--accent2)",
+      "muted": "rgba(11,18,32,.55)"
+    },
+    "typography": { "fontFamily": "ui-sans-serif, system-ui", "baseSize": 16, "weights": { "regular": 800, "bold": 950 } }
+  },
+  "nodes": [
+    {
+      "id": "root",
+      "type": "group",
+      "attrs": { "role": "img", "aria-label": "System flow illustration" },
+      "children": [
+        { "id": "bgRect", "type": "rect", "attrs": { "x": 0, "y": 0, "width": 980, "height": 320, "fill": "rgba(255,255,255,0)" } },
+        { "id": "glowLeft", "type": "circle", "attrs": { "cx": 148, "cy": 160, "r": 92 }, "style": { "fill": "rgba(var(--accentRgb), .14)" } },
+        { "id": "glowRight", "type": "circle", "attrs": { "cx": 842, "cy": 120, "r": 110 }, "style": { "fill": "rgba(var(--accent2Rgb), .10)" } },
+
+        { "id": "flowLine", "type": "path", "attrs": { "d": "M130 160 C240 88, 320 88, 420 130 S 600 230, 700 180 S 820 110, 900 150", "fill": "none", "stroke-width": 4, "stroke-linecap": "round", "stroke": "rgba(var(--accentRgb), .55)" } },
+        { "id": "flowLine2", "type": "path", "attrs": { "d": "M130 160 C240 232, 320 232, 420 190 S 600 90, 700 140 S 820 210, 900 170", "fill": "none", "stroke-width": 2, "stroke-linecap": "round", "stroke": "rgba(var(--accentRgb), .55)", "opacity": 0.55 } },
+
+        { "id": "nodeA", "type": "group", "children": [
+          { "id": "nodeABox", "type": "rect", "attrs": { "x": 62, "y": 120, "width": 140, "height": 80, "rx": 18 }, "style": { "fill": "rgba(var(--accentRgb), .10)", "stroke": "rgba(var(--accentRgb), .22)" } },
+          { "id": "nodeATitle", "type": "text", "text": "Input", "attrs": { "x": 132, "y": 154, "text-anchor": "middle" }, "style": { "fontSize": 16, "fontWeight": 950, "fill": "rgba(11,18,32,.70)" } },
+          { "id": "nodeASub", "type": "text", "text": "prompt \u00b7 rules", "attrs": { "x": 132, "y": 176, "text-anchor": "middle" }, "style": { "fontSize": 11, "fontWeight": 900, "fill": "rgba(11,18,32,.56)", "opacity": 0.9 } }
+        ] },
+        { "id": "nodeB", "type": "group", "children": [
+          { "id": "nodeBBox", "type": "rect", "attrs": { "x": 270, "y": 76, "width": 160, "height": 92, "rx": 18 }, "style": { "fill": "rgba(255,255,255,.88)", "stroke": "rgba(11,18,32,.14)" } },
+          { "id": "nodeBTitle", "type": "text", "text": "Decision", "attrs": { "x": 350, "y": 116, "text-anchor": "middle" }, "style": { "fontSize": 16, "fontWeight": 950, "fill": "rgba(11,18,32,.70)" } },
+          { "id": "nodeBSub", "type": "text", "text": "skills \u00b7 conflicts", "attrs": { "x": 350, "y": 138, "text-anchor": "middle" }, "style": { "fontSize": 11, "fontWeight": 900, "fill": "rgba(11,18,32,.56)", "opacity": 0.9 } }
+        ] },
+        { "id": "nodeC", "type": "group", "children": [
+          { "id": "nodeCBox", "type": "rect", "attrs": { "x": 470, "y": 176, "width": 170, "height": 92, "rx": 18 }, "style": { "fill": "rgba(255,255,255,.88)", "stroke": "rgba(11,18,32,.14)" } },
+          { "id": "nodeCTitle", "type": "text", "text": "Payments", "attrs": { "x": 555, "y": 216, "text-anchor": "middle" }, "style": { "fontSize": 16, "fontWeight": 950, "fill": "rgba(11,18,32,.70)" } },
+          { "id": "nodeCSub", "type": "text", "text": "settle \u00b7 receipts", "attrs": { "x": 555, "y": 238, "text-anchor": "middle" }, "style": { "fontSize": 11, "fontWeight": 900, "fill": "rgba(11,18,32,.56)", "opacity": 0.9 } }
+        ] },
+        { "id": "nodeD", "type": "group", "children": [
+          { "id": "nodeDBox", "type": "rect", "attrs": { "x": 670, "y": 70, "width": 170, "height": 92, "rx": 18 }, "style": { "fill": "rgba(255,255,255,.88)", "stroke": "rgba(11,18,32,.14)" } },
+          { "id": "nodeDTitle", "type": "text", "text": "Artifacts", "attrs": { "x": 755, "y": 110, "text-anchor": "middle" }, "style": { "fontSize": 16, "fontWeight": 950, "fill": "rgba(11,18,32,.70)" } },
+          { "id": "nodeDSub", "type": "text", "text": "CSV \u00b7 portal", "attrs": { "x": 755, "y": 132, "text-anchor": "middle" }, "style": { "fontSize": 11, "fontWeight": 900, "fill": "rgba(11,18,32,.56)", "opacity": 0.9 } }
+        ] },
+        { "id": "nodeE", "type": "group", "children": [
+          { "id": "nodeEBox", "type": "rect", "attrs": { "x": 790, "y": 190, "width": 150, "height": 92, "rx": 18 }, "style": { "fill": "rgba(var(--accentRgb), .10)", "stroke": "rgba(var(--accentRgb), .22)" } },
+          { "id": "nodeETitle", "type": "text", "text": "Output", "attrs": { "x": 865, "y": 230, "text-anchor": "middle" }, "style": { "fontSize": 16, "fontWeight": 950, "fill": "rgba(11,18,32,.70)" } },
+          { "id": "nodeESub", "type": "text", "text": "day plan", "attrs": { "x": 865, "y": 252, "text-anchor": "middle" }, "style": { "fontSize": 11, "fontWeight": 900, "fill": "rgba(11,18,32,.56)", "opacity": 0.9 } }
+        ] },
+
+        { "id": "captionChip", "type": "rect", "attrs": { "x": 14, "y": 282, "width": 360, "height": 28, "rx": 999 }, "style": { "fill": "rgba(255,255,255,.84)", "stroke": "rgba(11,18,32,.10)" } },
+        { "id": "captionDot", "type": "circle", "attrs": { "cx": 32, "cy": 296, "r": 4 }, "style": { "fill": "var(--accent)", "opacity": 1 } },
+        { "id": "captionText", "type": "text", "text": "{{slot:caption}}", "attrs": { "x": 46, "y": 300 }, "style": { "fontSize": 12, "fontWeight": 950, "fill": "rgba(11,18,32,.70)" } }
+      ]
+    }
+  ],
+  "animations": [
+    {
+      "id": "intro",
+      "type": "timeline",
+      "durationMs": 1200,
+      "loop": false,
+      "tracks": [
+        { "target": "flowLine", "property": "strokeDashoffset", "keyframes": [{ "t": 0, "value": "@pathLength" }, { "t": 0.7, "value": 0, "easing": "power2.out" }] },
+        { "target": "flowLine2", "property": "strokeDashoffset", "keyframes": [{ "t": 0.06, "value": "@pathLength" }, { "t": 0.9, "value": 0, "easing": "power2.out" }] },
+        { "target": "nodeA", "property": "opacity", "keyframes": [{ "t": 0.12, "value": 0 }, { "t": 0.34, "value": 1, "easing": "power2.out" }] },
+        { "target": "nodeB", "property": "opacity", "keyframes": [{ "t": 0.18, "value": 0 }, { "t": 0.40, "value": 1, "easing": "power2.out" }] },
+        { "target": "nodeC", "property": "opacity", "keyframes": [{ "t": 0.24, "value": 0 }, { "t": 0.48, "value": 1, "easing": "power2.out" }] },
+        { "target": "nodeD", "property": "opacity", "keyframes": [{ "t": 0.30, "value": 0 }, { "t": 0.56, "value": 1, "easing": "power2.out" }] },
+        { "target": "nodeE", "property": "opacity", "keyframes": [{ "t": 0.36, "value": 0 }, { "t": 0.64, "value": 1, "easing": "power2.out" }] }
+      ]
+    },
+    {
+      "id": "float",
+      "type": "timeline",
+      "durationMs": 1800,
+      "loop": true,
+      "tracks": [
+        { "target": "root", "property": "transform", "keyframes": [{ "t": 0, "value": "translate(0px, 0px)" }, { "t": 0.5, "value": "translate(0px, -2px)", "easing": "sine.inOut" }, { "t": 1, "value": "translate(0px, 0px)", "easing": "sine.inOut" }] }
+      ]
+    }
+  ],
+  "a11y": { "title": "System flow illustration", "desc": "A structured flow with nodes connected as a pipeline.", "reducedMotion": { "strategy": "fade-only" } }
+}
+

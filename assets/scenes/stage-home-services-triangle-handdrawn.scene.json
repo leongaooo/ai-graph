@@ -1,0 +1,57 @@
+{
+  "meta": { "version": "0.1", "title": "Stage: Home Services Triangle (Hand-drawn)", "lang": "en", "seed": 42 },
+  "canvas": { "width": 1200, "height": 600, "viewBox": "0 0 1200 600", "bg": "#0B0F14" },
+  "theme": {
+    "palette": {
+      "bg": "#0B0F14",
+      "fg": "rgba(234,242,255,0.92)",
+      "primary": "#4F8CFF",
+      "accent": "#8B5BFF",
+      "muted": "rgba(234,242,255,0.60)"
+    },
+    "typography": { "fontFamily": "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial", "baseSize": 16 }
+  },
+  "defs": {
+    "motifs": [
+      "doodle_swoosh",
+      "doodle_sparkles",
+      "map_pin_handdrawn",
+      "van_handdrawn",
+      "calendar_handdrawn",
+      "phone_handdrawn",
+      "house_handdrawn",
+      "lucide_laptop",
+      "lucide_sparkle",
+      "opeeps_effigy_admin_button_pocket_light",
+      "opeeps_effigy_fieldtech_jacket_deep_flip",
+      "opeeps_effigy_support_coffee_flip"
+    ],
+    "raw": "\n      <linearGradient id=\"g_accent\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n        <stop offset=\"0%\" stop-color=\"rgba(79,140,255,0.95)\"/>\n        <stop offset=\"100%\" stop-color=\"rgba(139,91,255,0.95)\"/>\n      </linearGradient>\n      <filter id=\"f_soft\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\">\n        <feGaussianBlur stdDeviation=\"14\"/>\n      </filter>\n    "
+  },
+  "nodes": [
+    { "id": "bg", "type": "rect", "attrs": { "data-role": "decor", "data-decor-type": "texture", "x": 0, "y": 0, "width": 1200, "height": 600, "fill": "#0B0F14" } },
+    { "id": "ground", "type": "ellipse", "attrs": { "data-role": "decor", "data-decor-type": "shadow", "cx": 620, "cy": 474, "rx": 430, "ry": 62, "fill": "rgba(0,0,0,0.30)", "filter": "url(#f_soft)" } },
+
+    { "id": "spark_tr", "type": "use", "attrs": { "data-role": "decor", "data-decor-type": "accent", "href": "#motif_doodle_sparkles", "x": 1110, "y": 18, "width": 88, "height": 88, "opacity": 0.34 } },
+    { "id": "swoosh", "type": "use", "attrs": { "data-role": "decor", "data-decor-type": "accent", "href": "#motif_doodle_swoosh", "x": 12, "y": 0, "width": 110, "height": 56, "opacity": 0.22 } },
+
+    { "id": "dispatcher", "type": "use", "attrs": { "data-role": "subject", "href": "#motif_opeeps_effigy_admin_button_pocket_light", "x": 140, "y": 176, "width": 320, "height": 392, "opacity": 0.96 } },
+    { "id": "fieldtech", "type": "use", "attrs": { "data-role": "subject", "href": "#motif_opeeps_effigy_fieldtech_jacket_deep_flip", "x": 720, "y": 176, "width": 320, "height": 392, "opacity": 0.96 } },
+    { "id": "customer", "type": "use", "attrs": { "data-role": "subject", "href": "#motif_opeeps_effigy_support_coffee_flip", "x": 440, "y": 220, "width": 320, "height": 392, "opacity": 0.90 } },
+
+    { "id": "laptop", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_lucide_laptop", "x": 1080, "y": 208, "width": 96, "height": 96, "opacity": 0.70 } },
+    { "id": "laptop_spark", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_lucide_sparkle", "x": 1140, "y": 186, "width": 44, "height": 44, "opacity": 0.55 } },
+
+    { "id": "pin", "type": "use", "attrs": { "data-role": "prop", "data-layer": "bg", "href": "#motif_map_pin_handdrawn", "x": 852, "y": 150, "width": 170, "height": 140, "opacity": 0.55 } },
+    { "id": "van", "type": "use", "attrs": { "data-role": "prop", "data-layer": "bg", "href": "#motif_van_handdrawn", "x": 520, "y": 340, "width": 240, "height": 160, "opacity": 0.58 } },
+    { "id": "house", "type": "use", "attrs": { "data-role": "prop", "data-layer": "bg", "href": "#motif_house_handdrawn", "x": 510, "y": 154, "width": 190, "height": 140, "opacity": 0.58 } },
+    { "id": "cal", "type": "use", "attrs": { "data-role": "prop", "data-layer": "bg", "href": "#motif_calendar_handdrawn", "x": 180, "y": 150, "width": 170, "height": 130, "opacity": 0.52 } },
+    { "id": "phone", "type": "use", "attrs": { "data-role": "prop", "data-layer": "bg", "href": "#motif_phone_handdrawn", "x": 640, "y": 140, "width": 160, "height": 130, "opacity": 0.52 } },
+
+    { "id": "kicker", "type": "text", "attrs": { "data-role": "text", "x": 600, "y": 64, "text-anchor": "middle", "fill": "rgba(234,242,255,0.66)", "font-size": 14, "letter-spacing": 1 }, "text": "{{slot:kicker}}" },
+    { "id": "headline", "type": "text", "attrs": { "data-role": "text", "x": 600, "y": 96, "text-anchor": "middle", "fill": "rgba(234,242,255,0.92)", "font-size": 28, "font-weight": 740 }, "text": "{{slot:headline}}" },
+    { "id": "subhead", "type": "text", "attrs": { "data-role": "text", "x": 600, "y": 126, "text-anchor": "middle", "fill": "rgba(234,242,255,0.64)", "font-size": 16 }, "text": "{{slot:subhead}}" }
+  ],
+  "animations": [],
+  "a11y": { "title": "Home services triangle", "desc": "Dispatcher, field tech, customer with hand-drawn props and decor.", "reducedMotion": { "strategy": "none" } }
+}

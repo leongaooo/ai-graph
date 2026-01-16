@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://front-end-effect.local/brief-spec.schema.json",
+  "title": "BriefSpec v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "intent", "layout", "story", "style", "motion", "constraints"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "lang"],
+      "properties": {
+        "version": { "type": "string", "const": "0.1" },
+        "lang": { "type": "string", "default": "zh-CN" },
+        "title": { "type": "string" },
+        "seed": { "type": "integer" }
+      }
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primaryGoal", "tone"],
+      "properties": {
+        "primaryGoal": {
+          "type": "string",
+          "enum": ["highlight", "explain", "compare", "celebrate", "warn", "guide"]
+        },
+        "tone": {
+          "type": "string",
+          "enum": ["calm", "excited", "serious", "playful", "warm", "techy"]
+        },
+        "audience": { "type": "string" },
+        "keywords": { "type": "array", "items": { "type": "string" }, "maxItems": 20 }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["template", "slots"],
+      "properties": {
+        "template": {
+          "type": "string",
+          "enum": [
+            "hero-card",
+            "hero-illustration",
+            "process-steps",
+            "compare",
+            "timeline",
+            "kpi-spotlight",
+            "feature-grid",
+            "faq-callout"
+          ]
+        },
+        "slots": { "type": "object", "additionalProperties": true }
+      }
+    },
+    "story": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["beats"],
+      "properties": {
+        "beats": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["text"],
+            "properties": {
+              "text": { "type": "string", "minLength": 1, "maxLength": 160 },
+              "emphasis": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["brightness", "contrast", "illustrationStyle"],
+      "properties": {
+        "brightness": { "type": "string", "enum": ["light", "dark"] },
+        "contrast": { "type": "string", "enum": ["low", "medium", "high"] },
+        "illustrationStyle": { "type": "string", "enum": ["flat", "line", "gradient", "paper"] },
+        "paletteHint": { "type": "string" }
+      }
+    },
+    "motion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["plan", "reducedMotionStrategy"],
+      "properties": {
+        "plan": { "type": "string", "minLength": 1, "maxLength": 400 },
+        "reducedMotionStrategy": {
+          "type": "string",
+          "enum": ["none", "fade-only", "no-loop", "no-translate"]
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["size", "maxNodes", "allowImages", "allowHumans"],
+      "properties": {
+        "size": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["width", "height"],
+          "properties": {
+            "width": { "type": "integer", "minimum": 200, "maximum": 4000 },
+            "height": { "type": "integer", "minimum": 200, "maximum": 4000 }
+          }
+        },
+        "maxNodes": { "type": "integer", "minimum": 30, "maximum": 600, "default": 120 },
+        "allowImages": { "type": "boolean", "default": false },
+        "allowHumans": { "type": "boolean", "default": false },
+        "brandColor": { "type": "string" }
+      }
+    }
+  }
+}

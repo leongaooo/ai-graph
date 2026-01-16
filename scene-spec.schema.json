@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://front-end-effect.local/scene-spec.schema.json",
+  "title": "SceneSpec v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "canvas", "theme", "nodes", "animations", "a11y"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version"],
+      "properties": {
+        "version": { "type": "string", "const": "0.1" },
+        "title": { "type": "string" },
+        "lang": { "type": "string" },
+        "seed": { "type": "integer" }
+      }
+    },
+    "canvas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height", "viewBox"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 200, "maximum": 4000 },
+        "height": { "type": "integer", "minimum": 200, "maximum": 4000 },
+        "viewBox": { "type": "string", "pattern": "^[0-9]+\\s+[0-9]+\\s+[0-9]+\\s+[0-9]+$" },
+        "bg": { "type": "string" }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["palette", "typography"],
+      "properties": {
+        "palette": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["bg", "fg", "primary", "accent", "muted"],
+          "properties": {
+            "bg": { "type": "string" },
+            "fg": { "type": "string" },
+            "primary": { "type": "string" },
+            "accent": { "type": "string" },
+            "muted": { "type": "string" },
+            "success": { "type": "string" },
+            "warning": { "type": "string" },
+            "danger": { "type": "string" }
+          }
+        },
+        "typography": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fontFamily", "baseSize"],
+          "properties": {
+            "fontFamily": { "type": "string" },
+            "baseSize": { "type": "number", "minimum": 8, "maximum": 64 },
+            "weights": { "type": "object", "additionalProperties": true }
+          }
+        }
+      }
+    },
+    "defs": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional SVG <defs> entries like gradients, filters, symbols; renderer-defined."
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/node" }
+    },
+    "animations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/animation" },
+      "default": []
+    },
+    "a11y": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reducedMotion"],
+      "properties": {
+        "title": { "type": "string" },
+        "desc": { "type": "string" },
+        "reducedMotion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["strategy"],
+          "properties": {
+            "strategy": { "type": "string", "enum": ["none", "fade-only", "no-loop", "no-translate"] }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$" },
+        "type": {
+          "type": "string",
+          "enum": ["group", "rect", "circle", "ellipse", "line", "path", "text", "image", "use"]
+        },
+        "attrs": { "type": "object", "additionalProperties": true },
+        "style": { "type": "object", "additionalProperties": true },
+        "text": { "type": "string" },
+        "children": { "type": "array", "items": { "$ref": "#/$defs/node" } }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "text" } }, "required": ["type"] },
+          "then": { "required": ["text"] }
+        }
+      ]
+    },
+    "animation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "durationMs", "tracks"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$" },
+        "type": { "type": "string", "const": "timeline" },
+        "durationMs": { "type": "integer", "minimum": 0, "maximum": 600000 },
+        "loop": { "type": "boolean", "default": false },
+        "tracks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["target", "property", "keyframes"],
+            "properties": {
+              "target": { "type": "string" },
+              "property": {
+                "type": "string",
+                "enum": ["opacity", "transform", "strokeDashoffset", "strokeDasharray"]
+              },
+              "keyframes": {
+                "type": "array",
+                "minItems": 2,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["t", "value"],
+                  "properties": {
+                    "t": { "type": "number", "minimum": 0, "maximum": 1 },
+                    "value": {},
+                    "easing": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

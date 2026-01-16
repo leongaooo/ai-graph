@@ -1,0 +1,140 @@
+{
+  "meta": { "version": "0.1", "title": "Demo Dispatch Map", "lang": "en", "seed": 19 },
+  "canvas": { "width": 960, "height": 420, "viewBox": "0 0 960 420", "bg": "#07080d" },
+  "theme": {
+    "palette": { "bg": "#07080d", "fg": "#EAF2FF", "primary": "#6AE4FF", "accent": "#8B5BFF", "muted": "rgba(255,255,255,0.62)" },
+    "typography": { "fontFamily": "ui-sans-serif, system-ui", "baseSize": 16, "weights": { "regular": 700, "bold": 900 } }
+  },
+  "defs": {
+    "raw": "<linearGradient id=\"g_accent\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#6AE4FF\" stop-opacity=\"0.95\"/><stop offset=\"1\" stop-color=\"#8B5BFF\" stop-opacity=\"0.88\"/></linearGradient><radialGradient id=\"g_glow\" cx=\"30%\" cy=\"20%\" r=\"70%\"><stop offset=\"0\" stop-color=\"#6AE4FF\" stop-opacity=\"0.22\"/><stop offset=\"1\" stop-color=\"#6AE4FF\" stop-opacity=\"0\"/></radialGradient><radialGradient id=\"g_glow2\" cx=\"80%\" cy=\"25%\" r=\"75%\"><stop offset=\"0\" stop-color=\"#8B5BFF\" stop-opacity=\"0.20\"/><stop offset=\"1\" stop-color=\"#8B5BFF\" stop-opacity=\"0\"/></radialGradient>"
+  },
+  "nodes": [
+    {
+      "id": "root",
+      "type": "group",
+      "attrs": { "role": "img", "aria-label": "Dispatch illustration" },
+      "children": [
+        { "id": "bg", "type": "rect", "attrs": { "x": 0, "y": 0, "width": 960, "height": 420, "rx": 28 }, "style": { "fill": "#07080d" } },
+        { "id": "glowA", "type": "rect", "attrs": { "x": 0, "y": 0, "width": 960, "height": 420 }, "style": { "fill": "url(#g_glow)" } },
+        { "id": "glowB", "type": "rect", "attrs": { "x": 0, "y": 0, "width": 960, "height": 420 }, "style": { "fill": "url(#g_glow2)" } },
+
+        {
+          "id": "frame",
+          "type": "rect",
+          "attrs": { "x": 28, "y": 28, "width": 904, "height": 364, "rx": 26 },
+          "style": { "fill": "rgba(255,255,255,0.03)", "stroke": "rgba(255,255,255,0.10)" }
+        },
+
+        {
+          "id": "title",
+          "type": "text",
+          "text": "{{slot:headline}}",
+          "attrs": { "x": 66, "y": 112 },
+          "style": { "fontSize": 34, "fontWeight": 900, "fill": "#EAF2FF" }
+        },
+        {
+          "id": "sub",
+          "type": "text",
+          "text": "{{slot:subhead}}",
+          "attrs": { "x": 66, "y": 148 },
+          "style": { "fontSize": 14, "fontWeight": 750, "fill": "rgba(234,242,255,0.66)" }
+        },
+
+        {
+          "id": "map",
+          "type": "rect",
+          "attrs": { "x": 520, "y": 70, "width": 380, "height": 290, "rx": 22 },
+          "style": { "fill": "rgba(255,255,255,0.03)", "stroke": "rgba(255,255,255,0.10)" }
+        },
+        {
+          "id": "mapGrid",
+          "type": "path",
+          "attrs": {
+            "d": "M540 120 H880 M540 170 H880 M540 220 H880 M540 270 H880 M540 320 H880 M580 90 V350 M640 90 V350 M700 90 V350 M760 90 V350 M820 90 V350",
+            "fill": "none",
+            "stroke-width": 1
+          },
+          "style": { "stroke": "rgba(255,255,255,0.06)" }
+        },
+
+        {
+          "id": "route",
+          "type": "path",
+          "attrs": {
+            "d": "M560 308 C620 240, 690 252, 730 210 S 810 148, 868 138",
+            "fill": "none",
+            "stroke-width": 4,
+            "stroke-linecap": "round",
+            "stroke": "url(#g_accent)"
+          }
+        },
+
+        { "id": "pinA", "type": "circle", "attrs": { "cx": 560, "cy": 308, "r": 7 }, "style": { "fill": "#6AE4FF", "opacity": 0.95 } },
+        { "id": "pinB", "type": "circle", "attrs": { "cx": 730, "cy": 210, "r": 7 }, "style": { "fill": "#8B5BFF", "opacity": 0.92 } },
+        { "id": "pinC", "type": "circle", "attrs": { "cx": 868, "cy": 138, "r": 7 }, "style": { "fill": "#6AE4FF", "opacity": 0.95 } },
+
+        {
+          "id": "pill",
+          "type": "rect",
+          "attrs": { "x": 66, "y": 70, "width": 220, "height": 28, "rx": 999 },
+          "style": { "fill": "rgba(255,255,255,0.04)", "stroke": "rgba(255,255,255,0.12)" }
+        },
+        {
+          "id": "pillDot",
+          "type": "circle",
+          "attrs": { "cx": 82, "cy": 84, "r": 5 },
+          "style": { "fill": "#6AE4FF", "opacity": 0.9 }
+        },
+        {
+          "id": "pillText",
+          "type": "text",
+          "text": "{{slot:kicker}}",
+          "attrs": { "x": 96, "y": 88 },
+          "style": { "fontSize": 12, "fontWeight": 850, "fill": "rgba(234,242,255,0.72)" }
+        },
+
+        {
+          "id": "card1",
+          "type": "rect",
+          "attrs": { "x": 66, "y": 190, "width": 410, "height": 78, "rx": 18 },
+          "style": { "fill": "rgba(255,255,255,0.03)", "stroke": "rgba(255,255,255,0.10)" }
+        },
+        { "id": "card1Title", "type": "text", "text": "Booking Engine", "attrs": { "x": 88, "y": 222 }, "style": { "fontSize": 14, "fontWeight": 900, "fill": "rgba(234,242,255,0.88)" } },
+        { "id": "card1Sub", "type": "text", "text": "Slots • Duration • Area • Full-booked", "attrs": { "x": 88, "y": 246 }, "style": { "fontSize": 12, "fontWeight": 750, "fill": "rgba(234,242,255,0.60)" } },
+        { "id": "badge1", "type": "rect", "attrs": { "x": 388, "y": 206, "width": 74, "height": 24, "rx": 999 }, "style": { "fill": "rgba(106,228,255,0.10)", "stroke": "rgba(106,228,255,0.22)" } },
+        { "id": "badge1Text", "type": "text", "text": "Core", "attrs": { "x": 410, "y": 223 }, "style": { "fontSize": 11, "fontWeight": 900, "fill": "rgba(234,242,255,0.78)" } },
+
+        {
+          "id": "card2",
+          "type": "rect",
+          "attrs": { "x": 66, "y": 282, "width": 410, "height": 78, "rx": 18 },
+          "style": { "fill": "rgba(255,255,255,0.03)", "stroke": "rgba(255,255,255,0.10)" }
+        },
+        { "id": "card2Title", "type": "text", "text": "Dispatch & Scheduling", "attrs": { "x": 88, "y": 314 }, "style": { "fontSize": 14, "fontWeight": 900, "fill": "rgba(234,242,255,0.88)" } },
+        { "id": "card2Sub", "type": "text", "text": "Skills • Route conflicts • Reassign", "attrs": { "x": 88, "y": 338 }, "style": { "fontSize": 12, "fontWeight": 750, "fill": "rgba(234,242,255,0.60)" } },
+        { "id": "badge2", "type": "rect", "attrs": { "x": 332, "y": 298, "width": 130, "height": 24, "rx": 999 }, "style": { "fill": "rgba(139,91,255,0.10)", "stroke": "rgba(139,91,255,0.22)" } },
+        { "id": "badge2Text", "type": "text", "text": "Most tools miss", "attrs": { "x": 348, "y": 315 }, "style": { "fontSize": 11, "fontWeight": 900, "fill": "rgba(234,242,255,0.78)" } },
+
+        { "id": "caption", "type": "text", "text": "{{slot:caption}}", "attrs": { "x": 66, "y": 386 }, "style": { "fontSize": 12, "fontWeight": 800, "fill": "rgba(234,242,255,0.52)" } }
+      ]
+    }
+  ],
+  "animations": [
+    {
+      "id": "intro",
+      "type": "timeline",
+      "durationMs": 1300,
+      "loop": false,
+      "tracks": [
+        { "target": "title", "property": "opacity", "keyframes": [{ "t": 0, "value": 0 }, { "t": 0.22, "value": 1, "easing": "power2.out" }] },
+        { "target": "sub", "property": "opacity", "keyframes": [{ "t": 0.08, "value": 0 }, { "t": 0.30, "value": 1, "easing": "power2.out" }] },
+        { "target": "map", "property": "opacity", "keyframes": [{ "t": 0.12, "value": 0 }, { "t": 0.40, "value": 1, "easing": "power2.out" }] },
+        { "target": "route", "property": "strokeDashoffset", "keyframes": [{ "t": 0.18, "value": "@pathLength" }, { "t": 0.72, "value": 0, "easing": "power2.out" }] },
+        { "target": "card1", "property": "opacity", "keyframes": [{ "t": 0.22, "value": 0 }, { "t": 0.46, "value": 1, "easing": "power2.out" }] },
+        { "target": "card2", "property": "opacity", "keyframes": [{ "t": 0.30, "value": 0 }, { "t": 0.54, "value": 1, "easing": "power2.out" }] }
+      ]
+    }
+  ],
+  "a11y": { "title": "Dispatch map demo", "desc": "A small scene showing booking and dispatch on a map.", "reducedMotion": { "strategy": "fade-only" } }
+}
+

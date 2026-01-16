@@ -1,0 +1,23 @@
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Node
+node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+coverage/
+
+# Local examples output (repo keeps only .gitkeep)
+examples/*.svg
+examples/*.scene.json
+examples/*.scene.mother.json
+examples/*.brief.json
+
+# Builder-generated nested outputs
+tools/motif-builders/**/front-end-effect/

@@ -1,0 +1,105 @@
+{
+  "meta": { "version": "0.1", "title": "Hero Card Example", "lang": "zh-CN", "seed": 42 },
+  "canvas": { "width": 960, "height": 540, "viewBox": "0 0 960 540", "bg": "#0B1220" },
+  "theme": {
+    "palette": {
+      "bg": "#0B1220",
+      "fg": "#EAF2FF",
+      "primary": "#5B8CFF",
+      "accent": "#22C55E",
+      "muted": "#90A4C3"
+    },
+    "typography": { "fontFamily": "ui-sans-serif, system-ui", "baseSize": 16, "weights": { "regular": 400, "bold": 700 } }
+  },
+  "nodes": [
+    {
+      "id": "root",
+      "type": "group",
+      "attrs": { "role": "img" },
+      "children": [
+        {
+          "id": "bg",
+          "type": "rect",
+          "attrs": { "x": 0, "y": 0, "width": 960, "height": 540, "rx": 32 },
+          "style": { "fill": "#0B1220" }
+        },
+        {
+          "id": "card",
+          "type": "rect",
+          "attrs": { "x": 64, "y": 72, "width": 832, "height": 396, "rx": 28 },
+          "style": { "fill": "rgba(255,255,255,0.06)", "stroke": "rgba(255,255,255,0.12)" }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "text": "把文案变成会动的 SVG 场景",
+          "attrs": { "x": 120, "y": 170 },
+          "style": { "fontSize": 40, "fontWeight": 700, "fill": "#EAF2FF" }
+        },
+        {
+          "id": "subhead",
+          "type": "text",
+          "text": "固定架构 + AI 填充 + lint 兜底",
+          "attrs": { "x": 120, "y": 222 },
+          "style": { "fontSize": 20, "fontWeight": 400, "fill": "#90A4C3" }
+        },
+        {
+          "id": "spark",
+          "type": "circle",
+          "attrs": { "cx": 780, "cy": 190, "r": 10 },
+          "style": { "fill": "#5B8CFF", "opacity": 0.9 }
+        },
+        {
+          "id": "orbit",
+          "type": "circle",
+          "attrs": { "cx": 780, "cy": 190, "r": 54 },
+          "style": { "fill": "none", "stroke": "rgba(91,140,255,0.35)", "strokeWidth": 2, "strokeDasharray": "6 10" }
+        }
+      ]
+    }
+  ],
+  "animations": [
+    {
+      "id": "intro",
+      "type": "timeline",
+      "durationMs": 1200,
+      "loop": false,
+      "tracks": [
+        {
+          "target": "headline",
+          "property": "opacity",
+          "keyframes": [
+            { "t": 0, "value": 0 },
+            { "t": 0.25, "value": 1, "easing": "ease-out" }
+          ]
+        },
+        {
+          "target": "subhead",
+          "property": "opacity",
+          "keyframes": [
+            { "t": 0.1, "value": 0 },
+            { "t": 0.35, "value": 1, "easing": "ease-out" }
+          ]
+        },
+        {
+          "target": "spark",
+          "property": "transform",
+          "keyframes": [
+            { "t": 0, "value": "translate(0px, 12px) scale(0.9)" },
+            { "t": 0.25, "value": "translate(0px, 0px) scale(1)", "easing": "cubic-bezier(0.2, 0.9, 0.2, 1)" }
+          ]
+        },
+        {
+          "target": "orbit",
+          "property": "strokeDashoffset",
+          "keyframes": [
+            { "t": 0, "value": 60 },
+            { "t": 1, "value": 0, "easing": "linear" }
+          ]
+        }
+      ]
+    }
+  ],
+  "a11y": { "title": "SVG 场景示例", "desc": "用简单图形展示入场动画与描边动画。", "reducedMotion": { "strategy": "fade-only" } }
+}
+

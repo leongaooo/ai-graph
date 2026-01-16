@@ -1,0 +1,13 @@
+{
+  "name": "front-end-effect-motif-builder-opeeps",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node ./build-people-opeeps.mjs"
+  },
+  "dependencies": {
+    "@opeepsfun/open-peeps": "1.0.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  }
+}

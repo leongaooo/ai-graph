@@ -1,0 +1,63 @@
+{
+  "version": "0.1",
+  "notes": "Non-breaking metadata for motif selection/placement. Does not affect inject-motifs; used by auto-fill tools.",
+  "motifs": [
+    { "id": "opeeps_effigy_finance_paper", "category": "person", "domainTags": ["payments", "payroll"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_finance_paper_light", "category": "person", "domainTags": ["payments", "payroll"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_finance_paper_light_flip", "category": "person", "domainTags": ["payments", "payroll"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_finance_paper_deep", "category": "person", "domainTags": ["payments", "payroll"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_finance_paper_deep_flip", "category": "person", "domainTags": ["payments", "payroll"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+
+    { "id": "opeeps_effigy_support_coffee_light", "category": "person", "domainTags": ["portal", "support"], "styleTags": ["paper", "glass", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_support_coffee_light_flip", "category": "person", "domainTags": ["portal", "support"], "styleTags": ["paper", "glass", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_support_coffee_deep", "category": "person", "domainTags": ["portal", "support"], "styleTags": ["paper", "glass", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_support_coffee_deep_flip", "category": "person", "domainTags": ["portal", "support"], "styleTags": ["paper", "glass", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+
+    { "id": "opeeps_effigy_manager_blazer_light", "category": "person", "domainTags": ["booking", "dispatch", "admin"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_manager_blazer_light_flip", "category": "person", "domainTags": ["booking", "dispatch", "admin"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_dispatcher_computer_light", "category": "person", "domainTags": ["dispatch"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_dispatcher_computer_light_flip", "category": "person", "domainTags": ["dispatch"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_fieldtech_jacket_deep", "category": "person", "domainTags": ["dispatch", "booking"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_elder_turtleneck_light", "category": "person", "domainTags": ["payments", "portal", "booking"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_elder_turtleneck_light_flip", "category": "person", "domainTags": ["payments", "portal", "booking"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+    { "id": "opeeps_effigy_sales_dress", "category": "person", "domainTags": ["payments", "portal"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "fg", "sizeHint": "l" },
+
+    { "id": "credit_card_handdrawn", "category": "prop_real", "domainTags": ["payments"], "styleTags": ["glass", "paper"], "layerDefault": "bg", "sizeHint": "l" },
+    { "id": "receipt_handdrawn", "category": "prop_real", "domainTags": ["payments", "portal"], "styleTags": ["glass", "paper"], "layerDefault": "bg", "sizeHint": "m" },
+    { "id": "invoice_handdrawn", "category": "prop_real", "domainTags": ["payments", "payroll"], "styleTags": ["glass", "paper"], "layerDefault": "bg", "sizeHint": "m" },
+    { "id": "phone_handdrawn", "category": "prop_real", "domainTags": ["portal"], "styleTags": ["paper", "glass"], "layerDefault": "bg", "sizeHint": "m" },
+    { "id": "chat_bubble_handdrawn", "category": "prop_real", "domainTags": ["portal", "support"], "styleTags": ["paper", "glass"], "layerDefault": "bg", "sizeHint": "m" },
+    { "id": "check_badge_handdrawn", "category": "prop_real", "domainTags": ["payments", "trust"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "clipboard_handdrawn", "category": "prop_real", "domainTags": ["payments", "portal", "payroll"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "bg", "sizeHint": "m" },
+    { "id": "package_handdrawn", "category": "prop_real", "domainTags": ["payments", "portal", "dispatch"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "bg", "sizeHint": "m" },
+    { "id": "contract_handdrawn", "category": "prop_real", "domainTags": ["payments", "payroll"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "bg", "sizeHint": "m" },
+    { "id": "calendar_handdrawn", "category": "prop_real", "domainTags": ["booking", "portal"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "bg", "sizeHint": "m" },
+    { "id": "map_pin_handdrawn", "category": "prop_real", "domainTags": ["booking", "dispatch"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "map_route_handdrawn", "category": "prop_real", "domainTags": ["dispatch"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "bg", "sizeHint": "m" },
+    { "id": "van_handdrawn", "category": "prop_real", "domainTags": ["dispatch"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "bg", "sizeHint": "m" },
+    { "id": "toolbox_handdrawn", "category": "prop_real", "domainTags": ["dispatch"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "bg", "sizeHint": "m" },
+    { "id": "house_handdrawn", "category": "prop_real", "domainTags": ["booking"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "bg", "sizeHint": "m" },
+
+    { "id": "lucide_badge_check", "category": "prop_ui", "domainTags": ["payments", "trust"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "lucide_credit_card", "category": "prop_ui", "domainTags": ["payments"], "styleTags": ["glass", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "lucide_wallet", "category": "prop_ui", "domainTags": ["payments", "payroll"], "styleTags": ["glass", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "lucide_coins", "category": "prop_ui", "domainTags": ["payments", "payroll"], "styleTags": ["glass", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "lucide_shield_check", "category": "prop_ui", "domainTags": ["payments", "trust"], "styleTags": ["glass", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "lucide_lock", "category": "prop_ui", "domainTags": ["payments", "trust"], "styleTags": ["glass", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "lucide_laptop", "category": "prop_ui", "domainTags": ["portal", "booking", "dispatch"], "styleTags": ["glass", "paper", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+
+    { "id": "lucide_user", "category": "prop_ui", "domainTags": ["portal"], "styleTags": ["paper", "glass"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "lucide_file_text", "category": "prop_ui", "domainTags": ["portal"], "styleTags": ["paper", "glass"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "lucide_message_circle", "category": "prop_ui", "domainTags": ["portal", "support"], "styleTags": ["paper", "glass"], "layerDefault": "bg", "sizeHint": "s" },
+
+    { "id": "lucide_calendar_clock", "category": "prop_ui", "domainTags": ["booking"], "styleTags": ["glass", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "lucide_timer", "category": "prop_ui", "domainTags": ["booking"], "styleTags": ["glass", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "lucide_map", "category": "prop_ui", "domainTags": ["booking", "dispatch"], "styleTags": ["glass", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "lucide_badge", "category": "prop_ui", "domainTags": ["booking", "dispatch"], "styleTags": ["glass", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+
+    { "id": "doodle_corner_scribble", "category": "decor", "domainTags": ["payments", "portal", "booking", "dispatch"], "styleTags": ["paper", "glow"], "layerDefault": "bg", "sizeHint": "m" },
+    { "id": "doodle_sparkles", "category": "decor", "domainTags": ["payments", "portal", "booking", "dispatch"], "styleTags": ["paper", "glow"], "layerDefault": "bg", "sizeHint": "s" },
+    { "id": "doodle_swoosh", "category": "decor", "domainTags": ["payments", "portal", "booking", "dispatch"], "styleTags": ["paper", "glow"], "layerDefault": "bg", "sizeHint": "m" },
+    { "id": "doodle_dotfield", "category": "decor", "domainTags": ["payments", "portal", "booking", "dispatch"], "styleTags": ["paper", "glow"], "layerDefault": "bg", "sizeHint": "m" }
+  ]
+}

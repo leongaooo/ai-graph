@@ -1,0 +1,22 @@
+<symbol id="motif_handshake" viewBox="0 0 320 200">
+  <!-- left person -->
+  <g id="p1" opacity="0.98">
+    <circle cx="86" cy="60" r="20" fill="rgba(234,242,255,0.86)"/>
+    <rect x="58" y="86" width="56" height="70" rx="22" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)"/>
+    <path d="M108 118 C130 116, 146 120, 162 132" fill="none" stroke="rgba(106,228,255,0.75)" stroke-width="10" stroke-linecap="round"/>
+  </g>
+
+  <!-- right person -->
+  <g id="p2" opacity="0.98">
+    <circle cx="234" cy="60" r="20" fill="rgba(234,242,255,0.86)"/>
+    <rect x="206" y="86" width="56" height="70" rx="22" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)"/>
+    <path d="M212 118 C190 116, 174 120, 158 132" fill="none" stroke="rgba(139,91,255,0.70)" stroke-width="10" stroke-linecap="round"/>
+  </g>
+
+  <!-- handshake -->
+  <g id="hs" opacity="0.96">
+    <path d="M144 140 C150 132, 170 132, 176 140" fill="none" stroke="url(#g_accent)" stroke-width="12" stroke-linecap="round"/>
+    <path d="M150 148 C156 140, 164 140, 170 148" fill="none" stroke="rgba(234,242,255,0.32)" stroke-width="6" stroke-linecap="round"/>
+  </g>
+</symbol>
+

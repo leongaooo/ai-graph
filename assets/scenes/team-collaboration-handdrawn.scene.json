@@ -1,0 +1,74 @@
+{
+  "meta": { "version": "0.1", "title": "Team: Collaboration + Payroll (Hand-drawn)", "lang": "en", "seed": 24 },
+  "canvas": { "width": 1200, "height": 600, "viewBox": "0 0 1200 600", "bg": "#0B0F14" },
+  "theme": {
+    "palette": {
+      "bg": "#0B0F14",
+      "fg": "rgba(234,242,255,0.92)",
+      "primary": "#4F8CFF",
+      "accent": "#8B5BFF",
+      "muted": "rgba(234,242,255,0.60)"
+    },
+    "typography": { "fontFamily": "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial", "baseSize": 16 }
+  },
+  "defs": {
+    "motifs": [
+      "opeeps_effigy_explaining",
+      "opeeps_effigy_arms_crossed",
+      "contract_handdrawn",
+      "check_badge_handdrawn",
+      "doodle_dotfield",
+      "doodle_corner_scribble"
+    ],
+    "raw": "\n      <linearGradient id=\"g_accent\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n        <stop offset=\"0%\" stop-color=\"rgba(79,140,255,0.95)\"/>\n        <stop offset=\"100%\" stop-color=\"rgba(139,91,255,0.95)\"/>\n      </linearGradient>\n      <filter id=\"f_soft\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\">\n        <feGaussianBlur stdDeviation=\"14\"/>\n      </filter>\n      <pattern id=\"p_scribble\" width=\"22\" height=\"22\" patternUnits=\"userSpaceOnUse\">\n        <path d=\"M2 6c6-3 10-3 16 0\" fill=\"none\" stroke=\"rgba(234,242,255,0.04)\" stroke-width=\"2\" stroke-linecap=\"round\"/>\n        <path d=\"M3 16c5-2 9-2 14 0\" fill=\"none\" stroke=\"rgba(234,242,255,0.03)\" stroke-width=\"2\" stroke-linecap=\"round\"/>\n      </pattern>\n    "
+  },
+  "nodes": [
+    { "id": "bg", "type": "rect", "attrs": { "data-role": "decor", "x": 0, "y": 0, "width": 1200, "height": 600, "fill": "#0B0F14" } },
+    { "id": "scribble", "type": "rect", "attrs": { "data-role": "decor", "x": 0, "y": 0, "width": 1200, "height": 600, "fill": "url(#p_scribble)" } },
+    { "id": "ground", "type": "ellipse", "attrs": { "data-role": "decor", "cx": 600, "cy": 474, "rx": 420, "ry": 62, "fill": "rgba(0,0,0,0.30)", "filter": "url(#f_soft)" } },
+
+    { "id": "dots_tr", "type": "use", "attrs": { "data-role": "decor", "href": "#motif_doodle_dotfield", "x": 930, "y": 80, "width": 160, "height": 160, "opacity": 0.45 } },
+    { "id": "scribble_br", "type": "use", "attrs": { "data-role": "decor", "href": "#motif_doodle_corner_scribble", "x": 980, "y": 360, "width": 160, "height": 160, "opacity": 0.45 } },
+
+    {
+      "id": "spark1",
+      "type": "path",
+      "attrs": {
+        "data-role": "decor",
+        "d": "M574 198c10-12 22-12 32 0",
+        "fill": "none",
+        "stroke": "url(#g_accent)",
+        "stroke-width": 8,
+        "stroke-linecap": "round",
+        "stroke-dasharray": "1 18",
+        "opacity": 0.55
+      }
+    },
+    {
+      "id": "spark2",
+      "type": "path",
+      "attrs": {
+        "data-role": "decor",
+        "d": "M640 188c8-10 18-10 26 0",
+        "fill": "none",
+        "stroke": "rgba(234,242,255,0.22)",
+        "stroke-width": 7,
+        "stroke-linecap": "round",
+        "stroke-dasharray": "1 16",
+        "opacity": 0.55
+      }
+    },
+
+    { "id": "p_left", "type": "use", "attrs": { "data-role": "subject", "href": "#motif_opeeps_effigy_explaining", "x": 190, "y": 128, "width": 360, "height": 424 } },
+    { "id": "p_right", "type": "use", "attrs": { "data-role": "subject", "href": "#motif_opeeps_effigy_arms_crossed", "x": 670, "y": 128, "width": 360, "height": 424 } },
+
+    { "id": "sheet", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_contract_handdrawn", "x": 500, "y": 210, "width": 230, "height": 170 } },
+    { "id": "ok", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_check_badge_handdrawn", "x": 480, "y": 348, "width": 150, "height": 110, "opacity": 0.9 } },
+
+    { "id": "kicker", "type": "text", "attrs": { "data-role": "text", "x": 600, "y": 64, "text-anchor": "middle", "fill": "rgba(234,242,255,0.66)", "font-size": 14, "letter-spacing": 1 }, "text": "{{slot:kicker}}" },
+    { "id": "headline", "type": "text", "attrs": { "data-role": "text", "x": 600, "y": 96, "text-anchor": "middle", "fill": "rgba(234,242,255,0.92)", "font-size": 28, "font-weight": 700 }, "text": "{{slot:headline}}" },
+    { "id": "subhead", "type": "text", "attrs": { "data-role": "text", "x": 600, "y": 126, "text-anchor": "middle", "fill": "rgba(234,242,255,0.64)", "font-size": 16 }, "text": "{{slot:subhead}}" }
+  ],
+  "animations": [],
+  "a11y": { "title": "Hand-drawn team collaboration scene", "desc": "Two people with a sketchy contract and completion badge.", "reducedMotion": { "strategy": "none" } }
+}

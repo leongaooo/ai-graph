@@ -1,0 +1,49 @@
+{
+  "meta": { "version": "0.1", "title": "Commerce: Handshake + Contract (Hand-drawn)", "lang": "en", "seed": 12 },
+  "canvas": { "width": 1200, "height": 600, "viewBox": "0 0 1200 600", "bg": "#0B0F14" },
+  "theme": {
+    "palette": {
+      "bg": "#0B0F14",
+      "fg": "rgba(234,242,255,0.92)",
+      "primary": "#4F8CFF",
+      "accent": "#8B5BFF",
+      "muted": "rgba(234,242,255,0.60)"
+    },
+    "typography": { "fontFamily": "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial", "baseSize": 16 }
+  },
+  "defs": {
+    "motifs": [
+      "opeeps_effigy_explaining",
+      "opeeps_effigy_arms_crossed",
+      "handshake_handdrawn",
+      "contract_handdrawn",
+      "doodle_corner_scribble",
+      "doodle_sparkles"
+    ],
+    "raw": "\n      <linearGradient id=\"g_accent\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n        <stop offset=\"0%\" stop-color=\"rgba(79,140,255,0.95)\"/>\n        <stop offset=\"100%\" stop-color=\"rgba(139,91,255,0.95)\"/>\n      </linearGradient>\n      <radialGradient id=\"g_orb\" cx=\"30%\" cy=\"30%\" r=\"70%\">\n        <stop offset=\"0%\" stop-color=\"rgba(79,140,255,0.26)\"/>\n        <stop offset=\"55%\" stop-color=\"rgba(79,140,255,0.10)\"/>\n        <stop offset=\"100%\" stop-color=\"rgba(79,140,255,0)\"/>\n      </radialGradient>\n      <radialGradient id=\"g_orb2\" cx=\"30%\" cy=\"30%\" r=\"70%\">\n        <stop offset=\"0%\" stop-color=\"rgba(139,91,255,0.22)\"/>\n        <stop offset=\"55%\" stop-color=\"rgba(139,91,255,0.10)\"/>\n        <stop offset=\"100%\" stop-color=\"rgba(139,91,255,0)\"/>\n      </radialGradient>\n      <filter id=\"f_soft\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\">\n        <feGaussianBlur stdDeviation=\"14\"/>\n      </filter>\n      <pattern id=\"p_scribble\" width=\"22\" height=\"22\" patternUnits=\"userSpaceOnUse\">\n        <path d=\"M2 6c6-3 10-3 16 0\" fill=\"none\" stroke=\"rgba(234,242,255,0.04)\" stroke-width=\"2\" stroke-linecap=\"round\"/>\n        <path d=\"M3 16c5-2 9-2 14 0\" fill=\"none\" stroke=\"rgba(234,242,255,0.03)\" stroke-width=\"2\" stroke-linecap=\"round\"/>\n      </pattern>\n    "
+  },
+  "nodes": [
+    { "id": "bg", "type": "rect", "attrs": { "data-role": "decor", "x": 0, "y": 0, "width": 1200, "height": 600, "fill": "#0B0F14" } },
+    { "id": "scribble", "type": "rect", "attrs": { "data-role": "decor", "x": 0, "y": 0, "width": 1200, "height": 600, "fill": "url(#p_scribble)" } },
+
+    { "id": "orb1", "type": "circle", "attrs": { "data-role": "decor", "cx": 260, "cy": 160, "r": 220, "fill": "url(#g_orb)", "filter": "url(#f_soft)" } },
+    { "id": "orb2", "type": "circle", "attrs": { "data-role": "decor", "cx": 980, "cy": 120, "r": 240, "fill": "url(#g_orb2)", "filter": "url(#f_soft)" } },
+
+    { "id": "ground", "type": "ellipse", "attrs": { "data-role": "decor", "cx": 600, "cy": 474, "rx": 390, "ry": 58, "fill": "rgba(0,0,0,0.32)", "filter": "url(#f_soft)" } },
+
+    { "id": "doodle_tl", "type": "use", "attrs": { "data-role": "decor", "href": "#motif_doodle_sparkles", "x": 84, "y": 84, "width": 120, "height": 120, "opacity": 0.55 } },
+    { "id": "doodle_br", "type": "use", "attrs": { "data-role": "decor", "href": "#motif_doodle_corner_scribble", "x": 980, "y": 360, "width": 160, "height": 160, "opacity": 0.55 } },
+
+    { "id": "p_left", "type": "use", "attrs": { "data-role": "subject", "href": "#motif_opeeps_effigy_explaining", "x": 220, "y": 128, "width": 340, "height": 404 } },
+    { "id": "p_right", "type": "use", "attrs": { "data-role": "subject", "href": "#motif_opeeps_effigy_arms_crossed", "x": 660, "y": 128, "width": 340, "height": 404 } },
+
+    { "id": "contract", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_contract_handdrawn", "x": 520, "y": 186, "width": 210, "height": 160 } },
+    { "id": "handshake", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_handshake_handdrawn", "x": 494, "y": 316, "width": 252, "height": 168 } },
+
+    { "id": "kicker", "type": "text", "attrs": { "data-role": "text", "x": 600, "y": 64, "text-anchor": "middle", "fill": "rgba(234,242,255,0.66)", "font-size": 14, "letter-spacing": 1 }, "text": "{{slot:kicker}}" },
+    { "id": "headline", "type": "text", "attrs": { "data-role": "text", "x": 600, "y": 96, "text-anchor": "middle", "fill": "rgba(234,242,255,0.92)", "font-size": 28, "font-weight": 700 }, "text": "{{slot:headline}}" },
+    { "id": "subhead", "type": "text", "attrs": { "data-role": "text", "x": 600, "y": 126, "text-anchor": "middle", "fill": "rgba(234,242,255,0.64)", "font-size": 16 }, "text": "{{slot:subhead}}" }
+  ],
+  "animations": [],
+  "a11y": { "title": "Hand-drawn commerce scene illustration", "desc": "Hand-drawn handshake and contract with people.", "reducedMotion": { "strategy": "none" } }
+}

@@ -1,0 +1,41 @@
+<symbol id="motif_contract" viewBox="0 0 320 240">
+  <rect x="52" y="26" width="216" height="188" rx="22" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.14)"/>
+  <rect x="78" y="64" width="164" height="14" rx="7" fill="rgba(234,242,255,0.22)"/>
+  <rect x="78" y="92" width="132" height="12" rx="6" fill="rgba(234,242,255,0.16)"/>
+  <rect x="78" y="116" width="152" height="12" rx="6" fill="rgba(234,242,255,0.14)"/>
+  <rect x="78" y="140" width="118" height="12" rx="6" fill="rgba(234,242,255,0.12)"/>
+  <path d="M222 164c12-10 26-10 38 0" fill="none" stroke="url(#g_accent)" stroke-width="10" stroke-linecap="round"/>
+  <path d="M236 174c6-5 14-5 20 0" fill="none" stroke="rgba(234,242,255,0.28)" stroke-width="6" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="motif_credit_card" viewBox="0 0 320 240">
+  <rect x="54" y="64" width="212" height="132" rx="26" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.14)"/>
+  <rect x="54" y="92" width="212" height="18" fill="rgba(234,242,255,0.14)"/>
+  <rect x="78" y="134" width="78" height="16" rx="8" fill="rgba(234,242,255,0.18)"/>
+  <rect x="78" y="158" width="104" height="14" rx="7" fill="rgba(234,242,255,0.12)"/>
+  <circle cx="230" cy="164" r="18" fill="rgba(79,140,255,0.28)"/>
+  <circle cx="250" cy="164" r="14" fill="rgba(139,91,255,0.22)"/>
+</symbol>
+
+<symbol id="motif_check_badge" viewBox="0 0 320 240">
+  <circle cx="160" cy="120" r="78" fill="rgba(79,140,255,0.18)" stroke="rgba(255,255,255,0.12)"/>
+  <path d="M124 122l18 18 54-54" fill="none" stroke="url(#g_accent)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M94 120c0-36 30-66 66-66" fill="none" stroke="rgba(234,242,255,0.16)" stroke-width="10" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="motif_map_pin" viewBox="0 0 320 240">
+  <path d="M160 34c42 0 74 30 74 72 0 54-74 126-74 126s-74-72-74-126c0-42 32-72 74-72z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>
+  <circle cx="160" cy="106" r="22" fill="url(#g_accent)" opacity="0.85"/>
+  <path d="M64 194c32-40 70-58 96-58s64 18 96 58" fill="none" stroke="rgba(234,242,255,0.14)" stroke-width="10" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="motif_van" viewBox="0 0 320 240">
+  <rect x="56" y="104" width="206" height="78" rx="22" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.14)"/>
+  <path d="M56 126h128c16 0 26-6 34-18l12-18h32" fill="none" stroke="rgba(234,242,255,0.14)" stroke-width="10" stroke-linecap="round"/>
+  <rect x="78" y="126" width="64" height="30" rx="10" fill="rgba(234,242,255,0.10)"/>
+  <circle cx="112" cy="182" r="18" fill="rgba(234,242,255,0.14)"/>
+  <circle cx="222" cy="182" r="18" fill="rgba(234,242,255,0.14)"/>
+  <circle cx="112" cy="182" r="8" fill="url(#g_accent)" opacity="0.9"/>
+  <circle cx="222" cy="182" r="8" fill="url(#g_accent)" opacity="0.9"/>
+</symbol>
+

@@ -1,0 +1,91 @@
+{
+  "meta": { "version": "0.1", "title": "Hero Abstract Orbs", "lang": "en", "seed": 7 },
+  "canvas": { "width": 980, "height": 320, "viewBox": "0 0 980 320", "bg": "rgba(255,255,255,0)" },
+  "theme": {
+    "palette": {
+      "bg": "rgba(255,255,255,0)",
+      "fg": "rgba(11,18,32,.86)",
+      "primary": "var(--accent)",
+      "accent": "var(--accent2)",
+      "muted": "rgba(11,18,32,.58)"
+    },
+    "typography": { "fontFamily": "ui-sans-serif, system-ui", "baseSize": 16, "weights": { "regular": 800, "bold": 950 } }
+  },
+  "nodes": [
+    {
+      "id": "root",
+      "type": "group",
+      "attrs": { "role": "img", "aria-label": "Hero illustration" },
+      "children": [
+        { "id": "bgRect", "type": "rect", "attrs": { "x": 0, "y": 0, "width": 980, "height": 320, "fill": "rgba(255,255,255,0)" } },
+
+        { "id": "orb1", "type": "circle", "attrs": { "cx": 190, "cy": 150, "r": 120 }, "style": { "fill": "rgba(var(--accentRgb), .18)" } },
+        { "id": "orb2", "type": "circle", "attrs": { "cx": 820, "cy": 110, "r": 150 }, "style": { "fill": "rgba(var(--accent2Rgb), .14)" } },
+        { "id": "orb3", "type": "circle", "attrs": { "cx": 520, "cy": 40, "r": 110 }, "style": { "fill": "rgba(var(--accentRgb), .09)" } },
+        { "id": "orb4", "type": "circle", "attrs": { "cx": 620, "cy": 270, "r": 160 }, "style": { "fill": "rgba(var(--accent2Rgb), .10)" } },
+
+        {
+          "id": "cardA",
+          "type": "rect",
+          "attrs": { "x": 590, "y": 60, "width": 320, "height": 92, "rx": 22 },
+          "style": { "fill": "rgba(255,255,255,.78)", "stroke": "rgba(11,18,32,.10)", "opacity": 0.98 }
+        },
+        {
+          "id": "cardB",
+          "type": "rect",
+          "attrs": { "x": 640, "y": 170, "width": 270, "height": 108, "rx": 22 },
+          "style": { "fill": "rgba(255,255,255,.74)", "stroke": "rgba(11,18,32,.10)", "opacity": 0.98 }
+        },
+
+        { "id": "pill", "type": "rect", "attrs": { "x": 622, "y": 82, "width": 140, "height": 26, "rx": 999 }, "style": { "fill": "rgba(var(--accentRgb), .10)", "stroke": "rgba(var(--accentRgb), .22)" } },
+        { "id": "pillText", "type": "text", "text": "{{slot:kicker}}", "attrs": { "x": 692, "y": 100, "text-anchor": "middle" }, "style": { "fontSize": 12, "fontWeight": 950, "fill": "rgba(11,18,32,.80)" } },
+
+        { "id": "headline", "type": "text", "text": "{{slot:headline}}", "attrs": { "x": 66, "y": 140 }, "style": { "fontSize": 44, "fontWeight": 950, "fill": "rgba(11,18,32,.92)" } },
+        { "id": "subhead", "type": "text", "text": "{{slot:subhead}}", "attrs": { "x": 66, "y": 178 }, "style": { "fontSize": 14, "fontWeight": 850, "fill": "rgba(11,18,32,.62)" } },
+
+        { "id": "spark1", "type": "circle", "attrs": { "cx": 560, "cy": 86, "r": 4 }, "style": { "fill": "var(--accent)", "opacity": 0.85 } },
+        { "id": "spark2", "type": "circle", "attrs": { "cx": 928, "cy": 150, "r": 5 }, "style": { "fill": "var(--accent2)", "opacity": 0.8 } },
+        { "id": "spark3", "type": "circle", "attrs": { "cx": 604, "cy": 268, "r": 4 }, "style": { "fill": "var(--accent)", "opacity": 0.82 } },
+
+        {
+          "id": "captionChip",
+          "type": "rect",
+          "attrs": { "x": 14, "y": 282, "width": 360, "height": 28, "rx": 999 },
+          "style": { "fill": "rgba(255,255,255,.84)", "stroke": "rgba(11,18,32,.10)" }
+        },
+        { "id": "captionDot", "type": "circle", "attrs": { "cx": 32, "cy": 296, "r": 4 }, "style": { "fill": "var(--accent)", "opacity": 1 } },
+        { "id": "captionText", "type": "text", "text": "{{slot:caption}}", "attrs": { "x": 46, "y": 300 }, "style": { "fontSize": 12, "fontWeight": 950, "fill": "rgba(11,18,32,.70)" } }
+      ]
+    }
+  ],
+  "animations": [
+    {
+      "id": "intro",
+      "type": "timeline",
+      "durationMs": 1200,
+      "loop": false,
+      "tracks": [
+        { "target": "headline", "property": "opacity", "keyframes": [{ "t": 0, "value": 0 }, { "t": 0.25, "value": 1, "easing": "power2.out" }] },
+        { "target": "subhead", "property": "opacity", "keyframes": [{ "t": 0.08, "value": 0 }, { "t": 0.34, "value": 1, "easing": "power2.out" }] },
+        { "target": "cardA", "property": "opacity", "keyframes": [{ "t": 0.12, "value": 0 }, { "t": 0.42, "value": 1, "easing": "power2.out" }] },
+        { "target": "cardB", "property": "opacity", "keyframes": [{ "t": 0.18, "value": 0 }, { "t": 0.48, "value": 1, "easing": "power2.out" }] },
+        { "target": "cardA", "property": "transform", "keyframes": [{ "t": 0.12, "value": "translate(0px, 10px)" }, { "t": 0.42, "value": "translate(0px, 0px)", "easing": "power2.out" }] },
+        { "target": "cardB", "property": "transform", "keyframes": [{ "t": 0.18, "value": "translate(0px, 12px)" }, { "t": 0.48, "value": "translate(0px, 0px)", "easing": "power2.out" }] },
+        { "target": "captionChip", "property": "opacity", "keyframes": [{ "t": 0.3, "value": 0 }, { "t": 0.55, "value": 1, "easing": "power2.out" }] }
+      ]
+    },
+    {
+      "id": "float",
+      "type": "timeline",
+      "durationMs": 1800,
+      "loop": true,
+      "tracks": [
+        { "target": "orb1", "property": "transform", "keyframes": [{ "t": 0, "value": "translate(0px, 0px)" }, { "t": 0.5, "value": "translate(0px, -6px)", "easing": "sine.inOut" }, { "t": 1, "value": "translate(0px, 0px)", "easing": "sine.inOut" }] },
+        { "target": "orb2", "property": "transform", "keyframes": [{ "t": 0, "value": "translate(0px, 0px)" }, { "t": 0.5, "value": "translate(0px, 7px)", "easing": "sine.inOut" }, { "t": 1, "value": "translate(0px, 0px)", "easing": "sine.inOut" }] },
+        { "target": "spark2", "property": "transform", "keyframes": [{ "t": 0, "value": "scale(1)" }, { "t": 0.5, "value": "scale(1.25)", "easing": "sine.inOut" }, { "t": 1, "value": "scale(1)", "easing": "sine.inOut" }] }
+      ]
+    }
+  ],
+  "a11y": { "title": "Hero illustration", "desc": "A big abstract illustration with cards, sparkles and copy slots.", "reducedMotion": { "strategy": "fade-only" } }
+}
+

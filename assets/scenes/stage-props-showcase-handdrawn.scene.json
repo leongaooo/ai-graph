@@ -1,0 +1,53 @@
+{
+  "meta": { "version": "0.1", "title": "Stage: Props Showcase (Hand-drawn)", "lang": "en", "seed": 44 },
+  "canvas": { "width": 1200, "height": 600, "viewBox": "0 0 1200 600", "bg": "#0B0F14" },
+  "theme": {
+    "palette": {
+      "bg": "#0B0F14",
+      "fg": "rgba(234,242,255,0.92)",
+      "primary": "#4F8CFF",
+      "accent": "#8B5BFF",
+      "muted": "rgba(234,242,255,0.60)"
+    },
+    "typography": { "fontFamily": "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial", "baseSize": 16 }
+  },
+  "defs": {
+    "motifs": [
+      "calendar_handdrawn",
+      "phone_handdrawn",
+      "receipt_handdrawn",
+      "invoice_handdrawn",
+      "clipboard_handdrawn",
+      "map_route_handdrawn",
+      "package_handdrawn",
+      "toolbox_handdrawn"
+    ],
+    "raw": "\n      <linearGradient id=\"g_accent\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n        <stop offset=\"0%\" stop-color=\"rgba(79,140,255,0.95)\"/>\n        <stop offset=\"100%\" stop-color=\"rgba(139,91,255,0.95)\"/>\n      </linearGradient>\n      <filter id=\"f_soft\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\">\n        <feGaussianBlur stdDeviation=\"14\"/>\n      </filter>\n      <pattern id=\"p_scribble\" width=\"22\" height=\"22\" patternUnits=\"userSpaceOnUse\">\n        <path d=\"M2 6c6-3 10-3 16 0\" fill=\"none\" stroke=\"rgba(234,242,255,0.03)\" stroke-width=\"2\" stroke-linecap=\"round\"/>\n        <path d=\"M3 16c5-2 9-2 14 0\" fill=\"none\" stroke=\"rgba(234,242,255,0.02)\" stroke-width=\"2\" stroke-linecap=\"round\"/>\n      </pattern>\n    "
+  },
+  "nodes": [
+    { "id": "bg", "type": "rect", "attrs": { "data-role": "decor", "data-decor-type": "texture", "x": 0, "y": 0, "width": 1200, "height": 600, "fill": "#0B0F14" } },
+    { "id": "tex", "type": "rect", "attrs": { "data-role": "decor", "data-decor-type": "texture", "x": 0, "y": 0, "width": 1200, "height": 600, "fill": "url(#p_scribble)" } },
+    { "id": "spot", "type": "ellipse", "attrs": { "data-role": "decor", "data-decor-type": "shadow", "cx": 600, "cy": 412, "rx": 520, "ry": 140, "fill": "rgba(0,0,0,0.28)", "filter": "url(#f_soft)" } },
+
+    { "id": "p_cal", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_calendar_handdrawn", "x": 80, "y": 168, "width": 220, "height": 170, "opacity": 0.88 } },
+    { "id": "p_phone", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_phone_handdrawn", "x": 350, "y": 168, "width": 220, "height": 170, "opacity": 0.86 } },
+    { "id": "p_receipt", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_receipt_handdrawn", "x": 620, "y": 168, "width": 220, "height": 170, "opacity": 0.86 } },
+    { "id": "p_invoice", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_invoice_handdrawn", "x": 890, "y": 168, "width": 220, "height": 170, "opacity": 0.86 } },
+
+    { "id": "p_clip", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_clipboard_handdrawn", "x": 80, "y": 360, "width": 220, "height": 170, "opacity": 0.84 } },
+    { "id": "p_route", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_map_route_handdrawn", "x": 350, "y": 360, "width": 220, "height": 170, "opacity": 0.84 } },
+    { "id": "p_pack", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_package_handdrawn", "x": 620, "y": 360, "width": 220, "height": 170, "opacity": 0.84 } },
+    { "id": "p_tool", "type": "use", "attrs": { "data-role": "prop", "href": "#motif_toolbox_handdrawn", "x": 890, "y": 360, "width": 220, "height": 170, "opacity": 0.84 } },
+
+    { "id": "kicker", "type": "text", "attrs": { "data-role": "text", "x": 600, "y": 64, "text-anchor": "middle", "fill": "rgba(234,242,255,0.66)", "font-size": 14, "letter-spacing": 1 }, "text": "{{slot:kicker}}" },
+    { "id": "headline", "type": "text", "attrs": { "data-role": "text", "x": 600, "y": 98, "text-anchor": "middle", "fill": "rgba(234,242,255,0.92)", "font-size": 28, "font-weight": 740 }, "text": "{{slot:headline}}" },
+    { "id": "subhead", "type": "text", "attrs": { "data-role": "text", "x": 600, "y": 130, "text-anchor": "middle", "fill": "rgba(234,242,255,0.64)", "font-size": 16 }, "text": "{{slot:subhead}}" }
+  ],
+  "animations": [],
+  "a11y": {
+    "title": "Props showcase illustration",
+    "desc": "A grid of hand-drawn props suitable for SaaS and ops scenes.",
+    "reducedMotion": { "strategy": "none" }
+  }
+}
+

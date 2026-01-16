@@ -1,0 +1,108 @@
+{
+  "meta": { "version": "0.1", "title": "Demo Commerce Handshake", "lang": "zh-CN", "seed": 27 },
+  "canvas": { "width": 960, "height": 420, "viewBox": "0 0 960 420", "bg": "#07080d" },
+  "theme": {
+    "palette": { "bg": "#07080d", "fg": "#EAF2FF", "primary": "#6AE4FF", "accent": "#8B5BFF", "muted": "rgba(255,255,255,0.62)" },
+    "typography": { "fontFamily": "ui-sans-serif, system-ui", "baseSize": 16, "weights": { "regular": 700, "bold": 900 } }
+  },
+  "defs": {
+    "raw": "<linearGradient id=\"g_accent\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#6AE4FF\" stop-opacity=\"0.95\"/><stop offset=\"1\" stop-color=\"#8B5BFF\" stop-opacity=\"0.88\"/></linearGradient><radialGradient id=\"g_glow\" cx=\"28%\" cy=\"18%\" r=\"70%\"><stop offset=\"0\" stop-color=\"#6AE4FF\" stop-opacity=\"0.20\"/><stop offset=\"1\" stop-color=\"#6AE4FF\" stop-opacity=\"0\"/></radialGradient><radialGradient id=\"g_glow2\" cx=\"78%\" cy=\"24%\" r=\"75%\"><stop offset=\"0\" stop-color=\"#8B5BFF\" stop-opacity=\"0.18\"/><stop offset=\"1\" stop-color=\"#8B5BFF\" stop-opacity=\"0\"/></radialGradient><filter id=\"f_soft\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\"><feGaussianBlur stdDeviation=\"10\"/></filter><symbol id=\"motif_handshake\" viewBox=\"0 0 320 200\"><g id=\"p1\" opacity=\"0.98\"><circle cx=\"86\" cy=\"60\" r=\"20\" fill=\"rgba(234,242,255,0.86)\"/><rect x=\"58\" y=\"86\" width=\"56\" height=\"70\" rx=\"22\" fill=\"rgba(255,255,255,0.06)\" stroke=\"rgba(255,255,255,0.12)\"/><path d=\"M108 118 C130 116, 146 120, 162 132\" fill=\"none\" stroke=\"rgba(106,228,255,0.75)\" stroke-width=\"10\" stroke-linecap=\"round\"/></g><g id=\"p2\" opacity=\"0.98\"><circle cx=\"234\" cy=\"60\" r=\"20\" fill=\"rgba(234,242,255,0.86)\"/><rect x=\"206\" y=\"86\" width=\"56\" height=\"70\" rx=\"22\" fill=\"rgba(255,255,255,0.06)\" stroke=\"rgba(255,255,255,0.12)\"/><path d=\"M212 118 C190 116, 174 120, 158 132\" fill=\"none\" stroke=\"rgba(139,91,255,0.70)\" stroke-width=\"10\" stroke-linecap=\"round\"/></g><g id=\"hs\" opacity=\"0.96\"><path d=\"M144 140 C150 132, 170 132, 176 140\" fill=\"none\" stroke=\"url(#g_accent)\" stroke-width=\"12\" stroke-linecap=\"round\"/><path d=\"M150 148 C156 140, 164 140, 170 148\" fill=\"none\" stroke=\"rgba(234,242,255,0.32)\" stroke-width=\"6\" stroke-linecap=\"round\"/></g></symbol>"
+  },
+  "nodes": [
+    {
+      "id": "root",
+      "type": "group",
+      "attrs": { "role": "img", "aria-label": "Commerce illustration" },
+      "children": [
+        { "id": "bg", "type": "rect", "attrs": { "x": 0, "y": 0, "width": 960, "height": 420, "rx": 28 }, "style": { "fill": "#07080d" } },
+        { "id": "glowA", "type": "rect", "attrs": { "x": 0, "y": 0, "width": 960, "height": 420 }, "style": { "fill": "url(#g_glow)" } },
+        { "id": "glowB", "type": "rect", "attrs": { "x": 0, "y": 0, "width": 960, "height": 420 }, "style": { "fill": "url(#g_glow2)" } },
+
+        {
+          "id": "frame",
+          "type": "rect",
+          "attrs": { "x": 28, "y": 28, "width": 904, "height": 364, "rx": 26 },
+          "style": { "fill": "rgba(255,255,255,0.03)", "stroke": "rgba(255,255,255,0.10)" }
+        },
+
+        {
+          "id": "pill",
+          "type": "rect",
+          "attrs": { "x": 66, "y": 70, "width": 240, "height": 28, "rx": 999 },
+          "style": { "fill": "rgba(255,255,255,0.04)", "stroke": "rgba(255,255,255,0.12)" }
+        },
+        { "id": "pillDot", "type": "circle", "attrs": { "cx": 82, "cy": 84, "r": 5 }, "style": { "fill": "#6AE4FF", "opacity": 0.9 } },
+        { "id": "pillText", "type": "text", "text": "{{slot:kicker}}", "attrs": { "x": 96, "y": 88 }, "style": { "fontSize": 12, "fontWeight": 850, "fill": "rgba(234,242,255,0.72)" } },
+
+        { "id": "title", "type": "text", "text": "{{slot:headline}}", "attrs": { "x": 66, "y": 122 }, "style": { "fontSize": 34, "fontWeight": 900, "fill": "#EAF2FF" } },
+        { "id": "sub", "type": "text", "text": "{{slot:subhead}}", "attrs": { "x": 66, "y": 158 }, "style": { "fontSize": 14, "fontWeight": 750, "fill": "rgba(234,242,255,0.66)" } },
+
+        {
+          "id": "hsCard",
+          "type": "rect",
+          "attrs": { "x": 540, "y": 70, "width": 360, "height": 198, "rx": 22 },
+          "style": { "fill": "rgba(255,255,255,0.03)", "stroke": "rgba(255,255,255,0.10)" }
+        },
+        {
+          "id": "hsGlow",
+          "type": "circle",
+          "attrs": { "cx": 720, "cy": 170, "r": 96 },
+          "style": { "fill": "url(#g_accent)", "opacity": 0.10, "filter": "url(#f_soft)" }
+        },
+        {
+          "id": "hsUse",
+          "type": "use",
+          "attrs": { "href": "#motif_handshake", "x": 560, "y": 92, "width": 320, "height": 200 }
+        },
+        { "id": "hsLabel", "type": "text", "text": "Commercialization", "attrs": { "x": 560, "y": 252 }, "style": { "fontSize": 12, "fontWeight": 850, "fill": "rgba(234,242,255,0.52)" } },
+
+        {
+          "id": "stackCard",
+          "type": "rect",
+          "attrs": { "x": 66, "y": 210, "width": 440, "height": 150, "rx": 22 },
+          "style": { "fill": "rgba(255,255,255,0.03)", "stroke": "rgba(255,255,255,0.10)" }
+        },
+        { "id": "stackTitle", "type": "text", "text": "Revenue stack", "attrs": { "x": 88, "y": 244 }, "style": { "fontSize": 14, "fontWeight": 900, "fill": "rgba(234,242,255,0.88)" } },
+        { "id": "stackSub", "type": "text", "text": "Pricing → Checkout → Invoice → Payout", "attrs": { "x": 88, "y": 268 }, "style": { "fontSize": 12, "fontWeight": 750, "fill": "rgba(234,242,255,0.60)" } },
+
+        { "id": "chipA", "type": "rect", "attrs": { "x": 88, "y": 292, "width": 112, "height": 26, "rx": 999 }, "style": { "fill": "rgba(106,228,255,0.10)", "stroke": "rgba(106,228,255,0.22)" } },
+        { "id": "chipAT", "type": "text", "text": "Checkout", "attrs": { "x": 104, "y": 310 }, "style": { "fontSize": 11, "fontWeight": 900, "fill": "rgba(234,242,255,0.78)" } },
+
+        { "id": "chipB", "type": "rect", "attrs": { "x": 210, "y": 292, "width": 110, "height": 26, "rx": 999 }, "style": { "fill": "rgba(139,91,255,0.10)", "stroke": "rgba(139,91,255,0.22)" } },
+        { "id": "chipBT", "type": "text", "text": "Pricing", "attrs": { "x": 226, "y": 310 }, "style": { "fontSize": 11, "fontWeight": 900, "fill": "rgba(234,242,255,0.78)" } },
+
+        { "id": "chipC", "type": "rect", "attrs": { "x": 330, "y": 292, "width": 118, "height": 26, "rx": 999 }, "style": { "fill": "rgba(255,255,255,0.04)", "stroke": "rgba(255,255,255,0.12)" } },
+        { "id": "chipCT", "type": "text", "text": "Invoice", "attrs": { "x": 346, "y": 310 }, "style": { "fontSize": 11, "fontWeight": 900, "fill": "rgba(234,242,255,0.66)" } },
+
+        { "id": "caption", "type": "text", "text": "{{slot:caption}}", "attrs": { "x": 66, "y": 386 }, "style": { "fontSize": 12, "fontWeight": 800, "fill": "rgba(234,242,255,0.52)" } }
+      ]
+    }
+  ],
+  "animations": [
+    {
+      "id": "intro",
+      "type": "timeline",
+      "durationMs": 1200,
+      "loop": false,
+      "tracks": [
+        { "target": "title", "property": "opacity", "keyframes": [{ "t": 0, "value": 0 }, { "t": 0.22, "value": 1, "easing": "power2.out" }] },
+        { "target": "sub", "property": "opacity", "keyframes": [{ "t": 0.08, "value": 0 }, { "t": 0.30, "value": 1, "easing": "power2.out" }] },
+        { "target": "hsUse", "property": "opacity", "keyframes": [{ "t": 0.18, "value": 0 }, { "t": 0.46, "value": 1, "easing": "power2.out" }] },
+        { "target": "stackCard", "property": "opacity", "keyframes": [{ "t": 0.24, "value": 0 }, { "t": 0.52, "value": 1, "easing": "power2.out" }] },
+        { "target": "hsGlow", "property": "opacity", "keyframes": [{ "t": 0.18, "value": 0 }, { "t": 0.46, "value": 0.10, "easing": "power2.out" }] }
+      ]
+    },
+    {
+      "id": "float",
+      "type": "timeline",
+      "durationMs": 2200,
+      "loop": true,
+      "tracks": [
+        { "target": "hsUse", "property": "transform", "keyframes": [{ "t": 0, "value": "translate(0px, 0px)" }, { "t": 0.5, "value": "translate(0px, -2px)", "easing": "sine.inOut" }, { "t": 1, "value": "translate(0px, 0px)", "easing": "sine.inOut" }] },
+        { "target": "hsGlow", "property": "transform", "keyframes": [{ "t": 0, "value": "scale(1)" }, { "t": 0.5, "value": "scale(1.05)", "easing": "sine.inOut" }, { "t": 1, "value": "scale(1)", "easing": "sine.inOut" }] }
+      ]
+    }
+  ],
+  "a11y": { "title": "Commerce handshake demo", "desc": "A small scene showing a handshake motif and monetization stack.", "reducedMotion": { "strategy": "fade-only" } }
+}
+

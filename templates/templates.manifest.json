@@ -1,0 +1,24 @@
+{
+  "version": "0.1",
+  "templates": [
+    {
+      "id": "hero-illustration",
+      "purpose": "Big illustration + headline/subhead; used for hero or section openers.",
+      "slots": ["kicker", "headline", "subhead", "caption"],
+      "recommendedScenes": ["hero-abstract-orbs", "hero-flow-pipeline"]
+    },
+    {
+      "id": "flow-diagram",
+      "purpose": "Structured flow; good for explaining systems, pipelines, ops.",
+      "slots": ["headline", "caption"],
+      "recommendedScenes": ["hero-flow-pipeline"]
+    },
+    {
+      "id": "kpi-spotlight",
+      "purpose": "Large number with supportive label; good for metrics sections.",
+      "slots": ["kpi", "label", "caption"],
+      "recommendedScenes": ["kpi-ring-spotlight"]
+    }
+  ]
+}
+

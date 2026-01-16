@@ -1,0 +1,845 @@
+{
+  "version": "0.1",
+  "motifs": [
+    {
+      "id": "handshake",
+      "type": "symbol",
+      "notes": "Two simple characters + handshake. Use as a 'human' cue in commercialization scenes.",
+      "symbolId": "motif_handshake",
+      "path": "front-end-effect/assets/motifs/handshake.defs.svg"
+    },
+    {
+      "id": "handshake_handdrawn",
+      "type": "symbol",
+      "notes": "Hand-drawn handshake cue (sketchy strokes).",
+      "symbolId": "motif_handshake_handdrawn",
+      "path": "front-end-effect/assets/motifs/handshake-handdrawn.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_explaining",
+      "type": "symbol",
+      "notes": "Open Peeps effigy: explaining pose (human/brand cue).",
+      "symbolId": "motif_opeeps_effigy_explaining",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_arms_crossed",
+      "type": "symbol",
+      "notes": "Open Peeps effigy: arms crossed pose (human/brand cue).",
+      "symbolId": "motif_opeeps_effigy_arms_crossed",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_builder_hoodie",
+      "type": "symbol",
+      "notes": "Open Peeps: builder/dev vibe (hoodie + beanie).",
+      "symbolId": "motif_opeeps_effigy_builder_hoodie",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_manager_blazer",
+      "type": "symbol",
+      "notes": "Open Peeps: manager/owner vibe (blazer + glasses).",
+      "symbolId": "motif_opeeps_effigy_manager_blazer",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_dispatcher_computer",
+      "type": "symbol",
+      "notes": "Open Peeps: dispatcher/operator (computer + glasses).",
+      "symbolId": "motif_opeeps_effigy_dispatcher_computer",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_fieldtech_jacket",
+      "type": "symbol",
+      "notes": "Open Peeps: field technician (jacket + beanie).",
+      "symbolId": "motif_opeeps_effigy_fieldtech_jacket",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_finance_paper",
+      "type": "symbol",
+      "notes": "Open Peeps: finance/admin (paper + glasses).",
+      "symbolId": "motif_opeeps_effigy_finance_paper",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_support_coffee",
+      "type": "symbol",
+      "notes": "Open Peeps: support/CS (coffee).",
+      "symbolId": "motif_opeeps_effigy_support_coffee",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_elder_turtleneck",
+      "type": "symbol",
+      "notes": "Open Peeps: older profile (gray hair + turtleneck).",
+      "symbolId": "motif_opeeps_effigy_elder_turtleneck",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_ops_shirtcoat",
+      "type": "symbol",
+      "notes": "Open Peeps: ops/supervisor (shirt coat + hijab).",
+      "symbolId": "motif_opeeps_effigy_ops_shirtcoat",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_sales_dress",
+      "type": "symbol",
+      "notes": "Open Peeps: sales/CS (dress).",
+      "symbolId": "motif_opeeps_effigy_sales_dress",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_admin_button_pocket",
+      "type": "symbol",
+      "notes": "Open Peeps: admin/coordinator (button pocket shirt).",
+      "symbolId": "motif_opeeps_effigy_admin_button_pocket",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_explaining_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (medium): explaining pose (flipped).",
+      "symbolId": "motif_opeeps_effigy_explaining_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_explaining_light",
+      "type": "symbol",
+      "notes": "Open Peeps (light): explaining pose.",
+      "symbolId": "motif_opeeps_effigy_explaining_light",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_explaining_light_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (light): explaining pose (flipped).",
+      "symbolId": "motif_opeeps_effigy_explaining_light_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_explaining_deep",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): explaining pose.",
+      "symbolId": "motif_opeeps_effigy_explaining_deep",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_explaining_deep_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): explaining pose (flipped).",
+      "symbolId": "motif_opeeps_effigy_explaining_deep_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_arms_crossed_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (medium): arms crossed (flipped).",
+      "symbolId": "motif_opeeps_effigy_arms_crossed_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_arms_crossed_light",
+      "type": "symbol",
+      "notes": "Open Peeps (light): arms crossed.",
+      "symbolId": "motif_opeeps_effigy_arms_crossed_light",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_arms_crossed_light_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (light): arms crossed (flipped).",
+      "symbolId": "motif_opeeps_effigy_arms_crossed_light_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_arms_crossed_deep",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): arms crossed.",
+      "symbolId": "motif_opeeps_effigy_arms_crossed_deep",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_arms_crossed_deep_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): arms crossed (flipped).",
+      "symbolId": "motif_opeeps_effigy_arms_crossed_deep_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_builder_hoodie_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (medium): builder/dev vibe (hoodie + beanie) (flipped).",
+      "symbolId": "motif_opeeps_effigy_builder_hoodie_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_builder_hoodie_light",
+      "type": "symbol",
+      "notes": "Open Peeps (light): builder/dev vibe (hoodie + beanie).",
+      "symbolId": "motif_opeeps_effigy_builder_hoodie_light",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_builder_hoodie_light_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (light): builder/dev vibe (hoodie + beanie) (flipped).",
+      "symbolId": "motif_opeeps_effigy_builder_hoodie_light_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_builder_hoodie_deep",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): builder/dev vibe (hoodie + beanie).",
+      "symbolId": "motif_opeeps_effigy_builder_hoodie_deep",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_builder_hoodie_deep_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): builder/dev vibe (hoodie + beanie) (flipped).",
+      "symbolId": "motif_opeeps_effigy_builder_hoodie_deep_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_manager_blazer_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (medium): manager/owner vibe (blazer + glasses) (flipped).",
+      "symbolId": "motif_opeeps_effigy_manager_blazer_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_manager_blazer_light",
+      "type": "symbol",
+      "notes": "Open Peeps (light): manager/owner vibe (blazer + glasses).",
+      "symbolId": "motif_opeeps_effigy_manager_blazer_light",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_manager_blazer_light_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (light): manager/owner vibe (blazer + glasses) (flipped).",
+      "symbolId": "motif_opeeps_effigy_manager_blazer_light_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_manager_blazer_deep",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): manager/owner vibe (blazer + glasses).",
+      "symbolId": "motif_opeeps_effigy_manager_blazer_deep",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_manager_blazer_deep_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): manager/owner vibe (blazer + glasses) (flipped).",
+      "symbolId": "motif_opeeps_effigy_manager_blazer_deep_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_dispatcher_computer_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (medium): dispatcher/operator (computer + glasses) (flipped).",
+      "symbolId": "motif_opeeps_effigy_dispatcher_computer_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_dispatcher_computer_light",
+      "type": "symbol",
+      "notes": "Open Peeps (light): dispatcher/operator (computer + glasses).",
+      "symbolId": "motif_opeeps_effigy_dispatcher_computer_light",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_dispatcher_computer_light_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (light): dispatcher/operator (computer + glasses) (flipped).",
+      "symbolId": "motif_opeeps_effigy_dispatcher_computer_light_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_dispatcher_computer_deep",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): dispatcher/operator (computer + glasses).",
+      "symbolId": "motif_opeeps_effigy_dispatcher_computer_deep",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_dispatcher_computer_deep_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): dispatcher/operator (computer + glasses) (flipped).",
+      "symbolId": "motif_opeeps_effigy_dispatcher_computer_deep_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_fieldtech_jacket_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (medium): field technician (jacket + beanie) (flipped).",
+      "symbolId": "motif_opeeps_effigy_fieldtech_jacket_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_fieldtech_jacket_light",
+      "type": "symbol",
+      "notes": "Open Peeps (light): field technician (jacket + beanie).",
+      "symbolId": "motif_opeeps_effigy_fieldtech_jacket_light",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_fieldtech_jacket_light_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (light): field technician (jacket + beanie) (flipped).",
+      "symbolId": "motif_opeeps_effigy_fieldtech_jacket_light_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_fieldtech_jacket_deep",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): field technician (jacket + beanie).",
+      "symbolId": "motif_opeeps_effigy_fieldtech_jacket_deep",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_fieldtech_jacket_deep_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): field technician (jacket + beanie) (flipped).",
+      "symbolId": "motif_opeeps_effigy_fieldtech_jacket_deep_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_support_coffee_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (medium): support/CS (coffee) (flipped).",
+      "symbolId": "motif_opeeps_effigy_support_coffee_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_support_coffee_light",
+      "type": "symbol",
+      "notes": "Open Peeps (light): support/CS (coffee).",
+      "symbolId": "motif_opeeps_effigy_support_coffee_light",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_support_coffee_light_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (light): support/CS (coffee) (flipped).",
+      "symbolId": "motif_opeeps_effigy_support_coffee_light_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_support_coffee_deep",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): support/CS (coffee).",
+      "symbolId": "motif_opeeps_effigy_support_coffee_deep",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_support_coffee_deep_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): support/CS (coffee) (flipped).",
+      "symbolId": "motif_opeeps_effigy_support_coffee_deep_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_elder_turtleneck_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (medium): older profile (gray hair + turtleneck) (flipped).",
+      "symbolId": "motif_opeeps_effigy_elder_turtleneck_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_elder_turtleneck_light",
+      "type": "symbol",
+      "notes": "Open Peeps (light): older profile (gray hair + turtleneck).",
+      "symbolId": "motif_opeeps_effigy_elder_turtleneck_light",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_elder_turtleneck_light_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (light): older profile (gray hair + turtleneck) (flipped).",
+      "symbolId": "motif_opeeps_effigy_elder_turtleneck_light_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_elder_turtleneck_deep",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): older profile (gray hair + turtleneck).",
+      "symbolId": "motif_opeeps_effigy_elder_turtleneck_deep",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_elder_turtleneck_deep_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): older profile (gray hair + turtleneck) (flipped).",
+      "symbolId": "motif_opeeps_effigy_elder_turtleneck_deep_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_ops_shirtcoat_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (medium): ops/supervisor (shirt coat + hijab) (flipped).",
+      "symbolId": "motif_opeeps_effigy_ops_shirtcoat_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_ops_shirtcoat_light",
+      "type": "symbol",
+      "notes": "Open Peeps (light): ops/supervisor (shirt coat + hijab).",
+      "symbolId": "motif_opeeps_effigy_ops_shirtcoat_light",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_ops_shirtcoat_light_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (light): ops/supervisor (shirt coat + hijab) (flipped).",
+      "symbolId": "motif_opeeps_effigy_ops_shirtcoat_light_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_ops_shirtcoat_deep",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): ops/supervisor (shirt coat + hijab).",
+      "symbolId": "motif_opeeps_effigy_ops_shirtcoat_deep",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_ops_shirtcoat_deep_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): ops/supervisor (shirt coat + hijab) (flipped).",
+      "symbolId": "motif_opeeps_effigy_ops_shirtcoat_deep_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_finance_paper_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (medium): finance/admin (paper + glasses) (flipped).",
+      "symbolId": "motif_opeeps_effigy_finance_paper_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_finance_paper_light",
+      "type": "symbol",
+      "notes": "Open Peeps (light): finance/admin (paper + glasses).",
+      "symbolId": "motif_opeeps_effigy_finance_paper_light",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_finance_paper_light_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (light): finance/admin (paper + glasses) (flipped).",
+      "symbolId": "motif_opeeps_effigy_finance_paper_light_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_finance_paper_deep",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): finance/admin (paper + glasses).",
+      "symbolId": "motif_opeeps_effigy_finance_paper_deep",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_finance_paper_deep_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): finance/admin (paper + glasses) (flipped).",
+      "symbolId": "motif_opeeps_effigy_finance_paper_deep_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_admin_button_pocket_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (medium): admin/coordinator (button pocket shirt) (flipped).",
+      "symbolId": "motif_opeeps_effigy_admin_button_pocket_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_admin_button_pocket_light",
+      "type": "symbol",
+      "notes": "Open Peeps (light): admin/coordinator (button pocket shirt).",
+      "symbolId": "motif_opeeps_effigy_admin_button_pocket_light",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_admin_button_pocket_light_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (light): admin/coordinator (button pocket shirt) (flipped).",
+      "symbolId": "motif_opeeps_effigy_admin_button_pocket_light_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_admin_button_pocket_deep",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): admin/coordinator (button pocket shirt).",
+      "symbolId": "motif_opeeps_effigy_admin_button_pocket_deep",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "opeeps_effigy_admin_button_pocket_deep_flip",
+      "type": "symbol",
+      "notes": "Open Peeps (deep): admin/coordinator (button pocket shirt) (flipped).",
+      "symbolId": "motif_opeeps_effigy_admin_button_pocket_deep_flip",
+      "path": "front-end-effect/assets/motifs/people-opeeps.defs.svg"
+    },
+    {
+      "id": "contract",
+      "type": "symbol",
+      "notes": "Commerce object: contract/paper (pairs well with handshake / pricing / checkout).",
+      "symbolId": "motif_contract",
+      "path": "front-end-effect/assets/motifs/commerce-objects.defs.svg"
+    },
+    {
+      "id": "credit_card",
+      "type": "symbol",
+      "notes": "Commerce object: credit card (payments).",
+      "symbolId": "motif_credit_card",
+      "path": "front-end-effect/assets/motifs/commerce-objects.defs.svg"
+    },
+    {
+      "id": "check_badge",
+      "type": "symbol",
+      "notes": "Commerce object: success/check badge (payment success / booked).",
+      "symbolId": "motif_check_badge",
+      "path": "front-end-effect/assets/motifs/commerce-objects.defs.svg"
+    },
+    {
+      "id": "map_pin",
+      "type": "symbol",
+      "notes": "Ops object: map pin (service area / dispatch).",
+      "symbolId": "motif_map_pin",
+      "path": "front-end-effect/assets/motifs/commerce-objects.defs.svg"
+    },
+    {
+      "id": "van",
+      "type": "symbol",
+      "notes": "Ops object: service van (dispatch / on-site service).",
+      "symbolId": "motif_van",
+      "path": "front-end-effect/assets/motifs/commerce-objects.defs.svg"
+    },
+    {
+      "id": "contract_handdrawn",
+      "type": "symbol",
+      "notes": "Hand-drawn contract/paper (sketchy strokes).",
+      "symbolId": "motif_contract_handdrawn",
+      "path": "front-end-effect/assets/motifs/commerce-objects-handdrawn.defs.svg"
+    },
+    {
+      "id": "credit_card_handdrawn",
+      "type": "symbol",
+      "notes": "Hand-drawn credit card (sketchy strokes).",
+      "symbolId": "motif_credit_card_handdrawn",
+      "path": "front-end-effect/assets/motifs/commerce-objects-handdrawn.defs.svg"
+    },
+    {
+      "id": "check_badge_handdrawn",
+      "type": "symbol",
+      "notes": "Hand-drawn check badge (sketchy strokes).",
+      "symbolId": "motif_check_badge_handdrawn",
+      "path": "front-end-effect/assets/motifs/commerce-objects-handdrawn.defs.svg"
+    },
+    {
+      "id": "map_pin_handdrawn",
+      "type": "symbol",
+      "notes": "Hand-drawn map pin (sketchy strokes).",
+      "symbolId": "motif_map_pin_handdrawn",
+      "path": "front-end-effect/assets/motifs/commerce-objects-handdrawn.defs.svg"
+    },
+    {
+      "id": "van_handdrawn",
+      "type": "symbol",
+      "notes": "Hand-drawn service van (sketchy strokes).",
+      "symbolId": "motif_van_handdrawn",
+      "path": "front-end-effect/assets/motifs/commerce-objects-handdrawn.defs.svg"
+    },
+    {
+      "id": "doodle_corner_scribble",
+      "type": "symbol",
+      "notes": "Hand-drawn decor: corner scribble curves (use sparingly).",
+      "symbolId": "motif_doodle_corner_scribble",
+      "path": "front-end-effect/assets/motifs/decor-handdrawn.defs.svg"
+    },
+    {
+      "id": "doodle_sparkles",
+      "type": "symbol",
+      "notes": "Hand-drawn decor: sparkles (use in empty corners).",
+      "symbolId": "motif_doodle_sparkles",
+      "path": "front-end-effect/assets/motifs/decor-handdrawn.defs.svg"
+    },
+    {
+      "id": "doodle_swoosh",
+      "type": "symbol",
+      "notes": "Hand-drawn decor: swoosh lines (use as subtle motion cue).",
+      "symbolId": "motif_doodle_swoosh",
+      "path": "front-end-effect/assets/motifs/decor-handdrawn.defs.svg"
+    },
+    {
+      "id": "doodle_dotfield",
+      "type": "symbol",
+      "notes": "Hand-drawn decor: dot field (very low opacity).",
+      "symbolId": "motif_doodle_dotfield",
+      "path": "front-end-effect/assets/motifs/decor-handdrawn.defs.svg"
+    },
+    {
+      "id": "paper_frame",
+      "type": "symbol",
+      "notes": "Paper/pencil decor: subtle paper edge frame.",
+      "symbolId": "motif_paper_frame",
+      "path": "front-end-effect/assets/motifs/decor-paper.defs.svg"
+    },
+    {
+      "id": "pencil_shade_bl",
+      "type": "symbol",
+      "notes": "Paper/pencil decor: pencil shading blob (bottom-left).",
+      "symbolId": "motif_pencil_shade_bl",
+      "path": "front-end-effect/assets/motifs/decor-paper.defs.svg"
+    },
+    {
+      "id": "pencil_shade_tr",
+      "type": "symbol",
+      "notes": "Paper/pencil decor: pencil shading blob (top-right).",
+      "symbolId": "motif_pencil_shade_tr",
+      "path": "front-end-effect/assets/motifs/decor-paper.defs.svg"
+    },
+    {
+      "id": "tape_strip",
+      "type": "symbol",
+      "notes": "Paper/pencil decor: tape strip.",
+      "symbolId": "motif_tape_strip",
+      "path": "front-end-effect/assets/motifs/decor-paper.defs.svg"
+    },
+    {
+      "id": "calendar_handdrawn",
+      "type": "symbol",
+      "notes": "Prop: calendar (booking).",
+      "symbolId": "motif_calendar_handdrawn",
+      "path": "front-end-effect/assets/motifs/props-handdrawn.defs.svg"
+    },
+    {
+      "id": "phone_handdrawn",
+      "type": "symbol",
+      "notes": "Prop: phone (customer portal / comms).",
+      "symbolId": "motif_phone_handdrawn",
+      "path": "front-end-effect/assets/motifs/props-handdrawn.defs.svg"
+    },
+    {
+      "id": "receipt_handdrawn",
+      "type": "symbol",
+      "notes": "Prop: receipt (payments).",
+      "symbolId": "motif_receipt_handdrawn",
+      "path": "front-end-effect/assets/motifs/props-handdrawn.defs.svg"
+    },
+    {
+      "id": "toolbox_handdrawn",
+      "type": "symbol",
+      "notes": "Prop: toolbox (field work).",
+      "symbolId": "motif_toolbox_handdrawn",
+      "path": "front-end-effect/assets/motifs/props-handdrawn.defs.svg"
+    },
+    {
+      "id": "house_handdrawn",
+      "type": "symbol",
+      "notes": "Prop: house (home services).",
+      "symbolId": "motif_house_handdrawn",
+      "path": "front-end-effect/assets/motifs/props-handdrawn.defs.svg"
+    },
+    {
+      "id": "lucide_sparkles",
+      "type": "symbol",
+      "notes": "Decor/prop icon: sparkles (Lucide). Use as accent or sticker to cover noisy details.",
+      "symbolId": "motif_lucide_sparkles",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_star",
+      "type": "symbol",
+      "notes": "Decor icon: star (Lucide). Corner accent in empty space.",
+      "symbolId": "motif_lucide_star",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_sparkle",
+      "type": "symbol",
+      "notes": "Decor icon: sparkle (Lucide). Minimal accent.",
+      "symbolId": "motif_lucide_sparkle",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_badge_check",
+      "type": "symbol",
+      "notes": "Prop icon: badge check (Lucide). Great for 'verified/success'.",
+      "symbolId": "motif_lucide_badge_check",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_laptop",
+      "type": "symbol",
+      "notes": "Prop icon: laptop (Lucide). Use instead of embedded laptop art when needed.",
+      "symbolId": "motif_lucide_laptop",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_clock",
+      "type": "symbol",
+      "notes": "Prop icon: clock (Lucide). Useful for durations/scheduling.",
+      "symbolId": "motif_lucide_clock",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_map_pin",
+      "type": "symbol",
+      "notes": "Prop icon: map pin (Lucide). Service area / location.",
+      "symbolId": "motif_lucide_map_pin",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_route",
+      "type": "symbol",
+      "notes": "Prop icon: route (Lucide). Dispatch / routing.",
+      "symbolId": "motif_lucide_route",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_credit_card",
+      "type": "symbol",
+      "notes": "Prop icon: credit card (Lucide). Payments.",
+      "symbolId": "motif_lucide_credit_card",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_wallet",
+      "type": "symbol",
+      "notes": "Prop icon: wallet (Lucide). Payroll / payouts.",
+      "symbolId": "motif_lucide_wallet",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_user",
+      "type": "symbol",
+      "notes": "Prop icon: user (Lucide). Customer portal / profile.",
+      "symbolId": "motif_lucide_user",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_file_text",
+      "type": "symbol",
+      "notes": "Prop icon: file text (Lucide). Orders / docs / invoices.",
+      "symbolId": "motif_lucide_file_text",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_triangle_alert",
+      "type": "symbol",
+      "notes": "Prop icon: warning triangle (Lucide). Route conflicts / capacity / alerts.",
+      "symbolId": "motif_lucide_triangle_alert",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_shuffle",
+      "type": "symbol",
+      "notes": "Prop icon: shuffle (Lucide). Reassign / dispatch changes.",
+      "symbolId": "motif_lucide_shuffle",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_calendar_clock",
+      "type": "symbol",
+      "notes": "Prop icon: calendar + clock (Lucide). Booking time slots.",
+      "symbolId": "motif_lucide_calendar_clock",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_timer",
+      "type": "symbol",
+      "notes": "Prop icon: timer (Lucide). Service duration.",
+      "symbolId": "motif_lucide_timer",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_map",
+      "type": "symbol",
+      "notes": "Prop icon: map (Lucide). Service area / coverage.",
+      "symbolId": "motif_lucide_map",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_badge",
+      "type": "symbol",
+      "notes": "Prop icon: badge (Lucide). Skills / qualifications.",
+      "symbolId": "motif_lucide_badge",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_tag",
+      "type": "symbol",
+      "notes": "Prop icon: tag (Lucide). Labels / pricing / plan.",
+      "symbolId": "motif_lucide_tag",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_message_circle",
+      "type": "symbol",
+      "notes": "Prop icon: message (Lucide). Customer support / chat.",
+      "symbolId": "motif_lucide_message_circle",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_coins",
+      "type": "symbol",
+      "notes": "Prop icon: coins (Lucide). Revenue / payouts.",
+      "symbolId": "motif_lucide_coins",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_shield_check",
+      "type": "symbol",
+      "notes": "Prop icon: shield check (Lucide). Secure / trusted payments.",
+      "symbolId": "motif_lucide_shield_check",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "lucide_lock",
+      "type": "symbol",
+      "notes": "Prop icon: lock (Lucide). Security / compliance.",
+      "symbolId": "motif_lucide_lock",
+      "path": "front-end-effect/assets/motifs/icons-lucide.defs.svg"
+    },
+    {
+      "id": "invoice_handdrawn",
+      "type": "symbol",
+      "notes": "Prop: invoice/billing sheet.",
+      "symbolId": "motif_invoice_handdrawn",
+      "path": "front-end-effect/assets/motifs/props-handdrawn.defs.svg"
+    },
+    {
+      "id": "chat_bubble_handdrawn",
+      "type": "symbol",
+      "notes": "Prop: chat bubble (support / customer portal).",
+      "symbolId": "motif_chat_bubble_handdrawn",
+      "path": "front-end-effect/assets/motifs/props-handdrawn.defs.svg"
+    },
+    {
+      "id": "map_route_handdrawn",
+      "type": "symbol",
+      "notes": "Prop: route mini-map (dispatch / scheduling).",
+      "symbolId": "motif_map_route_handdrawn",
+      "path": "front-end-effect/assets/motifs/props-handdrawn.defs.svg"
+    },
+    {
+      "id": "package_handdrawn",
+      "type": "symbol",
+      "notes": "Prop: package/box (deliveries / inventory).",
+      "symbolId": "motif_package_handdrawn",
+      "path": "front-end-effect/assets/motifs/props-handdrawn.defs.svg"
+    },
+    {
+      "id": "clipboard_handdrawn",
+      "type": "symbol",
+      "notes": "Prop: clipboard checklist (workflow / QA).",
+      "symbolId": "motif_clipboard_handdrawn",
+      "path": "front-end-effect/assets/motifs/props-handdrawn.defs.svg"
+    }
+  ]
+}
