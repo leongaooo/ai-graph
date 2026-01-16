@@ -43,29 +43,29 @@ ai-graph/
 1) 用已有 scene 模板渲染一个 SVG（Brief + scene mother → render）
 
 ```bash
-node front-end-effect/tools/pipeline.mjs \
-  --brief front-end-effect/examples/your.brief.json \
-  --scene front-end-effect/assets/scenes/stage-payments-stripe-glass.scene.json \
-  --outScene front-end-effect/examples/out.scene.json \
-  --outSvg front-end-effect/examples/out.render.svg
+node ai-graph/tools/pipeline.mjs \
+  --brief ai-graph/examples/your.brief.json \
+  --scene ai-graph/assets/scenes/stage-payments-stripe-glass.scene.json \
+  --outScene ai-graph/examples/out.scene.json \
+  --outSvg ai-graph/examples/out.render.svg
 ```
 
 2) 让工具“自动填充”一个场景（先产 mother，再走 pipeline）
 
 ```bash
-node front-end-effect/tools/scene-auto-fill.mjs \
-  --brief front-end-effect/examples/your.brief.json \
-  --out front-end-effect/examples/auto.scene.mother.json \
+node ai-graph/tools/scene-auto-fill.mjs \
+  --brief ai-graph/examples/your.brief.json \
+  --out ai-graph/examples/auto.scene.mother.json \
   --domain payments \
   --style glass \
   --seed 1 \
   --candidates 120
 
-node front-end-effect/tools/pipeline.mjs \
-  --brief front-end-effect/examples/your.brief.json \
-  --scene front-end-effect/examples/auto.scene.mother.json \
-  --outScene front-end-effect/examples/auto.scene.json \
-  --outSvg front-end-effect/examples/auto.render.svg
+node ai-graph/tools/pipeline.mjs \
+  --brief ai-graph/examples/your.brief.json \
+  --scene ai-graph/examples/auto.scene.mother.json \
+  --outScene ai-graph/examples/auto.scene.json \
+  --outSvg ai-graph/examples/auto.render.svg
 ```
 
 ## “不混乱”的设计约束（为什么它能稳定）
@@ -79,9 +79,9 @@ node front-end-effect/tools/pipeline.mjs \
 
 ## 文档
 
-- `front-end-effect/front-end-effect.md`：仓库能力与规范说明
-- `front-end-effect/user-prompt-to-svg-animate.md`：如何把用户需求变成可控的插画/动效指令
-- `front-end-effect/STAGE_SUMMARY.md`：阶段性总结与下一阶段建议
+- `ai-graph/ai-graph.md`：仓库能力与规范说明
+- `ai-graph/user-prompt-to-svg-animate.md`：如何把用户需求变成可控的插画/动效指令
+- `ai-graph/STAGE_SUMMARY.md`：阶段性总结与下一阶段建议
 
 ## 未来畅想（Roadmap）
 
