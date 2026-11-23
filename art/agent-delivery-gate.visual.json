@@ -1,0 +1,729 @@
+{
+  "version": 1,
+  "id": "agent-delivery-gate",
+  "seed": 20261121,
+  "intent": "把真实文章中的对外 Demo 交付路径画成一条可追溯的 sequence。主链路从读者与浏览器经过动态口令门禁、/app OCR 工作台、反向代理和 systemd OCR 服务，最后返回真实 tokens。代理提前读取 multipart 请求体是已证实的失败分支，门禁无效口令的具体页面行为保留为 unknown。",
+  "source": {
+    "path": "/Users/gaolimin/GitHub/next-blog/data/blog/agent-delivered-gate-service.mdx",
+    "title": "把一台 2C2G 的云服务器配成能对外交付的 Demo 出口",
+    "date": "2026-11-21",
+    "sha256": "9e87898e21d9ab67e034e5268db9936ad5057ee3d1e23cff498f05af92c239cc"
+  },
+  "question": "一次对外 Demo 访问如何从门禁走到真实 OCR tokens，上传失败时哪一层负责？",
+  "mainConclusion": {
+    "claimRef": "c-main",
+    "text": "小规格服务器可以成为清晰的对外 Demo 出口，前提是访问、控制和端到端结果都能验证。"
+  },
+  "evidence": [
+    {
+      "id": "e-title",
+      "lineStart": 2,
+      "lineEnd": 2,
+      "textHash": "2d28645bdf9c748eb65ea6e5f34f21935149357816e02677ede9683c12f4220f",
+      "excerpt": "title: 把一台 2C2G 的云服务器配成能对外交付的 Demo 出口"
+    },
+    {
+      "id": "e-summary",
+      "lineStart": 6,
+      "lineEnd": 6,
+      "textHash": "3351b8be45f30f78ca11e2990370f99a3cc32d0d62b4198709fae7a61bae9392",
+      "excerpt": "summary: 在 Ubuntu 24.04、2vCPU 3.6G 的云服务器上，把 OCR 能力整理成带动态口令门禁、systemd 托管和可验证结果的在线 Demo。"
+    },
+    {
+      "id": "e-thesis",
+      "lineStart": 9,
+      "lineEnd": 11,
+      "textHash": "8fca1fd6f6016ec383a6e17d4d9872b8955696c84b32eb3fbead86cb55a3248e",
+      "excerpt": "一台小规格云服务器也可以成为一个真正能交付的 Demo 出口，前提是先把“能运行”变成“能访问、能控制、能复现”。\n\n这次的目标很具体：让 OCR 工作台可以通过一个受控入口对外演示，同时保留清晰的启动方式和可验证的端到端结果。服务器环境是 Ubuntu 24.04，配置为 2vCPU、3.6G 内存。"
+    },
+    {
+      "id": "e-background",
+      "lineStart": 15,
+      "lineEnd": 17,
+      "textHash": "dcf51a08201a082d3eb3ebc72bc20d46f8f0d744889760ff6e8b9159c7139803",
+      "excerpt": "OCR 程序在本机运行，只能说明代码和模型可以工作。面试演示或合作沟通需要的是一个别人能够打开、输入口令、完成一次识别的入口。\n\n因此我把交付问题拆成三件事：访问入口、服务托管和真实链路验证。访问入口负责控制谁能进入，服务托管负责重启后恢复，链路验证负责证明上传和识别都真的走通。"
+    },
+    {
+      "id": "e-gate",
+      "lineStart": 21,
+      "lineEnd": 21,
+      "textHash": "1061e8304c9f1cc2812f15a966aadf931131b21ac37c6d0850f2476579d33444",
+      "excerpt": "我在公网只保留一个专用演示入口，先进入门禁，再进入 OCR 工作台。门禁使用动态口令，单个口令有效期为 1 小时；需要演示时生成，过期后重新生成。"
+    },
+    {
+      "id": "e-systemd",
+      "lineStart": 23,
+      "lineEnd": 23,
+      "textHash": "06ecfc74c4d60a2c2db45c79ccb465c8fcda789a339e3d4f928b8b1ff4402a14",
+      "excerpt": "OCR 服务由 systemd 托管。这样服务的启动命令、运行状态和重启行为都有明确的管理入口，交付时不依赖某个终端窗口一直保持打开。"
+    },
+    {
+      "id": "e-path",
+      "lineStart": 25,
+      "lineEnd": 25,
+      "textHash": "5c90feeff76373d5d4cc8923b8c07cfdd97eeb0064b54a210757e1475fed1006",
+      "excerpt": "最后，我把门禁和 OCR 工作台串成一条完整路径：通过门禁进入 `/app`，再从工作台调用识别接口。"
+    },
+    {
+      "id": "e-proxy-failure",
+      "lineStart": 29,
+      "lineEnd": 29,
+      "textHash": "28774dd20f72407663f3a7a5d13ecf098993c71c8459bda972ec5e38b0959fc3",
+      "excerpt": "这次最容易被忽略的细节在反向代理的 POST 请求上。文件上传使用的是 multipart 请求，门禁如果先读取请求体再转发，上游就会收到不完整或空的内容。"
+    },
+    {
+      "id": "e-proxy-fix",
+      "lineStart": 31,
+      "lineEnd": 33,
+      "textHash": "3f6ed4ff6ef3da9d308eb6ec99f8d1e0ddc82b858b09bcdbc0dd4a5f9ffb480a",
+      "excerpt": "我修复了代理提前消费请求体的问题，让请求体沿着代理直接透传到 OCR 服务。修复后，801KB 的 multipart 上传可以完整到达上游，门禁仍然负责访问控制。\n\n这个决策的核心不是增加一个更复杂的网关，而是让每一层只处理自己负责的事情：门禁处理会话和口令，代理处理转发，OCR 服务处理识别。"
+    },
+    {
+      "id": "e-result",
+      "lineStart": 37,
+      "lineEnd": 37,
+      "textHash": "9ed792f3145931f116e029c5fdfafe87c293929deb2a6933e283e30af68f30d9",
+      "excerpt": "公网整条链路已经跑通：口令通过后进入 `/app`，上传图片并调用 OCR 接口，端到端约 26 秒返回真实 tokens。"
+    },
+    {
+      "id": "e-criteria",
+      "lineStart": 41,
+      "lineEnd": 45,
+      "textHash": "f7aa23da4628f46fe035b6a1003029642986ae692ad47e05ea9bdf7126ce4ee0",
+      "excerpt": "- 专用演示入口可以作为对外 Demo 入口。\n- 1 小时动态口令控制进入工作台的权限。\n- systemd 提供明确的服务托管方式。\n- 801KB multipart POST 可以透传到 OCR 上游。\n- 从访问到识别结果约 26 秒完成，并返回真实 tokens。"
+    },
+    {
+      "id": "e-close",
+      "lineStart": 56,
+      "lineEnd": 56,
+      "textHash": "b1c471cf59b29a2f9ab8952b49f921ac5f509b8e452a415b0af237e7a2e7c97c",
+      "excerpt": "对外 Demo 的价值，来自别人可以在有限时间内完成一次真实操作，并且我能解释它如何运行、如何恢复、哪里有边界。把这些环节补齐，小规格服务器也能承担一个清晰的交付出口。"
+    }
+  ],
+  "entities": [
+    {
+      "id": "reader-browser",
+      "label": "读者 / 浏览器",
+      "kind": "actor",
+      "status": "supported",
+      "sourceRefs": [
+        "e-gate",
+        "e-result"
+      ]
+    },
+    {
+      "id": "dynamic-gate",
+      "label": "动态口令门禁",
+      "kind": "control",
+      "status": "supported",
+      "sourceRefs": [
+        "e-gate"
+      ]
+    },
+    {
+      "id": "app",
+      "label": "/app OCR 工作台",
+      "kind": "application",
+      "status": "supported",
+      "sourceRefs": [
+        "e-path",
+        "e-result"
+      ]
+    },
+    {
+      "id": "reverse-proxy",
+      "label": "反向代理",
+      "kind": "network",
+      "status": "supported",
+      "sourceRefs": [
+        "e-proxy-failure",
+        "e-proxy-fix"
+      ]
+    },
+    {
+      "id": "systemd-service",
+      "label": "systemd OCR 服务",
+      "kind": "service",
+      "status": "supported",
+      "sourceRefs": [
+        "e-systemd",
+        "e-proxy-fix"
+      ]
+    },
+    {
+      "id": "tokens",
+      "label": "真实 tokens",
+      "kind": "result",
+      "status": "supported",
+      "sourceRefs": [
+        "e-result"
+      ]
+    },
+    {
+      "id": "cloud-server",
+      "label": "2C2G / 2vCPU · 3.6G 云服务器",
+      "kind": "context",
+      "status": "supported",
+      "sourceRefs": [
+        "e-title",
+        "e-summary",
+        "e-thesis"
+      ]
+    },
+    {
+      "id": "gate-expired",
+      "label": "口令过期后重新生成",
+      "kind": "boundary",
+      "status": "supported",
+      "sourceRefs": [
+        "e-gate"
+      ]
+    },
+    {
+      "id": "gate-failure",
+      "label": "门禁失败行为未说明",
+      "kind": "failure",
+      "status": "unknown",
+      "sourceRefs": [
+        "e-gate"
+      ]
+    },
+    {
+      "id": "proxy-failure",
+      "label": "提前读体 → 上游内容不完整或为空",
+      "kind": "failure",
+      "status": "supported",
+      "sourceRefs": [
+        "e-proxy-failure"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "id": "r-enter",
+      "from": "reader-browser",
+      "to": "dynamic-gate",
+      "type": "进入",
+      "status": "supported",
+      "sourceRefs": [
+        "e-gate"
+      ]
+    },
+    {
+      "id": "r-allow",
+      "from": "dynamic-gate",
+      "to": "app",
+      "type": "放行进入 /app",
+      "status": "supported",
+      "sourceRefs": [
+        "e-path"
+      ]
+    },
+    {
+      "id": "r-upload",
+      "from": "app",
+      "to": "reverse-proxy",
+      "type": "上传 multipart",
+      "status": "supported",
+      "sourceRefs": [
+        "e-path",
+        "e-proxy-fix"
+      ]
+    },
+    {
+      "id": "r-forward",
+      "from": "reverse-proxy",
+      "to": "systemd-service",
+      "type": "透传请求体",
+      "status": "supported",
+      "sourceRefs": [
+        "e-proxy-fix"
+      ]
+    },
+    {
+      "id": "r-return",
+      "from": "systemd-service",
+      "to": "tokens",
+      "type": "返回识别结果",
+      "status": "supported",
+      "sourceRefs": [
+        "e-result"
+      ]
+    },
+    {
+      "id": "r-display",
+      "from": "tokens",
+      "to": "reader-browser",
+      "type": "返回",
+      "status": "supported",
+      "sourceRefs": [
+        "e-result"
+      ]
+    },
+    {
+      "id": "r-expire",
+      "from": "dynamic-gate",
+      "to": "gate-expired",
+      "type": "过期分支",
+      "status": "supported",
+      "sourceRefs": [
+        "e-gate"
+      ]
+    },
+    {
+      "id": "r-gate-fail",
+      "from": "dynamic-gate",
+      "to": "gate-failure",
+      "type": "失败分支",
+      "status": "unknown",
+      "sourceRefs": [
+        "e-gate"
+      ]
+    },
+    {
+      "id": "r-body-fail",
+      "from": "reverse-proxy",
+      "to": "proxy-failure",
+      "type": "失败分支",
+      "status": "supported",
+      "sourceRefs": [
+        "e-proxy-failure"
+      ]
+    },
+    {
+      "id": "r-host",
+      "from": "cloud-server",
+      "to": "systemd-service",
+      "type": "承载",
+      "status": "supported",
+      "sourceRefs": [
+        "e-summary",
+        "e-systemd"
+      ]
+    }
+  ],
+  "levels": [
+    {
+      "id": "level-access",
+      "label": "访问入口",
+      "members": [
+        "reader-browser",
+        "dynamic-gate",
+        "gate-expired",
+        "gate-failure"
+      ]
+    },
+    {
+      "id": "level-path",
+      "label": "请求链路",
+      "members": [
+        "app",
+        "reverse-proxy",
+        "proxy-failure"
+      ]
+    },
+    {
+      "id": "level-runtime",
+      "label": "服务与结果",
+      "members": [
+        "cloud-server",
+        "systemd-service",
+        "tokens"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "c-main",
+      "text": "小规格服务器可以成为清晰的对外 Demo 出口，前提是访问、控制和端到端结果都能验证。",
+      "status": "supported",
+      "sourceRefs": [
+        "e-thesis",
+        "e-close"
+      ]
+    },
+    {
+      "id": "c-access",
+      "text": "动态口令负责控制谁能进入工作台。",
+      "status": "supported",
+      "sourceRefs": [
+        "e-background",
+        "e-gate"
+      ]
+    },
+    {
+      "id": "c-hosting",
+      "text": "systemd 为 OCR 服务提供明确的启动、运行和重启管理入口。",
+      "status": "supported",
+      "sourceRefs": [
+        "e-systemd"
+      ]
+    },
+    {
+      "id": "c-responsibility",
+      "text": "门禁处理会话和口令，代理处理转发，OCR 服务处理识别。",
+      "status": "supported",
+      "sourceRefs": [
+        "e-proxy-fix"
+      ]
+    },
+    {
+      "id": "c-end-to-end",
+      "text": "口令通过后可以进入 /app，上传图片并在约 26 秒后返回真实 tokens。",
+      "status": "supported",
+      "sourceRefs": [
+        "e-result"
+      ]
+    },
+    {
+      "id": "c-upload-failure",
+      "text": "代理提前读取 multipart 请求体会让上游收到不完整或空的内容。",
+      "status": "supported",
+      "sourceRefs": [
+        "e-proxy-failure"
+      ]
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "u-gate-failure",
+      "text": "文章没有说明无效或过期口令的具体页面返回、重试次数和锁定行为。",
+      "status": "unknown",
+      "sourceRefs": [
+        "e-gate"
+      ]
+    },
+    {
+      "id": "u-service-recovery",
+      "text": "文章说明 systemd 管理重启行为，但没有给出自动恢复耗时或重启策略参数。",
+      "status": "unknown",
+      "sourceRefs": [
+        "e-systemd"
+      ]
+    }
+  ],
+  "inferences": [
+    {
+      "id": "i-sequence",
+      "text": "将文章分散描述的访问、上传、转发和返回整理为一条顺序链路。",
+      "status": "inferred",
+      "reason": "文章分别描述门禁到 /app、工作台调用接口、代理透传和端到端返回。",
+      "sourceRefs": [
+        "e-path",
+        "e-proxy-fix",
+        "e-result"
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "id": "m-size-label",
+      "label": "服务器规格（原文写法）",
+      "value": "2C2G",
+      "unit": "原文标签",
+      "sourceRefs": [
+        "e-title"
+      ]
+    },
+    {
+      "id": "m-cpu",
+      "label": "CPU",
+      "value": 2,
+      "unit": "vCPU",
+      "sourceRefs": [
+        "e-summary",
+        "e-thesis"
+      ]
+    },
+    {
+      "id": "m-memory",
+      "label": "内存",
+      "value": 3.6,
+      "unit": "GB",
+      "sourceRefs": [
+        "e-summary",
+        "e-thesis"
+      ]
+    },
+    {
+      "id": "m-ttl",
+      "label": "动态口令有效期",
+      "value": 1,
+      "unit": "小时",
+      "sourceRefs": [
+        "e-gate",
+        "e-criteria"
+      ]
+    },
+    {
+      "id": "m-upload",
+      "label": "multipart 上传",
+      "value": 801,
+      "unit": "KB",
+      "sourceRefs": [
+        "e-proxy-fix",
+        "e-criteria"
+      ]
+    },
+    {
+      "id": "m-duration",
+      "label": "端到端返回",
+      "value": 26,
+      "unit": "秒",
+      "sourceRefs": [
+        "e-result",
+        "e-criteria"
+      ]
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "q1",
+      "question": "一次成功演示的主路径依次经过哪些节点？",
+      "answer": "读者/浏览器 → 动态口令门禁 → /app OCR 工作台 → 反向代理 → systemd OCR 服务 → 真实 tokens。",
+      "answerRefs": [
+        "r-enter",
+        "r-allow",
+        "r-upload",
+        "r-forward",
+        "r-return",
+        "r-display"
+      ],
+      "visibleRefs": [
+        "node-reader-browser",
+        "node-dynamic-gate",
+        "node-app",
+        "node-reverse-proxy",
+        "node-systemd-service",
+        "node-tokens"
+      ]
+    },
+    {
+      "id": "q2",
+      "question": "上传失败时，哪一层的什么行为会导致失败？",
+      "answer": "反向代理或门禁提前读取 multipart 请求体后再转发，会让上游收到不完整或空的内容。",
+      "answerRefs": [
+        "r-body-fail",
+        "c-upload-failure"
+      ],
+      "visibleRefs": [
+        "edge-r-body-fail",
+        "node-proxy-failure"
+      ]
+    },
+    {
+      "id": "q3",
+      "question": "图上的 2C2G、3.6G、1 小时、801KB 和 26 秒分别表示什么？",
+      "answer": "服务器规格标签、文章正文中的内存、动态口令有效期、multipart 上传大小和端到端返回耗时。",
+      "answerRefs": [
+        "m-size-label",
+        "m-memory",
+        "m-ttl",
+        "m-upload",
+        "m-duration"
+      ],
+      "visibleRefs": [
+        "metric-m-size-label",
+        "metric-m-memory",
+        "metric-m-ttl",
+        "metric-m-upload",
+        "metric-m-duration"
+      ]
+    }
+  ],
+  "view": {
+    "grammar": "sequence",
+    "focus": "c-main",
+    "order": [
+      "reader-browser",
+      "dynamic-gate",
+      "app",
+      "reverse-proxy",
+      "systemd-service",
+      "tokens"
+    ],
+    "elements": [
+      {
+        "id": "node-reader-browser",
+        "kind": "node",
+        "ref": "reader-browser",
+        "status": "supported"
+      },
+      {
+        "id": "node-dynamic-gate",
+        "kind": "node",
+        "ref": "dynamic-gate",
+        "status": "supported"
+      },
+      {
+        "id": "node-app",
+        "kind": "node",
+        "ref": "app",
+        "status": "supported"
+      },
+      {
+        "id": "node-reverse-proxy",
+        "kind": "node",
+        "ref": "reverse-proxy",
+        "status": "supported"
+      },
+      {
+        "id": "node-systemd-service",
+        "kind": "node",
+        "ref": "systemd-service",
+        "status": "supported"
+      },
+      {
+        "id": "node-tokens",
+        "kind": "node",
+        "ref": "tokens",
+        "status": "supported"
+      },
+      {
+        "id": "node-cloud-server",
+        "kind": "context",
+        "ref": "cloud-server",
+        "status": "supported"
+      },
+      {
+        "id": "node-gate-expired",
+        "kind": "node",
+        "ref": "gate-expired",
+        "status": "supported"
+      },
+      {
+        "id": "node-gate-failure",
+        "kind": "node",
+        "ref": "gate-failure",
+        "status": "unknown",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "node-proxy-failure",
+        "kind": "node",
+        "ref": "proxy-failure",
+        "status": "supported"
+      },
+      {
+        "id": "edge-r-enter",
+        "kind": "edge",
+        "ref": "r-enter",
+        "status": "supported",
+        "lineStyle": "solid"
+      },
+      {
+        "id": "edge-r-allow",
+        "kind": "edge",
+        "ref": "r-allow",
+        "status": "supported",
+        "lineStyle": "solid"
+      },
+      {
+        "id": "edge-r-upload",
+        "kind": "edge",
+        "ref": "r-upload",
+        "status": "supported",
+        "lineStyle": "solid"
+      },
+      {
+        "id": "edge-r-forward",
+        "kind": "edge",
+        "ref": "r-forward",
+        "status": "supported",
+        "lineStyle": "solid"
+      },
+      {
+        "id": "edge-r-return",
+        "kind": "edge",
+        "ref": "r-return",
+        "status": "supported",
+        "lineStyle": "solid"
+      },
+      {
+        "id": "edge-r-display",
+        "kind": "edge",
+        "ref": "r-display",
+        "status": "supported",
+        "lineStyle": "solid"
+      },
+      {
+        "id": "edge-r-expire",
+        "kind": "edge",
+        "ref": "r-expire",
+        "status": "supported",
+        "lineStyle": "solid"
+      },
+      {
+        "id": "edge-r-gate-fail",
+        "kind": "edge",
+        "ref": "r-gate-fail",
+        "status": "unknown",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "edge-r-body-fail",
+        "kind": "edge",
+        "ref": "r-body-fail",
+        "status": "supported",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "edge-r-host",
+        "kind": "edge",
+        "ref": "r-host",
+        "status": "supported",
+        "lineStyle": "dotted"
+      },
+      {
+        "id": "note-i-sequence",
+        "kind": "note",
+        "ref": "i-sequence",
+        "status": "inferred",
+        "lineStyle": "dotted"
+      },
+      {
+        "id": "claim-c-main",
+        "kind": "claim",
+        "ref": "c-main",
+        "status": "supported"
+      },
+      {
+        "id": "metric-m-size-label",
+        "kind": "metric",
+        "ref": "m-size-label",
+        "status": "supported"
+      },
+      {
+        "id": "metric-m-memory",
+        "kind": "metric",
+        "ref": "m-memory",
+        "status": "supported"
+      },
+      {
+        "id": "metric-m-ttl",
+        "kind": "metric",
+        "ref": "m-ttl",
+        "status": "supported"
+      },
+      {
+        "id": "metric-m-upload",
+        "kind": "metric",
+        "ref": "m-upload",
+        "status": "supported"
+      },
+      {
+        "id": "metric-m-duration",
+        "kind": "metric",
+        "ref": "m-duration",
+        "status": "supported"
+      }
+    ]
+  },
+  "copy": {
+    "title": "把一台 2C2G 的云服务器\n配成能对外交付的 Demo 出口",
+    "subtitle": "访问 · 门禁 · 上传 · 识别 · 结果",
+    "series": "真实文章 · 2026-11-21",
+    "index": "T1 / 01",
+    "parameters": "sequence · 1200 × 675 · seed 20261121"
+  }
+}

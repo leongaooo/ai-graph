@@ -29,12 +29,19 @@ export const area = points => Math.abs(points.reduce((sum, point, index) => {
 export const bounds = points => [0, 1].map(axis => Math.min(...points.map(point => point[axis])))
   .concat([0, 1].map(axis => Math.max(...points.map(point => point[axis]))));
 const coords = point => point.map(num).join(' ');
+const dataAttrs = ({ dataRef, status, role, dash } = {}) => [
+  dataRef ? ` data-ref="${esc(dataRef)}"` : '',
+  status ? ` data-status="${esc(status)}"` : '',
+  role ? ` data-role="${esc(role)}"` : '',
+  dash ? ` stroke-dasharray="${esc(dash)}"` : ''
+].join('');
 
-export function stroke(start, end, { width = 1.4, color = palette.ink, opacity = 1 } = {}, random) {
+export function stroke(start, end, { width = 1.4, color = palette.ink, opacity = 1, dataRef, status, role, dash } = {}, random) {
   if (!weights.includes(width)) throw new Error(`非法线宽：${width}`);
   const delta = end.map((value, index) => value - start[index]);
   const length = Math.hypot(...delta);
-  if (length < 24) return `<path d="M${coords(start)}L${coords(end)}" fill="none" stroke="${color}" stroke-width="${width}" opacity="${opacity}"/>`;
+  const attrs = dataAttrs({ dataRef, status, role, dash });
+  if (length < 24) return `<path d="M${coords(start)}L${coords(end)}" fill="none" stroke="${color}" stroke-width="${width}" opacity="${opacity}"${attrs}/>`;
   const normal = [-delta[1] / length, delta[0] / length];
   const offset = () => (random() * 2 - 1) * 0.6;
   const first = offset(), middle = offset(), last = offset();
@@ -42,7 +49,7 @@ export function stroke(start, end, { width = 1.4, color = palette.ink, opacity =
   const side = sign => [at(1/6, first + sign * width * 0.55), at(1/3, middle + sign * width / 2),
     at(1/2, middle + sign * width / 2), at(2/3, middle + sign * width / 2), at(5/6, last + sign * width * 0.55)];
   const upper = side(1), lower = side(-1);
-  return `<path data-pen="${width}" d="M${coords(start)}C${upper.slice(0, 3).map(coords).join(' ')}C${upper.slice(3).map(coords).join(' ')} ${coords(end)}C${lower.slice(3).reverse().map(coords).join(' ')} ${coords(lower[2])}C${lower.slice(0, 2).reverse().map(coords).join(' ')} ${coords(start)}Z" fill="${color}" opacity="${opacity}"/>`;
+  return `<path data-pen="${width}" d="M${coords(start)}C${upper.slice(0, 3).map(coords).join(' ')}C${upper.slice(3).map(coords).join(' ')} ${coords(end)}C${lower.slice(3).reverse().map(coords).join(' ')} ${coords(lower[2])}C${lower.slice(0, 2).reverse().map(coords).join(' ')} ${coords(start)}Z" fill="${color}" opacity="${opacity}"${attrs}/>`;
 }
 
 export function hatch(draw, frame, { u, v, width, height, step = 14, color = palette.mist, opacity = 0.35 }) {
@@ -63,7 +70,7 @@ const advance = (text, size, spacing) => Array.from(text).reduce((sum, char) => 
 const fonts = { title: 'Songti SC, Source Han Serif SC, serif', sans: 'PingFang SC, Noto Sans CJK SC, sans-serif', mono: 'ui-monospace, Menlo, monospace' };
 
 export function typeBlock(draw, content, { x, y, width, size, lineHeight = size * 1.18, kind = 'sans', maxChars = kind === 'title' ? 12 : 22,
-  spacing = 0, fill = palette.ink, weight = kind === 'title' ? 600 : 400 }) {
+  spacing = 0, fill = palette.ink, weight = kind === 'title' ? 600 : 400, dataRef, status, role }) {
   const fits = text => count(text) <= maxChars && advance(text, size, spacing) <= width;
   const lines = content.split('\n').flatMap(paragraph => {
     const tokens = tokenize(paragraph);
@@ -81,7 +88,7 @@ export function typeBlock(draw, content, { x, y, width, size, lineHeight = size 
     const baseline = y + index * lineHeight;
     const box = [x, num(baseline - size), num(x + advance(text, size, spacing)), num(baseline + size * 0.27)];
     draw.text.push({ text, kind, box, width, maxChars });
-    draw.emit(`<text x="${x}" y="${num(baseline)}" fill="${fill}" font-family="${fonts[kind]}" font-size="${size}" font-weight="${weight}" letter-spacing="${spacing}">${esc(text)}</text>`);
+    draw.emit(`<text x="${x}" y="${num(baseline)}" fill="${fill}" font-family="${fonts[kind]}" font-size="${size}" font-weight="${weight}" letter-spacing="${spacing}"${dataAttrs({ dataRef, status, role })}>${esc(text)}</text>`);
   });
   return lines;
 }
@@ -106,7 +113,7 @@ export function layout(camera, seed) {
     if (style.color === palette.amber) surfaces.amber.push(2 * pad * (Math.hypot(vertices[1][0] - vertices[0][0], vertices[1][1] - vertices[0][1]) + 2 * pad));
     emit(stroke(...vertices, style, random));
   };
-  draw.poly = (vertices, { fill = 'none', edge, width = 1.4, opacity = 1, texture = false } = {}) => {
+  draw.poly = (vertices, { fill = 'none', edge, width = 1.4, opacity = 1, texture = false, dataRef, status, role, dash } = {}) => {
     const projected = vertices.map(project);
     track(projected);
     if (texture || fill === palette.amber) surfaces[texture ? 'texture' : 'amber'].push(area(projected));
@@ -115,8 +122,9 @@ export function layout(camera, seed) {
       return Math.hypot(nextX - x, nextY - y) < 24;
     });
     if (shortEdges) track(projected, width / 2);
-    emit(`<path d="M${projected.map(coords).join('L')}Z" fill="${texture ? 'url(#dot45)' : fill}"${shortEdges ? ` stroke="${edge}" stroke-width="${width}" stroke-linejoin="round"` : ''}${opacity === 1 ? '' : ` opacity="${opacity}"`}/>`);
-    if (edge && !shortEdges) vertices.forEach((start, index) => draw.line(start, vertices[(index + 1) % vertices.length], { color: edge, width, opacity }));
+    const attrs = dataAttrs({ dataRef, status, role, dash });
+    emit(`<path d="M${projected.map(coords).join('L')}Z" fill="${texture ? 'url(#dot45)' : fill}"${shortEdges ? ` stroke="${edge}" stroke-width="${width}" stroke-linejoin="round"${dash ? ` stroke-dasharray="${esc(dash)}"` : ''}` : ''}${opacity === 1 ? '' : ` opacity="${opacity}"`}${attrs}/>`);
+    if (edge && !shortEdges) vertices.forEach((start, index) => draw.line(start, vertices[(index + 1) % vertices.length], { color: edge, width, opacity, dataRef, status, role, dash }));
   };
   draw.curve = (commands, { fill = 'none', edge = 'none', width = 1.4, opacity = 1 } = {}) => {
     const projected = commands.map(([command, ...vertices]) => [command, ...vertices.map(project)]);

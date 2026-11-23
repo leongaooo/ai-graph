@@ -1,5 +1,69 @@
 # ai-graph
 
+## AI Graph 2.0：从场景插画到语义解释图
+
+当前主线不是“让插画更好看”，而是“让图承担信息职责”。
+
+```text
+Brief → VisualSpec（实体/关系/证据/unknown）
+      → 语义门禁（来源哈希、单位、可见回指）
+      → 图法选择（首版只做 sequence）
+      → 确定性 SVG（1200×675 桌面 + 390×860 竖版）
+```
+
+- **主产物是 VisualSpec，不是 SVG**：SVG 只是同一份语义数据的一个视图。
+- **AI 负责理解与选图法，不负责猜坐标**：坐标由布局器稳定生成。
+- **每条 supported 关系必须能回指文章行号与文本哈希**；没有证据的内容只能标 `inferred` 或 `unknown`，不能画成事实。
+- **门禁不通过就不构建**：证据哈希、单位来源、可见元素回指、unknown 线型、验收问题映射，任一失败直接退出。
+- **同一份 spec 同时出桌面与移动两套图**：移动版不是把桌面图缩小，而是重新排版。
+- **页面入口**：这条切片已接入 `leongao.me/projects/ai-graph` 的首屏；旧 01/02/03 场景降级为“样式实验”。
+
+### 第一条纵向切片
+
+样本是真实文章《把一台 2C2G 的云服务器配成能对外交付的 Demo 出口》：
+
+```bash
+cd /Users/gaolimin/GitHub/ai-graph
+node tools/visual-spec-lint.mjs art/agent-delivery-gate.visual.json
+node tools/build-explainer.mjs art/agent-delivery-gate.visual.json out
+```
+
+产物：
+
+- `art/agent-delivery-gate.visual.json`：12 条证据、10 个实体、10 条关系、6 条主张、6 个指标、2 个 unknown、1 条 inference。
+- `out/agent-delivery-gate.svg`：1200×675，五个节点的主路径 + tokens 结果 + 代理反例分支。
+- `out/agent-delivery-gate.mobile.svg`：390×860 竖版。
+- `out/agent-delivery-gate.semantic-report.json`：语义门禁报告，10 项全部通过。
+- `out/agent-delivery-gate.scene.json` / `.mobile.scene.json`：每个可见元素的 ref、bbox、status。
+
+验证：
+
+- 把任意一条 evidence 的 `textHash` 改错，`visual-spec-lint.mjs` 退出码为 1，报 `supportedEvidence` 失败。
+- 同参两次构建，桌面 SVG SHA-1 `36e384c361264a07b8b95072d9309c87733ae0b7`，移动 SVG SHA-1 `721ede46ab7eb5c04fca3157c34665ad36d1b3af`，两次一致。
+- 桌面/移动 `textOverflow: 0`。
+
+### 当前边界
+
+- 只有一个真实样本、一种图法；还没有证明第二篇文章不需要大量特例。
+- 还没有 docs、CLI 帮助和外部开发者 30 分钟上手记录。
+- 还没有真实读者理解测试；当前只能证明结构成立，不能证明读者理解变好。
+- 不把当前产物描述成商业可用或行业可用。
+
+字段、status 语义和门禁规则见 [`docs/visual-spec.md`](docs/visual-spec.md)。
+
+### 下一步
+
+1. 第二个真实样本，优先需要 `state` 或 `hierarchy` 图法；若需大量特例就停止扩图法。
+2. `docs/visual-spec.md` + 一条 30 分钟 quickstart。
+3. 把这张解释图放到 `/projects/ai-graph` 首位；旧 01/02/03 场景改标“样式实验”。
+4. 3–5 名目标读者只看图回答三条验收问题；任一人失败先改图，不扩图法。
+
+---
+
+## 以下为旧 SceneSpec 场景插画路径（legacy）
+
+> 2026-11-23 起，以下内容保留为样式实验与历史实现，不再作为 AI Graph 的主成果主张。旧路径证明的是程序化渲染、确定性构建和视觉约束，不是信息理解。
+
 一个面向 **AI 生成页面效果** 的“图文场景插画”工具箱：把用户文案转成 **可控、可复用、可验证** 的 SVG 场景插画（人物 + 物品 + 背景装饰），再交给任意前端技术栈去做滚动进入、hover、打字机、动效编排。
 
 如果你在做落地页/产品页时，觉得“只有文字和卡片不够惊艳”，但又不希望引入重量级图形引擎、也不想让 AI 随机画出不可控的 SVG——这个仓库提供了一条中间路径：**结构化指令 + 素材库 + 质量门禁 + 稳定渲染**。
