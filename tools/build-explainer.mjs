@@ -3,6 +3,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { lintVisualSpec } from './visual-spec-lint.mjs';
+import { buildState } from './lib/state-layout.mjs';
 import { canvas, esc, layout, palette, paper, typeBlock } from './lib/ink.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -377,11 +378,21 @@ ${layers.map(layer => `  <g id="${layer}">\n${format(draw.groups[layer])}\n  </g
 
 export function build(artPath = defaultArt, outDir = defaultOut) {
   const absoluteArt = resolve(artPath);
+  const raw = readFileSync(absoluteArt, 'utf8');
+  let art = null;
+  try {
+    art = JSON.parse(raw);
+  } catch {
+    // 让 lint 统一产出可读的 idUnique 错误报告，而不是在这里抛裸 JSON.parse。
+  }
   const semanticReport = lintVisualSpec(absoluteArt);
   mkdirSync(outDir, { recursive: true });
-  writeFileSync(join(outDir, 'agent-delivery-gate.semantic-report.json'), `${JSON.stringify(semanticReport, null, 2)}\n`);
+  writeFileSync(join(outDir, `${art?.id ?? 'visual-spec'}.semantic-report.json`), `${JSON.stringify(semanticReport, null, 2)}\n`);
   if (!semanticReport.ok) throw new Error(`语义门禁失败：${semanticReport.errors.map(error => `${error.rule} ${error.path}`).join('；')}`);
-  const art = JSON.parse(readFileSync(absoluteArt, 'utf8'));
+  if (!art) throw new Error('spec JSON 解析失败');
+  if (art.view?.grammar === 'state') {
+    return buildState(art, outDir, semanticReport);
+  }
   return { desktop: render(art, outDir, semanticReport), mobile: renderMobile(art, outDir, semanticReport) };
 }
 

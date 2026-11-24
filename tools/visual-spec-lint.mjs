@@ -12,10 +12,13 @@ const rules = [
   'metricUnitsSources',
   'focusClaim',
   'acceptanceVisibleRefs',
-  'sourceSha256'
+  'sourceSha256',
+  'grammarSupported',
+  'stateLayoutRefs'
 ];
 
 const hash = value => createHash('sha256').update(value).digest('hex');
+const stateElementId = ref => `state-${String(ref).replace(/^st-/, '')}`;
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const asArray = value => Array.isArray(value) ? value : [];
 const sourceRefsOf = item => {
@@ -150,6 +153,47 @@ function createReport(specPath) {
     if (!entityIds.has(relation?.to)) fail('edgeEndpoints', `relations[${index}].to`, `边终点不存在：${relation?.to}`);
   }
 
+  const grammar = spec.view?.grammar;
+  if (!['sequence', 'state'].includes(grammar)) {
+    fail('grammarSupported', 'view.grammar', `不支持的图法：${grammar ?? '(missing)'}；当前只支持 sequence / state`);
+  }
+
+  if (grammar === 'state') {
+    const lanes = asArray(spec.view?.lanes);
+    if (lanes.length === 0) fail('stateLayoutRefs', 'view.lanes', 'state 图法必须提供 lanes');
+    for (const [index, lane] of lanes.entries()) {
+      if (!semanticById.has(lane?.ref)) fail('stateLayoutRefs', `view.lanes[${index}].ref`, `lane ref 不存在：${lane?.ref}`);
+      if (!Array.isArray(lane?.states) || lane.states.length === 0) {
+        fail('stateLayoutRefs', `view.lanes[${index}].states`, 'lane 必须提供非空 states');
+      } else {
+        for (const [stateIndex, state] of lane.states.entries()) {
+          if (!semanticById.has(state?.ref)) fail('stateLayoutRefs', `view.lanes[${index}].states[${stateIndex}].ref`, `state ref 不存在：${state?.ref}`);
+        }
+      }
+    }
+
+    const steps = asArray(spec.view?.loop?.steps);
+    if (steps.length === 0) fail('stateLayoutRefs', 'view.loop.steps', 'state 图法必须提供非空 loop.steps');
+    for (const [index, step] of steps.entries()) {
+      if (!semanticById.has(step?.ref)) fail('stateLayoutRefs', `view.loop.steps[${index}].ref`, `loop step ref 不存在：${step?.ref}`);
+    }
+
+    if (spec.view?.loop?.feedback) {
+      const feedback = spec.view.loop.feedback;
+      const stepIds = new Set(steps.map(item => item?.id));
+      if (!stepIds.has(feedback.from)) fail('stateLayoutRefs', 'view.loop.feedback.from', `feedback 起点不存在：${feedback.from}`);
+      if (!stepIds.has(feedback.to)) fail('stateLayoutRefs', 'view.loop.feedback.to', `feedback 终点不存在：${feedback.to}`);
+      if (!semanticById.has(feedback.ref)) fail('stateLayoutRefs', 'view.loop.feedback.ref', `feedback ref 不存在：${feedback.ref}`);
+    }
+
+    for (const [index, note] of asArray(spec.view?.notes).entries()) {
+      if (!semanticById.has(note?.ref)) fail('stateLayoutRefs', `view.notes[${index}].ref`, `note ref 不存在：${note?.ref}`);
+    }
+    if (spec.view?.edge?.ref && !semanticById.has(spec.view.edge.ref)) {
+      fail('stateLayoutRefs', 'view.edge.ref', `edge ref 不存在：${spec.view.edge.ref}`);
+    }
+  }
+
   for (const [index, metric] of asArray(spec.metrics).entries()) {
     if (typeof metric?.unit !== 'string' || metric.unit.trim() === '') fail('metricUnitsSources', `metrics[${index}].unit`, 'metric 必须有 unit');
     if (sourceRefsOf(metric).length === 0) fail('metricUnitsSources', `metrics[${index}].sourceRefs`, 'metric 必须有 sourceRef/sourceRefs');
@@ -171,6 +215,25 @@ function createReport(specPath) {
     }
     if (element?.status === 'unknown' && element?.lineStyle === 'solid') {
       fail('unknownNotSolid', `view.elements[${index}].lineStyle`, 'unknown 可见元素不能使用 solid');
+    }
+  }
+
+  if (grammar === 'state') {
+    const requireElement = (id, path) => {
+      if (!viewElementIds.has(id)) fail('stateLayoutRefs', path, `view.elements 缺少可见元素：${id}`);
+    };
+    for (const [index, lane] of asArray(spec.view?.lanes).entries()) {
+      requireElement(lane?.id, `view.lanes[${index}].id`);
+      for (const [stateIndex, state] of asArray(lane?.states).entries()) {
+        requireElement(stateElementId(state?.ref), `view.lanes[${index}].states[${stateIndex}].ref`);
+      }
+    }
+    for (const [index, step] of asArray(spec.view?.loop?.steps).entries()) {
+      requireElement(step?.id, `view.loop.steps[${index}].id`);
+    }
+    if (spec.view?.edge) requireElement(spec.view.edge.id, 'view.edge.id');
+    for (const [index, note] of asArray(spec.view?.notes).entries()) {
+      requireElement(note?.id, `view.notes[${index}].id`);
     }
   }
 

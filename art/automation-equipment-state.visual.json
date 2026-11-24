@@ -1,0 +1,975 @@
+{
+  "version": 1,
+  "id": "automation-equipment-state",
+  "intent": "把设备监控从设备列表、四类状态、分级告警、工单闭环到边缘判断和复盘优化画成一张可追溯的 state 图；把文章没有给出的阈值、时限和硬件规格保留为未知。",
+  "source": {
+    "path": "/Users/gaolimin/GitHub/next-blog/data/blog/automation-equipment-monitoring.mdx",
+    "title": "自动化设备监控平台：从状态可见到异常可控",
+    "date": "2025-12-09",
+    "sha256": "8ad62613412cc71a7f7b02f732be7ee2154cb7925f14beb90ee07b51c60fcbb0"
+  },
+  "question": "一台设备的四类状态如何分开建模，异常如何变成组织行动？",
+  "mainConclusion": {
+    "claimRef": "c-main",
+    "text": "监控平台的价值不是把设备画在屏幕上，而是让现场状态进入管理闭环。"
+  },
+  "copy": {
+    "title": "自动化设备监控平台\n从状态可见到异常可控",
+    "subtitle": "四类状态 · 分级告警 · 工单闭环 · 边缘判断",
+    "series": "真实文章 · 2025-12-09",
+    "index": "T2 / 02",
+    "parameters": "state · 1200 × 675 · seed 20251209"
+  },
+  "levels": [],
+  "entities": [
+    {
+      "id": "online-state",
+      "label": "在线状态",
+      "kind": "dimension",
+      "status": "supported",
+      "sourceRefs": [
+        "e-online",
+        "e-state-model"
+      ]
+    },
+    {
+      "id": "run-state",
+      "label": "运行状态",
+      "kind": "dimension",
+      "status": "supported",
+      "sourceRefs": [
+        "e-run",
+        "e-state-model"
+      ]
+    },
+    {
+      "id": "business-state",
+      "label": "业务状态",
+      "kind": "dimension",
+      "status": "supported",
+      "sourceRefs": [
+        "e-business",
+        "e-state-model"
+      ]
+    },
+    {
+      "id": "risk-state",
+      "label": "风险状态",
+      "kind": "dimension",
+      "status": "supported",
+      "sourceRefs": [
+        "e-risk",
+        "e-state-model"
+      ]
+    },
+    {
+      "id": "st-online",
+      "label": "在线",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-online"
+      ]
+    },
+    {
+      "id": "st-offline",
+      "label": "离线",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-online"
+      ]
+    },
+    {
+      "id": "st-weak",
+      "label": "弱连接",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-online"
+      ]
+    },
+    {
+      "id": "st-running",
+      "label": "运行",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-run"
+      ]
+    },
+    {
+      "id": "st-standby",
+      "label": "待机",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-run"
+      ]
+    },
+    {
+      "id": "st-stopped",
+      "label": "停机",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-run"
+      ]
+    },
+    {
+      "id": "st-fault",
+      "label": "故障",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-run"
+      ]
+    },
+    {
+      "id": "st-producing",
+      "label": "生产中",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-business"
+      ]
+    },
+    {
+      "id": "st-maintenance",
+      "label": "保养中",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-business"
+      ]
+    },
+    {
+      "id": "st-commissioning",
+      "label": "调试中",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-business"
+      ]
+    },
+    {
+      "id": "st-normal",
+      "label": "正常",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-risk"
+      ]
+    },
+    {
+      "id": "st-warning",
+      "label": "预警",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-risk"
+      ]
+    },
+    {
+      "id": "st-alert",
+      "label": "告警",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-risk"
+      ]
+    },
+    {
+      "id": "st-critical",
+      "label": "严重",
+      "kind": "state",
+      "status": "supported",
+      "sourceRefs": [
+        "e-risk"
+      ]
+    },
+    {
+      "id": "device-anomaly",
+      "label": "设备异常",
+      "kind": "event",
+      "status": "supported",
+      "sourceRefs": [
+        "e-loop",
+        "e-problem"
+      ]
+    },
+    {
+      "id": "alert-event",
+      "label": "告警事件",
+      "kind": "event",
+      "status": "supported",
+      "sourceRefs": [
+        "e-loop",
+        "e-alert"
+      ]
+    },
+    {
+      "id": "ticket-create",
+      "label": "工单创建",
+      "kind": "event",
+      "status": "supported",
+      "sourceRefs": [
+        "e-loop",
+        "e-ticket-context"
+      ]
+    },
+    {
+      "id": "person-handle",
+      "label": "人员处理",
+      "kind": "actor",
+      "status": "supported",
+      "sourceRefs": [
+        "e-loop"
+      ]
+    },
+    {
+      "id": "result-confirm",
+      "label": "结果确认",
+      "kind": "event",
+      "status": "supported",
+      "sourceRefs": [
+        "e-loop"
+      ]
+    },
+    {
+      "id": "data-review",
+      "label": "数据复盘",
+      "kind": "event",
+      "status": "supported",
+      "sourceRefs": [
+        "e-loop",
+        "e-review"
+      ]
+    },
+    {
+      "id": "edge-gateway",
+      "label": "边缘网关",
+      "kind": "actor",
+      "status": "supported",
+      "sourceRefs": [
+        "e-edge"
+      ]
+    },
+    {
+      "id": "cloud-platform",
+      "label": "云端平台",
+      "kind": "actor",
+      "status": "supported",
+      "sourceRefs": [
+        "e-edge"
+      ]
+    },
+    {
+      "id": "device-snapshot",
+      "label": "设备快照",
+      "kind": "artifact",
+      "status": "supported",
+      "sourceRefs": [
+        "e-ticket-context"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "id": "r-loop-1",
+      "from": "device-anomaly",
+      "to": "alert-event",
+      "label": "触发告警",
+      "status": "supported",
+      "sourceRefs": [
+        "e-loop"
+      ]
+    },
+    {
+      "id": "r-loop-2",
+      "from": "alert-event",
+      "to": "ticket-create",
+      "label": "生成工单",
+      "status": "supported",
+      "sourceRefs": [
+        "e-loop"
+      ]
+    },
+    {
+      "id": "r-loop-3",
+      "from": "ticket-create",
+      "to": "person-handle",
+      "label": "派发处理",
+      "status": "supported",
+      "sourceRefs": [
+        "e-loop"
+      ]
+    },
+    {
+      "id": "r-loop-4",
+      "from": "person-handle",
+      "to": "result-confirm",
+      "label": "回填结果",
+      "status": "supported",
+      "sourceRefs": [
+        "e-loop"
+      ]
+    },
+    {
+      "id": "r-loop-5",
+      "from": "result-confirm",
+      "to": "data-review",
+      "label": "沉淀数据",
+      "status": "supported",
+      "sourceRefs": [
+        "e-loop"
+      ]
+    },
+    {
+      "id": "r-loop-6",
+      "from": "data-review",
+      "to": "alert-event",
+      "label": "反哺规则",
+      "status": "supported",
+      "sourceRefs": [
+        "e-review"
+      ]
+    },
+    {
+      "id": "r-edge-alert",
+      "from": "edge-gateway",
+      "to": "alert-event",
+      "label": "异常初判",
+      "status": "supported",
+      "sourceRefs": [
+        "e-edge"
+      ]
+    },
+    {
+      "id": "r-edge-local",
+      "from": "edge-gateway",
+      "to": "device-anomaly",
+      "label": "本地联动",
+      "status": "supported",
+      "sourceRefs": [
+        "e-edge"
+      ]
+    },
+    {
+      "id": "r-edge-offload",
+      "from": "edge-gateway",
+      "to": "cloud-platform",
+      "label": "只上传必要数据",
+      "status": "inferred",
+      "reason": "文章只说不能把所有数据都直接传到云端判断，并列出边缘侧可承担的本地计算；没有给出具体分流字段。",
+      "sourceRefs": [
+        "e-edge"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "c-main",
+      "text": "监控平台的价值不是把设备画在屏幕上，而是让现场状态进入管理闭环。",
+      "status": "supported",
+      "sourceRefs": [
+        "e-conclusion"
+      ]
+    },
+    {
+      "id": "c-no-mixed-fields",
+      "text": "在线、运行、业务、风险四类状态不能混成一个字段。",
+      "status": "supported",
+      "sourceRefs": [
+        "e-state-model"
+      ]
+    },
+    {
+      "id": "c-alert-grading",
+      "text": "告警必须分级，并匹配不同的通知策略和处置流程。",
+      "status": "supported",
+      "sourceRefs": [
+        "e-alert"
+      ]
+    },
+    {
+      "id": "c-data-action",
+      "text": "设备数据提供事实，工单流程承接行动。",
+      "status": "supported",
+      "sourceRefs": [
+        "e-ticket-context"
+      ]
+    },
+    {
+      "id": "c-edge-judgement",
+      "text": "边缘网关不应只是转发器，应承担协议转换、过滤、异常初判、离线缓存和本地联动。",
+      "status": "supported",
+      "sourceRefs": [
+        "e-edge"
+      ]
+    },
+    {
+      "id": "c-review-learns",
+      "text": "复盘数据反过来优化告警策略，让平台从机械提醒变成经验系统。",
+      "status": "supported",
+      "sourceRefs": [
+        "e-review"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "e-title",
+      "lineStart": 2,
+      "lineEnd": 2,
+      "textHash": "6eab607971b69c270ef5048a87c0184488f5d326d001db203c0233b7cb3bc528",
+      "excerpt": "title: 自动化设备监控平台：从状态可见到异常可控"
+    },
+    {
+      "id": "e-summary",
+      "lineStart": 6,
+      "lineEnd": 6,
+      "textHash": "10648aad721228a398138574e90b9a3e56d851e5e0246beb54e2785fa4ce29a0",
+      "excerpt": "summary: 自动化设备监控平台的价值不只是看见设备状态，而是把异常识别、工单协同和持续优化串成闭环。"
+    },
+    {
+      "id": "e-problem",
+      "lineStart": 11,
+      "lineEnd": 13,
+      "textHash": "2e89cf9a9377b288a0a75e70da094fa4bfce15b775fd3cb40363b863f39eb8a3",
+      "excerpt": "但真正做起来，会发现“看见设备”只是第一步。设备在线不代表运行正常，数据上报不代表业务可用，告警弹出也不代表问题会被处理。 /  / 监控平台真正要解决的，是让设备异常从不可见、不可追、不可复盘，变成可识别、可处理、可优化。"
+    },
+    {
+      "id": "e-state-model",
+      "lineStart": 21,
+      "lineEnd": 30,
+      "textHash": "d5189cce953e735f6c46886248bf239a153d40f6639d84594df9a711d1812781",
+      "excerpt": "设备监控的核心是状态模型。 /  / 比如一台设备可能有： /  / - 在线状态：在线、离线、弱连接 / - 运行状态：运行、待机、停机、故障 / - 业务状态：生产中、保养中、调试中 / - 风险状态：正常、预警、告警、严重 /  / 这些状态不能混成一个字段。否则页面看起来简单，后面规则判断和告警处理会很痛苦。"
+    },
+    {
+      "id": "e-online",
+      "lineStart": 25,
+      "lineEnd": 25,
+      "textHash": "c17ff4303bb630a4c0373a0a81a5233e7d27b0007b1b5d4594d8f31fa8c6db6b",
+      "excerpt": "- 在线状态：在线、离线、弱连接"
+    },
+    {
+      "id": "e-run",
+      "lineStart": 26,
+      "lineEnd": 26,
+      "textHash": "5708edb0efd3fa070e13efcf72c2a210b7a4d304835403c3b9868bf61224a00b",
+      "excerpt": "- 运行状态：运行、待机、停机、故障"
+    },
+    {
+      "id": "e-business",
+      "lineStart": 27,
+      "lineEnd": 27,
+      "textHash": "317310dc9028de359b566f786d129c7f76189da2bd44f36d71e162e6cb94d761",
+      "excerpt": "- 业务状态：生产中、保养中、调试中"
+    },
+    {
+      "id": "e-risk",
+      "lineStart": 28,
+      "lineEnd": 28,
+      "textHash": "3f11dbc9d0ea9532a379d3dd8915805df0d308ab2faf65434b7a2789420a9a1c",
+      "excerpt": "- 风险状态：正常、预警、告警、严重"
+    },
+    {
+      "id": "e-alert",
+      "lineStart": 38,
+      "lineEnd": 45,
+      "textHash": "a3e298bfa667520614c84f74e7834eaf148af79b11d3b882c3a281d88fc8247c",
+      "excerpt": "告警必须分级： /  / - 提醒：需要关注，但不立即处理 / - 预警：可能影响运行，需要排查 / - 告警：已经出现异常，需要处理 / - 严重：影响安全或生产，需要升级 /  / 分级之后，还要有不同的通知策略和处置流程。不是所有告警都应该打电话，也不是所有异常都要生成工单。"
+    },
+    {
+      "id": "e-loop",
+      "lineStart": 51,
+      "lineEnd": 55,
+      "textHash": "95e1c88eac40c483c7eba6b18975921960807edb8bd557bc716d7a2f4f3cee10",
+      "excerpt": "更完整的链路应该是： /  / ```text / 设备异常 -> 告警事件 -> 工单创建 -> 人员处理 -> 结果确认 -> 数据复盘 / ```"
+    },
+    {
+      "id": "e-ticket-context",
+      "lineStart": 57,
+      "lineEnd": 59,
+      "textHash": "3b017f1aec18488a1bb4cbfbcef96206d30553e552b7c0579b5b0bc1a53c54ac",
+      "excerpt": "工单里最好带上设备快照、异常时间、历史趋势、最近操作记录。这样维修人员不需要再到处查信息，处理完成后也能把原因和措施沉淀下来。 /  / 设备数据提供事实，工单流程承接行动。"
+    },
+    {
+      "id": "e-edge",
+      "lineStart": 63,
+      "lineEnd": 73,
+      "textHash": "512ec7324238c16790335769a9f76eb20ddfb387e05cbee3c1c71b8b769dfba1",
+      "excerpt": "自动化设备现场经常存在网络不稳定、设备协议复杂、数据频率高的问题。 /  / 如果所有数据都直接传到云端判断，可能会遇到延迟、丢包和成本问题。边缘网关不应该只是转发器，它可以承担一部分本地计算： /  / - 协议转换 / - 数据过滤 / - 异常初判 / - 离线缓存 / - 本地联动 /  / 尤其是安全相关场景，不能完全依赖云端响应。该在现场闭环的动"
+    },
+    {
+      "id": "e-review",
+      "lineStart": 79,
+      "lineEnd": 89,
+      "textHash": "217bdc38098233c62c2b7e97bc939db08f08ec6ebd5d1ad1359060688cb3a885",
+      "excerpt": "阈值可能设置不准，告警规则可能误报，设备状态可能需要重新定义。关键是平台能不能通过复盘越来越准。 /  / 每一次告警处理后，都应该沉淀： /  / - 是否真实异常 / - 根因是什么 / - 处理时长多久 / - 是否重复发生 / - 是否需要调整规则 /  / 这些数据会反过来优化告警策略，让平台从“机械提醒”变成“经验系统”。"
+    },
+    {
+      "id": "e-conclusion",
+      "lineStart": 93,
+      "lineEnd": 97,
+      "textHash": "a44714b3390a1ba7dbe0c1eb1f1f9290155a128c1603e86e718fd68097899c8a",
+      "excerpt": "自动化设备监控平台的价值，不是把设备画在屏幕上，而是让现场状态进入管理闭环。 /  / 设备自己不会说业务语言，平台要替它翻译。它说温度异常，平台要知道这意味着风险；它说电流波动，平台要知道是否需要停机；它离线了，平台要知道谁该处理。 /  / 当设备状态能够自然转化为组织行动，监控平台才真正从可见走向可控。"
+    }
+  ],
+  "metrics": [],
+  "unknowns": [
+    {
+      "id": "u-thresholds",
+      "text": "文章没有给出各类状态的判定阈值、去抖窗口和状态优先级。",
+      "status": "unknown",
+      "lineStyle": "dashed",
+      "sourceRefs": [
+        "e-state-model"
+      ]
+    },
+    {
+      "id": "u-sla",
+      "text": "文章没有说明工单处理时限、升级路径和跨班次交接规则。",
+      "status": "unknown",
+      "lineStyle": "dashed",
+      "sourceRefs": [
+        "e-ticket-context",
+        "e-alert"
+      ]
+    },
+    {
+      "id": "u-edge-hardware",
+      "text": "文章没有说明边缘网关的硬件规格、算力上限和协议清单。",
+      "status": "unknown",
+      "lineStyle": "dashed",
+      "sourceRefs": [
+        "e-edge"
+      ]
+    }
+  ],
+  "inferences": [
+    {
+      "id": "i-orthogonal",
+      "text": "四个状态维度需要分开建模，并在告警时组合判断。",
+      "status": "inferred",
+      "reason": "文章分别列出在线、运行、业务、风险四类状态，并明确说不能混成一个字段。",
+      "sourceRefs": [
+        "e-state-model"
+      ]
+    },
+    {
+      "id": "i-edge-split",
+      "text": "安全相关动作优先在边缘闭环，非安全数据再按需上云。",
+      "status": "inferred",
+      "reason": "文章说安全场景不能完全依赖云端响应，该在现场闭环的动作要在现场闭环。",
+      "sourceRefs": [
+        "e-edge"
+      ]
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "q1",
+      "question": "四个状态维度分别是什么？为什么不能合并成一个字段？",
+      "answer": "在线、运行、业务、风险；合并后规则判断和告警处理会变痛苦。",
+      "answerRefs": [
+        "lane-online",
+        "lane-run",
+        "lane-business",
+        "lane-risk"
+      ],
+      "visibleRefs": [
+        "lane-online",
+        "lane-run",
+        "lane-business",
+        "lane-risk",
+        "state-online",
+        "state-fault",
+        "state-producing",
+        "state-critical"
+      ]
+    },
+    {
+      "id": "q2",
+      "question": "一条设备异常从出现到复盘经过哪些环节？",
+      "answer": "设备异常 → 告警事件 → 工单创建 → 人员处理 → 结果确认 → 数据复盘；复盘再反哺告警规则。",
+      "answerRefs": [
+        "r-loop-1",
+        "r-loop-2",
+        "r-loop-3",
+        "r-loop-4",
+        "r-loop-5",
+        "r-loop-6"
+      ],
+      "visibleRefs": [
+        "loop-device-anomaly",
+        "loop-alert-event",
+        "loop-ticket-create",
+        "loop-person-handle",
+        "loop-result-confirm",
+        "loop-data-review"
+      ]
+    },
+    {
+      "id": "q3",
+      "question": "哪些判断适合放在边缘侧？文章没有说明什么？",
+      "answer": "协议转换、数据过滤、异常初判、离线缓存、本地联动；未说明阈值、工单时限和边缘硬件规格。",
+      "answerRefs": [
+        "c-edge-judgement"
+      ],
+      "visibleRefs": [
+        "edge-gateway-note",
+        "note-thresholds",
+        "note-sla",
+        "note-edge-hardware"
+      ]
+    }
+  ],
+  "view": {
+    "grammar": "state",
+    "focus": "c-no-mixed-fields",
+    "lanes": [
+      {
+        "id": "lane-online",
+        "title": "在线状态",
+        "ref": "online-state",
+        "states": [
+          {
+            "ref": "st-online",
+            "label": "在线"
+          },
+          {
+            "ref": "st-offline",
+            "label": "离线"
+          },
+          {
+            "ref": "st-weak",
+            "label": "弱连接"
+          }
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "lane-run",
+        "title": "运行状态",
+        "ref": "run-state",
+        "states": [
+          {
+            "ref": "st-running",
+            "label": "运行"
+          },
+          {
+            "ref": "st-standby",
+            "label": "待机"
+          },
+          {
+            "ref": "st-stopped",
+            "label": "停机"
+          },
+          {
+            "ref": "st-fault",
+            "label": "故障"
+          }
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "lane-business",
+        "title": "业务状态",
+        "ref": "business-state",
+        "states": [
+          {
+            "ref": "st-producing",
+            "label": "生产中"
+          },
+          {
+            "ref": "st-maintenance",
+            "label": "保养中"
+          },
+          {
+            "ref": "st-commissioning",
+            "label": "调试中"
+          }
+        ],
+        "tone": "teal"
+      },
+      {
+        "id": "lane-risk",
+        "title": "风险状态",
+        "ref": "risk-state",
+        "states": [
+          {
+            "ref": "st-normal",
+            "label": "正常"
+          },
+          {
+            "ref": "st-warning",
+            "label": "预警"
+          },
+          {
+            "ref": "st-alert",
+            "label": "告警"
+          },
+          {
+            "ref": "st-critical",
+            "label": "严重"
+          }
+        ],
+        "tone": "amber"
+      }
+    ],
+    "loop": {
+      "id": "loop",
+      "title": "从异常到复盘",
+      "ref": "c-data-action",
+      "steps": [
+        {
+          "id": "loop-device-anomaly",
+          "ref": "device-anomaly",
+          "label": "设备异常"
+        },
+        {
+          "id": "loop-alert-event",
+          "ref": "alert-event",
+          "label": "告警事件"
+        },
+        {
+          "id": "loop-ticket-create",
+          "ref": "ticket-create",
+          "label": "工单创建"
+        },
+        {
+          "id": "loop-person-handle",
+          "ref": "person-handle",
+          "label": "人员处理"
+        },
+        {
+          "id": "loop-result-confirm",
+          "ref": "result-confirm",
+          "label": "结果确认"
+        },
+        {
+          "id": "loop-data-review",
+          "ref": "data-review",
+          "label": "数据复盘"
+        }
+      ],
+      "feedback": {
+        "ref": "r-loop-6",
+        "from": "loop-data-review",
+        "to": "loop-alert-event",
+        "label": "复盘反哺告警规则"
+      }
+    },
+    "edge": {
+      "id": "edge-gateway-note",
+      "ref": "edge-gateway",
+      "label": "边缘网关",
+      "tasks": [
+        "协议转换",
+        "数据过滤",
+        "异常初判",
+        "离线缓存",
+        "本地联动"
+      ]
+    },
+    "notes": [
+      {
+        "id": "note-thresholds",
+        "ref": "u-thresholds",
+        "label": "未知：状态阈值与去抖窗口"
+      },
+      {
+        "id": "note-sla",
+        "ref": "u-sla",
+        "label": "未知：工单时限与升级路径"
+      },
+      {
+        "id": "note-edge-hardware",
+        "ref": "u-edge-hardware",
+        "label": "未知：边缘硬件与协议清单"
+      }
+    ],
+    "elements": [
+      {
+        "id": "lane-online",
+        "kind": "lane",
+        "ref": "online-state",
+        "status": "supported"
+      },
+      {
+        "id": "state-online",
+        "kind": "state",
+        "ref": "st-online",
+        "status": "supported"
+      },
+      {
+        "id": "state-offline",
+        "kind": "state",
+        "ref": "st-offline",
+        "status": "supported"
+      },
+      {
+        "id": "state-weak",
+        "kind": "state",
+        "ref": "st-weak",
+        "status": "supported"
+      },
+      {
+        "id": "lane-run",
+        "kind": "lane",
+        "ref": "run-state",
+        "status": "supported"
+      },
+      {
+        "id": "state-running",
+        "kind": "state",
+        "ref": "st-running",
+        "status": "supported"
+      },
+      {
+        "id": "state-standby",
+        "kind": "state",
+        "ref": "st-standby",
+        "status": "supported"
+      },
+      {
+        "id": "state-stopped",
+        "kind": "state",
+        "ref": "st-stopped",
+        "status": "supported"
+      },
+      {
+        "id": "state-fault",
+        "kind": "state",
+        "ref": "st-fault",
+        "status": "supported"
+      },
+      {
+        "id": "lane-business",
+        "kind": "lane",
+        "ref": "business-state",
+        "status": "supported"
+      },
+      {
+        "id": "state-producing",
+        "kind": "state",
+        "ref": "st-producing",
+        "status": "supported"
+      },
+      {
+        "id": "state-maintenance",
+        "kind": "state",
+        "ref": "st-maintenance",
+        "status": "supported"
+      },
+      {
+        "id": "state-commissioning",
+        "kind": "state",
+        "ref": "st-commissioning",
+        "status": "supported"
+      },
+      {
+        "id": "lane-risk",
+        "kind": "lane",
+        "ref": "risk-state",
+        "status": "supported"
+      },
+      {
+        "id": "state-normal",
+        "kind": "state",
+        "ref": "st-normal",
+        "status": "supported"
+      },
+      {
+        "id": "state-warning",
+        "kind": "state",
+        "ref": "st-warning",
+        "status": "supported"
+      },
+      {
+        "id": "state-alert",
+        "kind": "state",
+        "ref": "st-alert",
+        "status": "supported"
+      },
+      {
+        "id": "state-critical",
+        "kind": "state",
+        "ref": "st-critical",
+        "status": "supported"
+      },
+      {
+        "id": "loop-device-anomaly",
+        "kind": "node",
+        "ref": "device-anomaly",
+        "status": "supported"
+      },
+      {
+        "id": "loop-alert-event",
+        "kind": "node",
+        "ref": "alert-event",
+        "status": "supported"
+      },
+      {
+        "id": "loop-ticket-create",
+        "kind": "node",
+        "ref": "ticket-create",
+        "status": "supported"
+      },
+      {
+        "id": "loop-person-handle",
+        "kind": "node",
+        "ref": "person-handle",
+        "status": "supported"
+      },
+      {
+        "id": "loop-result-confirm",
+        "kind": "node",
+        "ref": "result-confirm",
+        "status": "supported"
+      },
+      {
+        "id": "loop-data-review",
+        "kind": "node",
+        "ref": "data-review",
+        "status": "supported"
+      },
+      {
+        "id": "edge-gateway-note",
+        "kind": "note",
+        "ref": "edge-gateway",
+        "status": "supported"
+      },
+      {
+        "id": "note-thresholds",
+        "kind": "unknown",
+        "ref": "u-thresholds",
+        "status": "unknown",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "note-sla",
+        "kind": "unknown",
+        "ref": "u-sla",
+        "status": "unknown",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "note-edge-hardware",
+        "kind": "unknown",
+        "ref": "u-edge-hardware",
+        "status": "unknown",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "claim-main",
+        "kind": "claim",
+        "ref": "c-main",
+        "status": "supported"
+      }
+    ]
+  },
+  "seed": 20251209
+}

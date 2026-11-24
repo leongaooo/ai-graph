@@ -7,18 +7,18 @@
 ```text
 Brief → VisualSpec（实体/关系/证据/unknown）
       → 语义门禁（来源哈希、单位、可见回指）
-      → 图法选择（首版只做 sequence）
+      → 图法选择（当前 sequence / state）
       → 确定性 SVG（1200×675 桌面 + 390×860 竖版）
 ```
 
 - **主产物是 VisualSpec，不是 SVG**：SVG 只是同一份语义数据的一个视图。
 - **AI 负责理解与选图法，不负责猜坐标**：坐标由布局器稳定生成。
 - **每条 supported 关系必须能回指文章行号与文本哈希**；没有证据的内容只能标 `inferred` 或 `unknown`，不能画成事实。
-- **门禁不通过就不构建**：证据哈希、单位来源、可见元素回指、unknown 线型、验收问题映射，任一失败直接退出。
+- **门禁不通过就不构建**：证据哈希、单位来源、可见元素回指、unknown 线型、验收问题映射、图法支持、state 布局引用，12 条任一失败直接退出。
 - **同一份 spec 同时出桌面与移动两套图**：移动版不是把桌面图缩小，而是重新排版。
-- **页面入口**：这条切片已接入 `leongao.me/projects/ai-graph` 的首屏；旧 01/02/03 场景降级为“样式实验”。
+- **页面入口**：第一条 `sequence` 切片已接入 `leongao.me/projects/ai-graph` 的首屏；第二条 `state` 切片目前只在仓库，尚未上页面；旧 01/02/03 场景降级为“样式实验”。
 
-### 第一条纵向切片
+### 第一条纵向切片（sequence）
 
 样本是真实文章《把一台 2C2G 的云服务器配成能对外交付的 Demo 出口》：
 
@@ -33,7 +33,7 @@ node tools/build-explainer.mjs art/agent-delivery-gate.visual.json out
 - `art/agent-delivery-gate.visual.json`：12 条证据、10 个实体、10 条关系、6 条主张、6 个指标、2 个 unknown、1 条 inference。
 - `out/agent-delivery-gate.svg`：1200×675，五个节点的主路径 + tokens 结果 + 代理反例分支。
 - `out/agent-delivery-gate.mobile.svg`：390×860 竖版。
-- `out/agent-delivery-gate.semantic-report.json`：语义门禁报告，10 项全部通过。
+- `out/agent-delivery-gate.semantic-report.json`：语义门禁报告，12 项全部通过。
 - `out/agent-delivery-gate.scene.json` / `.mobile.scene.json`：每个可见元素的 ref、bbox、status。
 
 验证：
@@ -42,21 +42,46 @@ node tools/build-explainer.mjs art/agent-delivery-gate.visual.json out
 - 同参两次构建，桌面 SVG SHA-1 `36e384c361264a07b8b95072d9309c87733ae0b7`，移动 SVG SHA-1 `721ede46ab7eb5c04fca3157c34665ad36d1b3af`，两次一致。
 - 桌面/移动 `textOverflow: 0`。
 
+### 第二条纵向切片（state）
+
+样本是真实文章《自动化设备监控平台：从状态可见到异常可控》。这条切片检验的不是“再画一张图”，而是“换一种图法时，布局器只读 spec，不读文章、不猜坐标”。
+
+```bash
+cd /Users/gaolimin/GitHub/ai-graph
+node tools/visual-spec-lint.mjs art/automation-equipment-state.visual.json
+node tools/build-explainer.mjs art/automation-equipment-state.visual.json out
+```
+
+产物：
+
+- `art/automation-equipment-state.visual.json`：14 条证据、27 个实体、9 条关系、6 条主张、0 个指标、3 个 unknown、2 条 inference。
+- `out/automation-equipment-state.svg`：1200×675，四列状态板（在线 / 运行 / 业务 / 风险）+ 异常到复盘闭环 + 边缘网关 + 未知项。
+- `out/automation-equipment-state.mobile.svg`：390×860，2×2 状态板 + 单列闭环。
+- `out/automation-equipment-state.semantic-report.json`：12/12 通过。
+
+验证：
+
+- 同参两次构建，桌面 SVG SHA-1 `fffc6aa607e6943d061eb72045f1eb33c309135b`，移动 SVG SHA-1 `77e51e57637f3f2a5b4a4385e6f2b4c4cd4b5061`，两次一致。
+- 桌面/移动 `textOverflow: 0`；移动 `maxContentY: 840.57 / 860`。
+- 把 `view.grammar` 改成 `hierarchy`，lint 退出 1，`grammarSupported` 失败。
+- 从 `view.elements` 移除 `state-fault`，lint 退出 1，`stateLayoutRefs` 报“缺少可见元素”。
+
 ### 当前边界
 
-- 只有一个真实样本、一种图法；还没有证明第二篇文章不需要大量特例。
-- 还没有 docs、CLI 帮助和外部开发者 30 分钟上手记录。
+- 已有两个真实样本、两种图法；但 `sequence` 仍是第一篇文章的固定坐标模板，`state` 才是第一个数据驱动的通用布局。
+- 还没有第三样本证明 `state` 不是只为这篇文章写的；也还没有 `hierarchy` / `comparison`。
+- `docs/quickstart.md` 已有初稿，但还没有外部开发者 30 分钟实测记录。
 - 还没有真实读者理解测试；当前只能证明结构成立，不能证明读者理解变好。
 - 不把当前产物描述成商业可用或行业可用。
 
-字段、status 语义和门禁规则见 [`docs/visual-spec.md`](docs/visual-spec.md)。
+字段、status 语义和门禁规则见 [`docs/visual-spec.md`](docs/visual-spec.md)；30 分钟上手见 [`docs/quickstart.md`](docs/quickstart.md)。
 
 ### 下一步
 
-1. 第二个真实样本，优先需要 `state` 或 `hierarchy` 图法；若需大量特例就停止扩图法。
-2. `docs/visual-spec.md` + 一条 30 分钟 quickstart。
-3. 把这张解释图放到 `/projects/ai-graph` 首位；旧 01/02/03 场景改标“样式实验”。
-4. 3–5 名目标读者只看图回答三条验收问题；任一人失败先改图，不扩图法。
+1. 按 `docs/quickstart.md` 找一名外部开发者做 30 分钟实测：从干净 clone 到 lint + build + 看到两张图，记录卡点。
+2. 3–5 名目标读者只看图回答验收问题；任一人失败先改图，不扩图法。
+3. 把第二样本接入 `/projects/ai-graph`，让页面同时展示 `sequence` 与 `state`，而不是只有一条切片。
+4. 第三样本或把 `sequence` 从固定模板改成数据驱动；在此之前不声称“通用布局引擎”。
 
 ---
 
