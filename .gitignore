@@ -21,3 +21,10 @@ examples/*.brief.json
 
 # Builder-generated nested outputs
 tools/motif-builders/**/front-end-effect/
+
+# Eval reports
+/eval/reports/*
+!/eval/reports/.gitkeep
+
+# Demo evidence log
+!demos/incident-state/sources/incident.log

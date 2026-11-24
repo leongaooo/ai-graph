@@ -1,0 +1,52 @@
+commit 94c3a63c8d1aa2da14d1cee70f06f9ca9abe39d1
+Author: Min888888 <616436112@qq.com>
+Date: 2026-11-22 17:12:15 +0800
+Subject: fix(analytics): umami 脚本改走 cloud 域名并放行 CSP
+
+---
+ data/siteMetadata.js | 6 +++---
+ next.config.js       | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/data/siteMetadata.js b/data/siteMetadata.js
+index cf3b148..def2c31 100644
+--- a/data/siteMetadata.js
++++ b/data/siteMetadata.js
+@@ -34,15 +34,15 @@ const siteMetadata = {
+     // If you want to use an analytics provider you have to add it to the
+     // content security policy in the `next.config.js` file.
+     // supports Plausible, Simple Analytics, Umami, Posthog or Google Analytics.
+     umamiAnalytics: {
+       // We use an env variable for this site to avoid other users cloning our analytics ID
+       umamiWebsiteId: process.env.NEXT_UMAMI_ID, // e.g. 123e4567-e89b-12d3-a456-426614174000
+-      // You may also need to overwrite the script if you're storing data in the US - ex:
+-      // src: 'https://us.umami.is/script.js'
+-      // Remember to add 'us.umami.is' in `next.config.js` as a permitted domain for the CSP
++      // analytics.umami.is 会 301 跳到 cloud.umami.is，直接写最终地址少一次跳转，
++      // 两个域名都要留在 CSP 的 script-src 里（老地址仍可能被缓存引用）。
++      src: 'https://cloud.umami.is/script.js',
+     },
+     // plausibleAnalytics: {
+     //   plausibleDataDomain: '', // e.g. tailwind-nextjs-starter-blog.vercel.app
+     // If you are hosting your own Plausible.
+     //   src: '', // e.g. https://plausible.my-domain.com/js/script.js
+     // },
+diff --git a/next.config.js b/next.config.js
+index 75d0f84..835d2b1 100644
+--- a/next.config.js
++++ b/next.config.js
+@@ -5,13 +5,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
+   enabled: process.env.ANALYZE === 'true',
+ })
+ 
+ // You might need to insert additional domains in script-src if you are using external services
+ const ContentSecurityPolicy = `
+   default-src 'self';
+-  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is;
++  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is cloud.umami.is;
+   style-src 'self' 'unsafe-inline';
+   img-src * blob: data:;
+   media-src *.s3.amazonaws.com;
+   connect-src *;
+   font-src 'self';
+   frame-src giscus.app

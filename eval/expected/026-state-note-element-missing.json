@@ -1,0 +1,28 @@
+{
+  "id": "026-state-note-element-missing",
+  "category": "layout",
+  "base": "incident",
+  "expect": {
+    "rule": "stateLayoutRefs",
+    "path": "view.notes[0].id",
+    "ref": "note-root-cause"
+  },
+  "repair": [
+    {
+      "op": "append",
+      "path": [
+        "view",
+        "elements"
+      ],
+      "value": {
+        "id": "note-root-cause",
+        "kind": "unknown",
+        "ref": "u-root-cause",
+        "status": "unknown",
+        "lineStyle": "dashed"
+      }
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

@@ -1,0 +1,11 @@
+{
+  "id": "001-sequence-baseline",
+  "category": "sequence",
+  "base": "pr",
+  "expect": {
+    "ok": true
+  },
+  "repair": [],
+  "source_mutation": null,
+  "max_calls": 2
+}

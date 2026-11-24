@@ -1,0 +1,26 @@
+{
+  "id": "030-relation-no-source",
+  "category": "no-source",
+  "base": "incident",
+  "expect": {
+    "rule": "supportedEvidence",
+    "path": "relations[1]",
+    "ref": "r-restart"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "semantic",
+        "relations",
+        1,
+        "sourceRefs"
+      ],
+      "value": [
+        "e-log-restart"
+      ]
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

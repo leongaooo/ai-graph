@@ -1,0 +1,27 @@
+{
+  "id": "023-state-lane-element-missing",
+  "category": "layout",
+  "base": "incident",
+  "expect": {
+    "rule": "stateLayoutRefs",
+    "path": "view.lanes[0].id",
+    "ref": "lane-service"
+  },
+  "repair": [
+    {
+      "op": "append",
+      "path": [
+        "view",
+        "elements"
+      ],
+      "value": {
+        "id": "lane-service",
+        "kind": "lane",
+        "ref": "svc-state",
+        "status": "supported"
+      }
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

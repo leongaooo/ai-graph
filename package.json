@@ -15,6 +15,7 @@
     "runtime:compile": "node tools/runtime/cli.mjs compile",
     "runtime:query": "node tools/runtime/cli.mjs query",
     "runtime:test": "node tools/runtime/test.mjs",
-    "mcp:start": "node tools/mcp-server.mjs"
+    "mcp:start": "node tools/mcp-server.mjs",
+    "eval:run": "node eval/run-eval.mjs"
   }
 }

@@ -1,0 +1,24 @@
+{
+  "id": "018-unknown-view-solid",
+  "category": "unknown",
+  "base": "pr",
+  "expect": {
+    "rule": "unknownNotSolid",
+    "path": "view.elements[7].lineStyle",
+    "ref": "node-cached-client"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "view",
+        "elements",
+        7,
+        "lineStyle"
+      ],
+      "value": "dashed"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

@@ -91,7 +91,6 @@ function fromLegacy(input, options = {}) {
 
 function fromEnvelope(input, options = {}) {
   const baseDir = options.baseDir || '';
-  const source = asArray(input.sources)[0] ?? {};
   const intent = normalizeIntent(input.intent, input);
   return {
     protocol: PROTOCOL_ID,
@@ -99,16 +98,14 @@ function fromEnvelope(input, options = {}) {
     id: asString(input.id),
     seed: input.seed,
     intent,
-    sources: [
-      {
-        id: asString(source.id) || 'source-main',
-        uri: uriToPath(source.uri ?? source.path, baseDir),
-        title: asString(source.title),
-        date: asString(source.date),
-        sha256: asString(source.sha256),
-        locators: asArray(source.locators).map(normalizeLocator)
-      }
-    ],
+    sources: asArray(input.sources).map((source, index) => ({
+      id: asString(source?.id) || `source-${index + 1}`,
+      uri: uriToPath(source?.uri ?? source?.path, baseDir),
+      title: asString(source?.title),
+      date: asString(source?.date),
+      sha256: asString(source?.sha256),
+      locators: asArray(source?.locators).map(normalizeLocator)
+    })),
     semantic: {
       entities: asArray(input.semantic?.entities),
       relations: asArray(input.semantic?.relations),
@@ -131,9 +128,10 @@ function envelopeErrors(envelope) {
   if (!Array.isArray(envelope.sources) || envelope.sources.length === 0) {
     fail('sources', 'sources 必须是非空数组');
   } else {
-    const source = envelope.sources[0];
-    if (!source.uri) fail('sources[0].uri', 'source.uri 必须是非空字符串');
-    if (!Array.isArray(source.locators)) fail('sources[0].locators', 'source.locators 必须是数组');
+    for (const [index, source] of envelope.sources.entries()) {
+      if (!source.uri) fail(`sources[${index}].uri`, 'source.uri 必须是非空字符串');
+      if (!Array.isArray(source.locators)) fail(`sources[${index}].locators`, 'source.locators 必须是数组');
+    }
   }
   if (!isObject(envelope.semantic)) {
     fail('semantic', 'semantic 必须是对象');
@@ -165,6 +163,7 @@ export function normalizeSpec(input, options = {}) {
 
 export function toLegacy(envelope) {
   const source = envelope.sources[0] ?? {};
+  const evidence = (envelope.sources ?? []).flatMap(item => item.locators ?? []);
   const main = envelope.intent?.mainConclusion ?? null;
   return {
     version: 1,
@@ -179,7 +178,8 @@ export function toLegacy(envelope) {
     },
     question: envelope.intent?.question ?? '',
     mainConclusion: main,
-    evidence: source.locators ?? [],
+    evidence,
+    sources: envelope.sources ?? [],
     entities: envelope.semantic?.entities ?? [],
     relations: envelope.semantic?.relations ?? [],
     levels: envelope.semantic?.levels ?? [],
@@ -197,6 +197,10 @@ export function sourceOf(envelope) {
   return envelope?.sources?.[0] ?? null;
 }
 
+export function sourcesOf(envelope) {
+  return envelope?.sources ?? [];
+}
+
 export function evidenceOf(envelope) {
-  return sourceOf(envelope)?.locators ?? [];
+  return (envelope?.sources ?? []).flatMap(source => source.locators ?? []);
 }

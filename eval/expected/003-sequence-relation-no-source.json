@@ -1,0 +1,26 @@
+{
+  "id": "003-sequence-relation-no-source",
+  "category": "sequence",
+  "base": "pr",
+  "expect": {
+    "rule": "supportedEvidence",
+    "path": "relations[0]",
+    "ref": "r-diff-metadata"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "semantic",
+        "relations",
+        0,
+        "sourceRefs"
+      ],
+      "value": [
+        "e-umami-src"
+      ]
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

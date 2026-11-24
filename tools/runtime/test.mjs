@@ -104,6 +104,22 @@ test('query acceptance maps viewElementId', () => {
   assert(ids.includes('node-proxy-failure'), `viewElementIds=${ids.join(',')}`);
 });
 
+test('multi-source validate keeps 3 sources', () => {
+  const researchPath = resolve(root, 'demos/research-claims/spec.json');
+  const result = validateSpec({ specPath: researchPath });
+  assert(result.ok, `validate 失败：${JSON.stringify(result.diagnostics)}`);
+  assert(Array.isArray(result.sources) && result.sources.length === 3, `sources=${JSON.stringify(result.sources)}`);
+  assert(result.summary.evidence === 18, `evidence=${result.summary.evidence}`);
+});
+
+test('multi-source compile deterministic hash', () => {
+  const researchPath = resolve(root, 'demos/research-claims/spec.json');
+  const result = compileSpec({ specPath: researchPath, outDir, profile: 'desktop' });
+  assert(result.ok, `compile 失败：${JSON.stringify(result.diagnostics)}`);
+  assert(result.artifacts.desktop.hash === '0c026bc6bf336579d1ad1270927e0849416ca1a6', `desktop hash=${result.artifacts.desktop.hash}`);
+  assert(Array.isArray(result.sources) && result.sources.length === 3, `sources=${JSON.stringify(result.sources)}`);
+});
+
 test('negative: evidence textHash mismatch', () => {
   const bad = clone(sequence);
   bad.evidence[0].textHash = '0'.repeat(64);

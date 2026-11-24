@@ -1,0 +1,24 @@
+{
+  "id": "016-unknown-entity-solid",
+  "category": "unknown",
+  "base": "pr",
+  "expect": {
+    "rule": "unknownNotSolid",
+    "path": "entities[8].lineStyle",
+    "ref": "cached-client"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "semantic",
+        "entities",
+        8,
+        "lineStyle"
+      ],
+      "value": "dashed"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

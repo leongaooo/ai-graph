@@ -132,13 +132,15 @@ function renderLanes(art, scope, { draw, x, y, width, height, columns, gapX, gap
       const row = Math.floor(index / 2);
       const chipX = laneX + 14 + column * (chipWidth + 8);
       const chipY = laneY + 44 + row * 32;
+      const stateStatus = semanticStatus(art, state.ref);
+      const stateDash = stateStatus === 'supported' ? '' : '6 4';
       draw.layer('prop');
-      rect(draw, { x: chipX, y: chipY, width: chipWidth, height: chipHeight, fill: palette.paper, stroke: color, strokeWidth: 1, radius: 13, dataRef: state.ref, status: 'supported', role: 'state-chip' });
+      rect(draw, { x: chipX, y: chipY, width: chipWidth, height: chipHeight, fill: palette.paper, stroke: color, strokeWidth: 1, dash: stateDash, radius: 13, dataRef: state.ref, status: stateStatus, role: 'state-chip' });
       draw.layer('type');
       typeBlock(draw, state.label, {
         x: chipX + 10, y: chipY + 18, width: chipWidth - 20,
         size: 10.5, maxChars: textMax(chipWidth - 20, 10.5, 7),
-        fill: color, dataRef: state.ref, status: 'supported', role: 'state-label'
+        fill: color, dataRef: state.ref, status: stateStatus, role: 'state-label'
       });
       scope.add({ id: `state-${state.ref.slice(3)}`, kind: 'state', bbox: [chipX, chipY, chipX + chipWidth, chipY + chipHeight], label: state.label });
     });
@@ -297,21 +299,29 @@ function renderNotes(art, scope, { draw, notes, x, y, width, height, gap, stacke
   });
 }
 
-function renderConclusion(art, scope, { draw, x, y, width, maxChars }) {
+function renderConclusion(art, scope, { draw, x, y, width, maxChars, text = art.mainConclusion.text }) {
+  const claimRef = art.mainConclusion.claimRef;
+  const status = semanticStatus(art, claimRef);
+  const lineStyle = status === 'supported' ? 'solid' : 'dashed';
   draw.layer('type');
-  const lines = typeBlock(draw, art.mainConclusion.text, {
+  const lines = typeBlock(draw, text, {
     x, y, width, size: 14, maxChars, fill: palette.ink,
-    dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'conclusion'
+    dataRef: claimRef, status, role: 'conclusion'
   });
   const bottom = y + (lines.length - 1) * 14 * 1.18 + 5;
-  scope.add({ id: 'claim-main', kind: 'claim', bbox: [x, y - 16, x + width, bottom], label: art.mainConclusion.text });
+  scope.add({ id: 'claim-main', kind: 'claim', bbox: [x, y - 16, x + width, bottom], lineStyle, label: art.mainConclusion.text });
 }
 
 function renderSource(art, { draw, x, y, width, compact = false }) {
   const lastLine = Math.max(...art.evidence.map(item => item.lineEnd));
-  const text = compact
-    ? `行 2–${lastLine} · ${art.evidence.length} 条证据`
-    : `${art.source.title} · 行 2–${lastLine} · ${art.evidence.length} 条证据`;
+  const sourceCount = Array.isArray(art.sources) ? art.sources.length : 1;
+  const text = sourceCount > 1
+    ? compact
+      ? `${sourceCount} 篇来源 · ${art.evidence.length} 条证据`
+      : `${sourceCount} 篇来源 · ${art.evidence.length} 条证据 · 各行号见 evidence`
+    : compact
+      ? `行 2–${lastLine} · ${art.evidence.length} 条证据`
+      : `${art.source.title} · 行 2–${lastLine} · ${art.evidence.length} 条证据`;
   draw.layer('type');
   typeBlock(draw, text, {
     x, y, width, size: 9.5, maxChars: compact ? 24 : 80, fill: palette.tone, dataRef: 'c-main', status: 'supported', role: 'source'
@@ -417,7 +427,10 @@ function renderStateMobile(art, outDir, semanticReport) {
   renderLoop(art, scope, { draw, x: 16, y: 450, width: 358, height: 30, columns: 1, gapX: 0, gapY: 4, titleY: 436 });
   renderEdge(art, scope, { draw, x: 16, y: 664, width: 358, height: 46, compact: true });
   renderNotes(art, scope, { draw, notes: art.view.notes, x: 16, y: 718, width: 358, height: 14, gap: 2, stacked: true });
-  renderConclusion(art, scope, { draw, x: 16, y: 798, width: 358, maxChars: 34 });
+  renderConclusion(art, scope, {
+    draw, x: 16, y: 798, width: 358, maxChars: 34,
+    text: art.copy?.mobileConclusion || art.mainConclusion.text
+  });
   renderSource(art, { draw, x: 16, y: 838, width: 170, compact: true });
   renderLegend({ draw, x: 200, y: 838, width: 174, compact: true });
 

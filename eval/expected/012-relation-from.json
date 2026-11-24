@@ -1,0 +1,23 @@
+{
+  "id": "012-relation-from",
+  "category": "failure-branch",
+  "base": "incident",
+  "expect": {
+    "rule": "edgeEndpoints",
+    "path": "relations[0].from"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "semantic",
+        "relations",
+        0,
+        "from"
+      ],
+      "value": "st-probe-refused"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

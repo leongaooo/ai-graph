@@ -1,0 +1,25 @@
+{
+  "id": "008-state-step-ref",
+  "category": "state",
+  "base": "incident",
+  "expect": {
+    "rule": "stateLayoutRefs",
+    "path": "view.loop.steps[0].ref",
+    "ref": "loop-detect"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "view",
+        "loop",
+        "steps",
+        0,
+        "ref"
+      ],
+      "value": "step-detect"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

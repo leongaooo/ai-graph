@@ -1,0 +1,24 @@
+{
+  "id": "009-state-feedback-ref",
+  "category": "state",
+  "base": "incident",
+  "expect": {
+    "rule": "stateLayoutRefs",
+    "path": "view.loop.feedback.ref",
+    "ref": "loop-incident"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "view",
+        "loop",
+        "feedback",
+        "ref"
+      ],
+      "value": "r-feedback"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

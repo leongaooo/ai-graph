@@ -1,0 +1,11 @@
+{
+  "id": "006-state-baseline",
+  "category": "state",
+  "base": "incident",
+  "expect": {
+    "ok": true
+  },
+  "repair": [],
+  "source_mutation": null,
+  "max_calls": 2
+}

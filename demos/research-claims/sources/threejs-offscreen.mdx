@@ -1,0 +1,204 @@
+---
+title: 🧠 三分视界：Three.js 离屏渲染与多重视角的艺术
+date: '2025-07-28'
+tags: ['three-js']
+draft: false
+summary: Off-screen rendering, optimization genius
+---
+
+_作者：一名曾在帧缓存深渊里摸爬滚打的像素炼金术士_
+
+---
+
+## 🍿 序章：主屏之外，另有洞天
+
+在 Three.js 的世界里，**渲染器**是那位负责把 3D 幻象灌注到你眼球里的魔术师。而默认的 `WebGLRenderer` 每次都是忠实地将图像渲染到屏幕的画布上，像一位守旧的戏剧演员，总演同一出好戏。
+
+但如果我告诉你——我们可以偷天换日，偷偷把场景渲染到一块看不见的布上（也就是 **离屏渲染**），然后再像魔术贴画一样，把这块布拼接出更绚烂的视觉宇宙呢？
+
+是的，这一切，都要从 `WebGLRenderTarget` 说起。
+
+---
+
+## 🎨 第一幕：RenderTarget 的神秘身世
+
+在 WebGL 中，每一帧的绘制都会写入一个叫做 **帧缓冲（Framebuffer）** 的魔法盒。而 `RenderTarget` 就是我们在 Three.js 中对帧缓冲的一次“高雅封装”。
+
+```
+const renderTarget = new THREE.WebGLRenderTarget(
+  window.innerWidth,
+  window.innerHeight,
+  {
+    minFilter: THREE.LinearFilter,
+    magFilter: THREE.LinearFilter,
+    format: THREE.RGBAFormat,
+  }
+);
+```
+
+这段代码创建了一个虚拟的画布，一块隐形的画卷，所有你渲染进去的图像都会被画在这里，而非屏幕上。我们可以：
+
+- 用它绘制阴影贴图
+- 做环境反射
+- 实现后处理（后期调色、模糊、辉光特效等）
+- 进行多 Pass 渲染（好戏还在后头）
+
+---
+
+## 🧭 第二幕：离屏渲染的三板斧
+
+### 🪞1. 多重视角（多相机）
+
+想象你在拍一部 3D 电影，一台相机拍主视角，另一台拍反光镜中的你。这该怎么实现？很简单，我们给每个相机准备一个自己的渲染目标。
+
+```
+const camera1 = new THREE.PerspectiveCamera();
+const camera2 = new THREE.PerspectiveCamera();
+
+const rt1 = new THREE.WebGLRenderTarget(w, h);
+const rt2 = new THREE.WebGLRenderTarget(w, h);
+
+renderer.setRenderTarget(rt1);
+renderer.render(scene, camera1);
+
+renderer.setRenderTarget(rt2);
+renderer.render(scene, camera2);
+
+// 回到主屏幕
+renderer.setRenderTarget(null);
+```
+
+此时，你手里就拥有了两个不同角度的世界快照，可以把它们贴在场景的任何材质上，实现“上帝视角”、“镜中世界”、“后视镜”等视效。
+
+---
+
+### 🔮2. 多 Pass 渲染（层层递进的炼金术）
+
+单次渲染太寡淡？那就分多个 Pass，让每一步都变得魔性：
+
+#### 第一步：渲染基础色（Albedo）
+
+```
+renderer.setRenderTarget(rtColor);
+renderer.render(colorScene, camera);
+```
+
+#### 第二步：计算光照或边缘高亮
+
+```
+renderer.setRenderTarget(rtLighting);
+renderer.render(lightingScene, camera);
+```
+
+#### 第三步：将它们合并输出
+
+最终我们使用一个屏幕空间的正方形（`THREE.PlaneGeometry`）+ 自定义 Shader，将之前的结果混合输出：
+
+```
+fullScreenQuad.material = new THREE.ShaderMaterial({
+  uniforms: {
+    tColor: { value: rtColor.texture },
+    tLighting: { value: rtLighting.texture },
+  },
+  vertexShader: `...`,
+  fragmentShader: `
+    uniform sampler2D tColor;
+    uniform sampler2D tLighting;
+    void main() {
+      vec4 base = texture2D(tColor, gl_FragCoord.xy / resolution);
+      vec4 light = texture2D(tLighting, gl_FragCoord.xy / resolution);
+      gl_FragColor = base + light; // 简单叠加
+    }
+  `,
+});
+renderer.setRenderTarget(null);
+renderer.render(screenScene, camera);
+```
+
+🎬 这样你就拥有了一个**图层化的渲染流程**，每一个 Pass 都是一次视觉炼金，可以做模糊、辉光、色彩分离、描边、GBuffer 等高级效果。
+
+---
+
+### 🧪3. 使用多个 RenderTarget 同时输出多张贴图（MRT）
+
+需要 GBuffer 吗？需要一次性输出法线图、深度图和颜色图？启用 **MRT（Multiple Render Targets）** 模式！
+
+> ⚠️ 前提是浏览器支持 `WEBGL_draw_buffers` 扩展（大多数支持）
+
+```
+const rt = new THREE.WebGLMultipleRenderTargets(w, h, 3);
+rt.texture[0].name = 'Color';
+rt.texture[1].name = 'Normal';
+rt.texture[2].name = 'Position';
+
+// 在 Shader 中使用 gl_FragData[i] 输出不同纹理
+```
+
+你就可以一次性绘制出三张纹理贴图，然后再做你想做的后处理。
+
+---
+
+## 📦 第三幕：自定义渲染器？还是说自定义管线？
+
+虽然 `WebGLRenderer` 已经做得很不错，但如果你想拥有更细节的控制（比如完全手动控制渲染顺序），可以考虑：
+
+- 写一个渲染调度器（Render Graph）
+- 使用低阶 WebGL API 实现更底层的渲染逻辑
+- 或者……直接改写 Three.js 的 `WebGLRenderer.prototype.render` 方法（魔法慎用）
+
+例如手动执行一个完整的多 Pass 渲染：
+
+```
+function render() {
+  renderer.setRenderTarget(rt1);
+  renderer.clear();
+  renderer.render(scene1, camera1);
+
+  renderer.setRenderTarget(rt2);
+  renderer.clear();
+  renderer.render(scene2, camera2);
+
+  // 最后合成
+  renderer.setRenderTarget(null);
+  renderer.render(finalScene, finalCamera);
+}
+```
+
+这就像你成为了整场电影的导演，不再只是观众。
+
+---
+
+## 🧠 附加彩蛋：RenderTarget 的常见用途清单
+
+| 用途         | 描述                   |
+| ------------ | ---------------------- |
+| 后期特效     | 景深、模糊、泛光、色差 |
+| 多视角合成   | 安全监控、上帝视角     |
+| 光照贴图     | 动态阴影、烘焙反射     |
+| GBuffer      | 延迟渲染准备           |
+| 镜面反射     | 反射探头、玻璃球反射   |
+| 缓存复杂渲染 | 节省 GPU 性能          |
+
+---
+
+## 🧙 尾声：像素炼金术士的嘱咐
+
+每一次 `renderTarget` 的使用，都是对 GPU 空间与显存的挑战；每一次多 Pass 的渲染，都是性能与画质的取舍。因此请你：
+
+- 记得释放不再使用的 RenderTarget（`.dispose()`）
+- 理性使用多 Pass，避免过度渲染
+- 为你的离屏宇宙起一个浪漫的名字 🌌
+
+---
+
+## 📚 推荐延伸阅读
+
+- [Three.js 文档中的 RenderTarget 章节](https://threejs.org/docs/#api/en/renderers/WebGLRenderTarget)
+- [PostProcessing Framework in Three.js](https://github.com/mrdoob/three.js/blob/master/examples/jsm/postprocessing/)
+- WebGL Shading Language（GLSL）基础
+
+---
+
+愿你在虚拟画布中，绘出万千真实。
+
+——**像素的仆人，光的使者，Three.js 开发者** 💡

@@ -1,0 +1,24 @@
+{
+  "id": "005-sequence-inferred-no-reason",
+  "category": "sequence",
+  "base": "pr",
+  "expect": {
+    "rule": "inferredReason",
+    "path": "entities[6].reason",
+    "ref": "browser"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "semantic",
+        "entities",
+        6,
+        "reason"
+      ],
+      "value": "PR 只展示配置；浏览器加载脚本是 CSP 的运行时结果，PR 没有附抓包或响应头证据。"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

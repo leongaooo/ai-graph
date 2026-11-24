@@ -1,0 +1,24 @@
+{
+  "id": "014-duplicate-entity-id",
+  "category": "failure-branch",
+  "base": "incident",
+  "expect": {
+    "rule": "idUnique",
+    "path": "entities[1].id",
+    "ref": "svc-state"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "semantic",
+        "entities",
+        1,
+        "id"
+      ],
+      "value": "signal-state"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

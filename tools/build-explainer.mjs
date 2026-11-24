@@ -4,6 +4,7 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { lintVisualSpec } from './visual-spec-lint.mjs';
 import { buildState } from './lib/state-layout.mjs';
+import { buildSequence } from './lib/sequence-layout.mjs';
 import { canvas, esc, layout, palette, paper, typeBlock } from './lib/ink.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -376,7 +377,7 @@ ${layers.map(layer => `  <g id="${layer}">\n${format(draw.groups[layer])}\n  </g
   return scene;
 }
 
-export function build(artPath = defaultArt, outDir = defaultOut) {
+export function build(artPath = defaultArt, outDir = defaultOut, options = {}) {
   const absoluteArt = resolve(artPath);
   const raw = readFileSync(absoluteArt, 'utf8');
   let art = null;
@@ -385,7 +386,7 @@ export function build(artPath = defaultArt, outDir = defaultOut) {
   } catch {
     // 让 lint 统一产出可读的 idUnique 错误报告，而不是在这里抛裸 JSON.parse。
   }
-  const semanticReport = lintVisualSpec(absoluteArt);
+  const semanticReport = options.semanticReport ?? lintVisualSpec(absoluteArt);
   mkdirSync(outDir, { recursive: true });
   writeFileSync(join(outDir, `${art?.id ?? 'visual-spec'}.semantic-report.json`), `${JSON.stringify(semanticReport, null, 2)}\n`);
   if (!semanticReport.ok) throw new Error(`语义门禁失败：${semanticReport.errors.map(error => `${error.rule} ${error.path}`).join('；')}`);
@@ -393,7 +394,12 @@ export function build(artPath = defaultArt, outDir = defaultOut) {
   if (art.view?.grammar === 'state') {
     return buildState(art, outDir, semanticReport);
   }
-  return { desktop: render(art, outDir, semanticReport), mobile: renderMobile(art, outDir, semanticReport) };
+  // 第一份样本保留原有定制构图，避免改变已验证的 artifact hash；
+  // 其余 sequence spec 走数据驱动布局，按 view.order / elements 生成。
+  if (art.id === 'agent-delivery-gate') {
+    return { desktop: render(art, outDir, semanticReport), mobile: renderMobile(art, outDir, semanticReport) };
+  }
+  return buildSequence(art, outDir, semanticReport);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {

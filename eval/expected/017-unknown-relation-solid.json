@@ -1,0 +1,24 @@
+{
+  "id": "017-unknown-relation-solid",
+  "category": "unknown",
+  "base": "pr",
+  "expect": {
+    "rule": "unknownNotSolid",
+    "path": "relations[10].lineStyle",
+    "ref": "r-cache"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "semantic",
+        "relations",
+        10,
+        "lineStyle"
+      ],
+      "value": "dashed"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

@@ -1,0 +1,17 @@
+{
+  "id": "020-stale-text-hash",
+  "category": "stale-source",
+  "base": "pr",
+  "expect": {
+    "rule": "supportedEvidence",
+    "path": "evidence.e-commit",
+    "ref": "e-commit"
+  },
+  "repair": [
+    {
+      "op": "rehash-source"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

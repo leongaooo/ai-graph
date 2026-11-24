@@ -1,0 +1,1076 @@
+{
+  "protocol": "ai-graph/visual-spec@0.2",
+  "version": "0.2",
+  "id": "research-claims-visual-value",
+  "seed": 20261124,
+  "intent": {
+    "text": "研究 Agent 在三篇真实文章之间建立主张与证据图：保留大屏的可用性主张、Three.js 的视觉表现主张、首页改版的工程验收主张，标出它们不是同一条设计原则，并用未知和推断区分可核对事实与综合判断。",
+    "question": "三篇文章各自主张什么？哪条冲突不能被合并？哪些结论只是推断或未知？",
+    "audience": "研究 Agent、投研/政策分析 Agent、知识整理 Agent",
+    "constraints": [
+      "三篇文章各自独立来源，不合并成单一事实",
+      "supported 主张必须有原文行号和 textHash",
+      "冲突主张并置，不合并成一条原则",
+      "综合结论标 inferred，不冒充原文"
+    ],
+    "mainConclusion": {
+      "claimRef": "c-main",
+      "text": "三篇文章给出三种视觉价值取向：大屏要服务判断，Three.js 可以追求视觉宇宙，首页改版用标准与验收把 AI 实现拉回可核对范围；它们可以并置，但不能被合并成一条设计原则。"
+    }
+  },
+  "sources": [
+    {
+      "id": "source-dashboard",
+      "uri": "sources/dashboard-usability.mdx",
+      "title": "可视化大屏：从炫技展示到真实可用",
+      "date": "2026-01-16",
+      "sha256": "94be605a8d6ad9bcbcb3b1ecf25471019276a3a57f001aadfa8796d66a050e62",
+      "locators": [
+        {
+          "id": "e-dash-summary",
+          "lineStart": 2,
+          "lineEnd": 6,
+          "textHash": "5f2ff15b01442a5ee3a8ff87c1ff3eff9c68992eb0e0566afb83e26612bc0f5d",
+          "excerpt": "title: 可视化大屏：从炫技展示到真实可用\ndate: '2026-01-16'\ntags: ['frontend', 'data-visualization']\ndraft: false\nsummary: 大屏不只是动效、地图和酷炫图表，更应该服务监控、判断、预警和现场决策。"
+        },
+        {
+          "id": "e-dash-hook",
+          "lineStart": 11,
+          "lineEnd": 15,
+          "textHash": "3f83b05bcccc5d9dc4e126289df944cae8a1d1a63c5341e11c7a8d6d57ac25fa",
+          "excerpt": "它天然容易被期待成“震撼”的东西：深色背景、发光边框、地图飞线、动态数字、环形图、粒子效果。第一次打开时确实很有仪式感，像是进入了一个指挥中心。\n\n但做过几次之后会发现，大屏如果只追求炫，很快就会变成背景板。\n\n真正的大屏应该帮助用户在远距离、短时间、高压力的场景下看懂问题，并做出判断。"
+        },
+        {
+          "id": "e-dash-scene",
+          "lineStart": 23,
+          "lineEnd": 32,
+          "textHash": "f70f430e10f5d262a7dfe2ba9bcc87065fe086498417230e9cb984d367a29d0e",
+          "excerpt": "所以大屏设计要先问：\n\n- 谁会看？\n- 在什么场景下看？\n- 需要多快发现异常？\n- 看完之后要做什么？\n\n如果是运维监控，大屏要突出告警、趋势和状态；如果是经营汇报，要突出关键指标和同比环比；如果是生产现场，要突出设备、产量、节拍和异常。\n\n不同场景的大屏，信息组织完全不同。"
+        },
+        {
+          "id": "e-dash-motion",
+          "lineStart": 53,
+          "lineEnd": 59,
+          "textHash": "4b430385fb6bfc47aac1d8f97506bd94d2db228d53fabe18663c34d95e71edb5",
+          "excerpt": "前端做大屏时很容易沉迷动效。\n\n数字滚动、图表刷新、地图闪烁、线条流动，看起来很热闹。但动效太多时，用户反而难以判断什么是真正变化，什么只是装饰。\n\n好的动效应该帮助用户理解状态变化。\n\n比如告警出现时短暂高亮，设备离线时状态平滑切换，趋势变化时用过渡帮助用户保留上下文。动效不是为了证明页面会动，而是为了让变化更容易被感知。"
+        },
+        {
+          "id": "e-dash-fallback",
+          "lineStart": 61,
+          "lineEnd": 75,
+          "textHash": "b1a43ed0838a79c2c7ad4785c4e9366495ae727aaad23f7369bed5d761a70693",
+          "excerpt": "## 实时数据要有降级方案\n\n大屏经常连接实时数据，这也是风险最大的部分。\n\n接口慢、网络断、设备不上报、WebSocket 重连失败，都会直接影响展示。用户看到空白或卡死，会立刻失去信任。\n\n所以大屏要设计数据状态：\n\n- 正常刷新\n- 数据延迟\n- 局部失败\n- 连接中断\n- 使用最后一次缓存\n\n这些状态最好能被温和地展示出来，让用户知道系统发生了什么，而不是让屏幕静静地停在那里。"
+        },
+        {
+          "id": "e-dash-conclusion",
+          "lineStart": 87,
+          "lineEnd": 93,
+          "textHash": "8c813c532ded7128a336100da8dcc82f5d54ef98e44ab2048f74924e5ea7c0f5",
+          "excerpt": "## 写在最后\n\n可视化大屏的价值，不在于它有多酷，而在于它能不能让重要信息被及时看见。\n\n一个成熟的大屏，应该克制、清晰、稳定，并且知道自己服务的业务场景。\n\n当用户在它面前不只是说“很好看”，而是说“我知道现在该处理哪里”，这块屏幕才真正有用。"
+        }
+      ]
+    },
+    {
+      "id": "source-three",
+      "uri": "sources/threejs-offscreen.mdx",
+      "title": "三分视界：Three.js 离屏渲染与多重视角的艺术",
+      "date": "2025-07-28",
+      "sha256": "da311ee3db51e782a309f161168fdbc3c8add501bad39682a8ef32dc1bd13a8e",
+      "locators": [
+        {
+          "id": "e-three-summary",
+          "lineStart": 2,
+          "lineEnd": 6,
+          "textHash": "3125b6340f7eacb00c7352fa3f82f79ad8ba3e3d747c7f1c7fb282a0ff195cb8",
+          "excerpt": "title: 🧠 三分视界：Three.js 离屏渲染与多重视角的艺术\ndate: '2025-07-28'\ntags: ['three-js']\ndraft: false\nsummary: Off-screen rendering, optimization genius"
+        },
+        {
+          "id": "e-three-idea",
+          "lineStart": 17,
+          "lineEnd": 19,
+          "textHash": "d22837279e804fe82d9e535d4870b934d98e8a2f3f459a42f6cac25404eaf2be",
+          "excerpt": "但如果我告诉你——我们可以偷天换日，偷偷把场景渲染到一块看不见的布上（也就是 **离屏渲染**），然后再像魔术贴画一样，把这块布拼接出更绚烂的视觉宇宙呢？\n\n是的，这一切，都要从 `WebGLRenderTarget` 说起。"
+        },
+        {
+          "id": "e-three-multi",
+          "lineStart": 50,
+          "lineEnd": 52,
+          "textHash": "8889b8663df5b9c76e99b645eb063fd3f3cf2e71c0d8ea980947c6eb856062ab",
+          "excerpt": "### 🪞1. 多重视角（多相机）\n\n想象你在拍一部 3D 电影，一台相机拍主视角，另一台拍反光镜中的你。这该怎么实现？很简单，我们给每个相机准备一个自己的渲染目标。"
+        },
+        {
+          "id": "e-three-uses",
+          "lineStart": 171,
+          "lineEnd": 180,
+          "textHash": "fbc943f12544a562cc3e2c2501b47b24bed75e076bee0fa3d8ad3280db589295",
+          "excerpt": "## 🧠 附加彩蛋：RenderTarget 的常见用途清单\n\n| 用途         | 描述                   |\n| ------------ | ---------------------- |\n| 后期特效     | 景深、模糊、泛光、色差 |\n| 多视角合成   | 安全监控、上帝视角     |\n| 光照贴图     | 动态阴影、烘焙反射     |\n| GBuffer      | 延迟渲染准备           |\n| 镜面反射     | 反射探头、玻璃球反射   |\n| 缓存复杂渲染 | 节省 GPU 性能          |"
+        },
+        {
+          "id": "e-three-cost",
+          "lineStart": 186,
+          "lineEnd": 190,
+          "textHash": "e3047c030a9a017f71cc88b7dc8d5c629ceeb93d4cd77cb639c88809afee8034",
+          "excerpt": "每一次 `renderTarget` 的使用，都是对 GPU 空间与显存的挑战；每一次多 Pass 的渲染，都是性能与画质的取舍。因此请你：\n\n- 记得释放不再使用的 RenderTarget（`.dispose()`）\n- 理性使用多 Pass，避免过度渲染\n- 为你的离屏宇宙起一个浪漫的名字 🌌"
+        }
+      ]
+    },
+    {
+      "id": "source-flow",
+      "uri": "sources/design-flow.mdx",
+      "title": "从设计意图到能跑的页面：一次首页改版的工程复盘",
+      "date": "2026-11-21",
+      "sha256": "41d0a8450c2941d0d9c042ce4564169769fae34e73444e775aab0d342827a166",
+      "locators": [
+        {
+          "id": "e-flow-summary",
+          "lineStart": 2,
+          "lineEnd": 6,
+          "textHash": "86060ce4153a9af4d959552ba5987b324ed4082aa581a7a741825de8a3e80a22",
+          "excerpt": "title: 从设计意图到能跑的页面：一次首页改版的工程复盘\ndate: '2026-11-21'\ntags: ['engineering', 'frontend', 'ai']\ndraft: false\nsummary: 记录一次个人站首页改版：先定判断标准与取舍，再由 AI 并行实现、人工逐条验收，附上本地构建体积、降级边界和一套可迁移的分工方法。"
+        },
+        {
+          "id": "e-flow-method",
+          "lineStart": 9,
+          "lineEnd": 9,
+          "textHash": "833c644d4e34e035b0ba74cf34fc3711a9706467a05019f8f42b8d99ca1e8043",
+          "excerpt": "这篇文章记录一次个人站首页改版的完整过程：先把访客该看见什么想清楚，再列出放弃了哪些备选，最后用本地构建和浏览器实测数字交代结果与边界。分工上，标准和验收由人来定，方案与代码由 AI 并行产出。"
+        },
+        {
+          "id": "e-flow-standard",
+          "lineStart": 21,
+          "lineEnd": 25,
+          "textHash": "ab5423e57b1bf3ed47d25bacc64ab1d4f3c5a8288af814277b88e6c47a230d7d",
+          "excerpt": "改版方案在动笔写代码之前先定了一条判断标准：访客进入站点的前几秒，应该同时看到三件事——一个正在运行的 AI 生成过程、一个可以点开的作品、一条能够读下去的深度文章。首页不是一张文字简历，能力要直接长在页面上。\n\n按这条标准，新首页首屏自上而下由四部分组成：左侧是流式终端样式的 `delivery.log`，逐行输出一条构建与交付记录；右侧是生成式等距插画；下方先是一条四项证据条，再是三张入口卡，分别通向作品墙、在线演示和文章；证据条用最短的词组交代构建方式、首屏脚本渲染方式、自运维托管状态和最近交付内容。\n\n信息排序上有一条明确原则：作品入口和演示入口必须出现在首屏，不能再把可点开的东西藏到二级页；文章不删除，但降级为第三顺位，招聘方先看能力，读者再往下读。所有入口保证键盘 Tab 可以到达，动效不阻挡点击。这个排序本身就是判断结果：首屏每一块区域都要对应一项可核验的能力，而不是装饰。"
+        },
+        {
+          "id": "e-flow-tradeoffs",
+          "lineStart": 33,
+          "lineEnd": 37,
+          "textHash": "9e654b670df6f8af1e4aec21e8044ba8b0bf649c980459eccf0f819dfcf6172b",
+          "excerpt": "第二处取舍，是插画用静态位图还是生成式矢量。备选是直接出一张位图，或用 AI 生成一张插画贴上去。位图带来额外图片请求、体积和版权归属问题，而且图片是死的，不能换色板、不能按数据重新生成；AI 生成图也无法携带结构化场景定义，很难和后续三维场景保持同一套几何语言。最终选择内联 SVG，由数据常量投影生成：场景先定义成一组 SceneSpec 常量，含 atlas 青绿、foundry 暖橙、quiet 冷灰三套色板，再经等距投影函数换算坐标，分成底、中、前三层 SVG 分组渲染。选这一侧要额外承担投影和分层代码的维护，好处是场景可复现、可换版、零网络请求。\n\n第三处取舍，是视觉风格要不要走紫色渐变的 AI 模板风。备选是当下常见的大面积紫色渐变加发光球体首页。没选它，因为这种视觉是模板味最重的来源，和想要传达的克制感相反。放弃这条捷径，等于少了一种最容易显得现代的语言，必须自己用细线、网格、描边动画和单一强调色把基调立起来，前期打磨成本更高。装饰元素只保留网格、扫描线和描边动画三种。\n\n第四处取舍，是冲击力要不要靠粒子、bloom 后期和 GLTF 模型堆出来。备选确实更直观：粒子系统、后期辉光、加载现成模型，页面立刻显得重。没选的原因有两层：这些特效和“模型、几何”的主题关系不大，只是在堆氛围；同时会额外引入后期处理包和模型资源，首页要背更重的运行时。代价是放弃一眼可见的奇观感，表现力只能靠几何、光线和交互手感争取。"
+        },
+        {
+          "id": "e-flow-numbers",
+          "lineStart": 49,
+          "lineEnd": 53,
+          "textHash": "c333fc0d0029e0bca2866fe182471ba21da7873f4dda00442c2bc1fb4525fb01",
+          "excerpt": "技术栈：Next.js 15.2.4、React 19、Tailwind v4、contentlayer2 0.5.5、framer-motion 12。2026-11-21 在本地执行静态构建，输出 68/68 个静态页面，退出码 0。构建产物中，首页 `/` 体积 10.1 kB，First Load JS 114 kB；接入三维场景之前这两个数字分别是 4.38 kB 与 108 kB，全站共享 JS 为 101 kB。内容侧：博客 19 篇，文章列表分页 4 页，标签聚合页 15 个。这些数字来自一次本地静态构建，不是线上访问采样，不能当作生产环境的加载表现。\n\n这套首页改动已在本地构建与验收通过，还没有发布到线上。验收用本地无头 Chrome：亮色、暗色两种主题态与 390px 移动端视口均无横向溢出，判断标准是 `scrollWidth == innerWidth`；`prefers-reduced-motion` 下动效降级为终态。验收截图留在项目记录里，亮色态、暗色态和移动端态各一张。\n\n插画第二版已经在本地跑起来：首页右侧渲染为 canvas，桌面无头 Chrome 实测 fps 60、blocks 12、draw calls 2；悬停到体块返回「块 02 · h=2.4」，点击后返回 `block-02 · x=3.2 y=4.2 h=2.4 tone=base · 来自 SceneSpec #01`。后一条信息说明体块的位置、高度和色调是由场景数据带出来的，不是模型里手摆的。这组读数只来自本机桌面环境，未在线上或其他设备复核。"
+        },
+        {
+          "id": "e-flow-limits",
+          "lineStart": 67,
+          "lineEnd": 67,
+          "textHash": "120458ae70ceb4a7c19ffe9624792ac880bbb50bd49ac1e42a8795117987a142",
+          "excerpt": "维护成本有几条要如实记录。SceneSpec 是 SVG 回落版和 three.js 场景共同的数据来源，两套渲染器要保持字段一致，改场景定义时需同时检查两侧。服务器由本人自运维，部署以手动为主。两套版本都还没有发布到线上，也没有真实访客反馈，首屏的信息排序只是本地验收通过，不是被访问数据验证过的结论。"
+        },
+        {
+          "id": "e-flow-team",
+          "lineStart": 71,
+          "lineEnd": 77,
+          "textHash": "2b72b7e0bcc534f8df3cf539ef2f85602d5fe8bec91cd93d9ba343c9c2e56e24",
+          "excerpt": "这次改版过程中真正可迁移的，不是某个具体组件，而是一条分工与验收的方式。\n\n分工上，标准和验收由人定，方案和高密度代码由 AI 出。这次的做法是：人先写清首屏要传达哪三件事、哪些备选不选、验收标准是什么；Codex、ChatGPT 与豆包并行推进不同任务，各自在划定的文件范围和约束内实现，人再逐条对照规格验收。换到产品团队，对应的是需求与边界文档先于代码存在、AI 承担实现密度、人保留目标与最终验收；并行处理多个模块时，文件白名单、依赖约束和回滚路径必须先讲清，否则产出很难合并。\n\n方法上有三点可以直接复用。一是把视觉意图先压成数据定义：场景形状、色板、体块参数都是纯常量，渲染器只负责解释数据，SVG 回落版和三维场景共用一份定义。二是规格里同时写清做什么和不做什么，不加哪些依赖、不引入哪些特效、哪些数据不能假装实时，约束本身就是设计判断。三是验收用可观察的条件：构建退出码、页面体积、视口是否横向溢出、reduced-motion 是否生效，都有对应的检查方式和截图留档。\n\n也要承认验证范围有限：它跑在个人站点和个人服务器上，没有多人协作、线上流量和长期维护的检验。换到更大的团队，数据驱动定义、AI 并行实现加人工验收仍成立，但要补上协作规范、线上监控和真实用户反馈，不能把个人项目经验直接当成团队流程结论。"
+        }
+      ]
+    }
+  ],
+  "semantic": {
+    "entities": [
+      {
+        "id": "dimension-value",
+        "label": "视觉价值",
+        "kind": "dimension",
+        "status": "supported",
+        "sourceRefs": [
+          "e-dash-hook",
+          "e-three-idea"
+        ]
+      },
+      {
+        "id": "dimension-evidence",
+        "label": "证据强度",
+        "kind": "dimension",
+        "status": "supported",
+        "sourceRefs": [
+          "e-flow-method",
+          "e-flow-limits"
+        ]
+      },
+      {
+        "id": "dimension-scope",
+        "label": "适用场景",
+        "kind": "dimension",
+        "status": "supported",
+        "sourceRefs": [
+          "e-dash-scene",
+          "e-three-multi"
+        ]
+      },
+      {
+        "id": "dimension-risk",
+        "label": "风险",
+        "kind": "dimension",
+        "status": "supported",
+        "sourceRefs": [
+          "e-three-cost",
+          "e-flow-limits"
+        ]
+      },
+      {
+        "id": "st-utility",
+        "label": "服务判断",
+        "kind": "state",
+        "status": "supported",
+        "sourceRefs": [
+          "e-dash-hook",
+          "e-dash-conclusion"
+        ]
+      },
+      {
+        "id": "st-impact",
+        "label": "视觉冲击",
+        "kind": "state",
+        "status": "supported",
+        "sourceRefs": [
+          "e-three-idea",
+          "e-three-multi"
+        ]
+      },
+      {
+        "id": "st-reconcile",
+        "label": "标准验收",
+        "kind": "state",
+        "status": "inferred",
+        "sourceRefs": [
+          "e-flow-method",
+          "e-flow-team"
+        ],
+        "reason": "把视觉表现拉回判断目标，并用验收条件约束；这是跨文章推断，不是三篇共同结论。"
+      },
+      {
+        "id": "st-observed",
+        "label": "原文事实",
+        "kind": "state",
+        "status": "supported",
+        "sourceRefs": [
+          "e-flow-method"
+        ]
+      },
+      {
+        "id": "st-inferred",
+        "label": "推断",
+        "kind": "state",
+        "status": "supported",
+        "sourceRefs": [
+          "e-flow-method"
+        ]
+      },
+      {
+        "id": "st-unknown",
+        "label": "未知",
+        "kind": "state",
+        "status": "supported",
+        "sourceRefs": [
+          "e-flow-limits"
+        ]
+      },
+      {
+        "id": "st-dashboard",
+        "label": "运维大屏",
+        "kind": "state",
+        "status": "supported",
+        "sourceRefs": [
+          "e-dash-scene"
+        ]
+      },
+      {
+        "id": "st-art",
+        "label": "图形实验",
+        "kind": "state",
+        "status": "supported",
+        "sourceRefs": [
+          "e-three-multi"
+        ]
+      },
+      {
+        "id": "st-personal",
+        "label": "个人站点",
+        "kind": "state",
+        "status": "supported",
+        "sourceRefs": [
+          "e-flow-summary"
+        ]
+      },
+      {
+        "id": "st-overdraw",
+        "label": "过度渲染",
+        "kind": "state",
+        "status": "inferred",
+        "sourceRefs": [
+          "e-three-cost"
+        ],
+        "reason": "Three.js 原文警告多 Pass 的性能代价，但没有直接说视觉冲击导致过度渲染。"
+      },
+      {
+        "id": "st-no-test",
+        "label": "无用户验证",
+        "kind": "state",
+        "status": "supported",
+        "sourceRefs": [
+          "e-flow-limits"
+        ]
+      },
+      {
+        "id": "st-scope-creep",
+        "label": "场景外推",
+        "kind": "state",
+        "status": "inferred",
+        "sourceRefs": [
+          "e-dash-scene",
+          "e-three-multi"
+        ],
+        "reason": "两篇文章受众不同；把一方的原则直接套到另一方场景，属于推断风险。"
+      },
+      {
+        "id": "step-collect",
+        "label": "收集原文",
+        "kind": "event",
+        "status": "supported",
+        "sourceRefs": [
+          "e-dash-summary",
+          "e-three-summary",
+          "e-flow-summary"
+        ]
+      },
+      {
+        "id": "step-extract",
+        "label": "抽取主张",
+        "kind": "event",
+        "status": "supported",
+        "sourceRefs": [
+          "e-dash-hook",
+          "e-three-idea",
+          "e-flow-method"
+        ]
+      },
+      {
+        "id": "step-cross",
+        "label": "交叉核对",
+        "kind": "event",
+        "status": "supported",
+        "sourceRefs": [
+          "e-dash-scene",
+          "e-three-multi",
+          "e-flow-team"
+        ]
+      },
+      {
+        "id": "step-mark",
+        "label": "标状态",
+        "kind": "event",
+        "status": "supported",
+        "sourceRefs": [
+          "e-flow-limits"
+        ]
+      },
+      {
+        "id": "step-cite",
+        "label": "绑证据",
+        "kind": "event",
+        "status": "supported",
+        "sourceRefs": [
+          "e-flow-standard"
+        ]
+      },
+      {
+        "id": "step-review",
+        "label": "人工复核",
+        "kind": "event",
+        "status": "supported",
+        "sourceRefs": [
+          "e-flow-team",
+          "e-flow-limits"
+        ]
+      },
+      {
+        "id": "edge-scope",
+        "label": "三篇原文快照",
+        "kind": "boundary",
+        "status": "supported",
+        "sourceRefs": [
+          "e-dash-summary",
+          "e-three-summary",
+          "e-flow-summary"
+        ],
+        "role": "独立来源 / 原文行号 / 不合并冲突"
+      }
+    ],
+    "relations": [
+      {
+        "id": "r-tension",
+        "from": "st-utility",
+        "to": "st-impact",
+        "type": "并置张力",
+        "label": "张力",
+        "status": "unknown",
+        "lineStyle": "dashed",
+        "reason": "两篇文章分别主张服务判断与视觉宇宙，原文没有直接互相评价；这是分析者并置后的张力。",
+        "sourceRefs": [
+          "e-dash-hook",
+          "e-three-idea"
+        ]
+      },
+      {
+        "id": "r-overdraw",
+        "from": "st-impact",
+        "to": "st-overdraw",
+        "type": "可能代价",
+        "label": "代价",
+        "status": "inferred",
+        "reason": "Three.js 原文警告多 Pass 的性能代价，但没有直接说视觉冲击导致过度渲染。",
+        "sourceRefs": [
+          "e-three-cost"
+        ]
+      },
+      {
+        "id": "r-reconcile",
+        "from": "st-reconcile",
+        "to": "st-utility",
+        "type": "验收约束",
+        "label": "约束",
+        "status": "inferred",
+        "reason": "用验收条件把视觉表现拉回判断目标；这是推断的和解路径。",
+        "sourceRefs": [
+          "e-flow-team",
+          "e-dash-conclusion"
+        ]
+      },
+      {
+        "id": "r-dash-scope",
+        "from": "st-utility",
+        "to": "st-dashboard",
+        "type": "适用场景",
+        "label": "场景",
+        "status": "supported",
+        "sourceRefs": [
+          "e-dash-scene"
+        ]
+      },
+      {
+        "id": "r-art-scope",
+        "from": "st-impact",
+        "to": "st-art",
+        "type": "适用场景",
+        "label": "场景",
+        "status": "supported",
+        "sourceRefs": [
+          "e-three-multi"
+        ]
+      },
+      {
+        "id": "r-personal-scope",
+        "from": "st-reconcile",
+        "to": "st-personal",
+        "type": "案例范围",
+        "label": "范围",
+        "status": "inferred",
+        "reason": "flow 文章是个人站点案例；标准与验收能否迁移到团队仍是推断。",
+        "sourceRefs": [
+          "e-flow-summary",
+          "e-flow-limits"
+        ]
+      },
+      {
+        "id": "r-feedback",
+        "from": "step-review",
+        "to": "step-extract",
+        "type": "复核反哺",
+        "label": "反哺",
+        "status": "inferred",
+        "reason": "复核发现证据缺口后回补抽取规则；原文没有定义研究流程，按研究惯例推断。",
+        "sourceRefs": [
+          "e-flow-team"
+        ]
+      }
+    ],
+    "claims": [
+      {
+        "id": "c-dashboard",
+        "text": "大屏的价值不在炫技，而在让重要信息被及时看见，并让用户知道现在该处理哪里。",
+        "status": "supported",
+        "sourceRefs": [
+          "e-dash-hook",
+          "e-dash-conclusion"
+        ]
+      },
+      {
+        "id": "c-three",
+        "text": "离屏渲染、多视角与多 Pass 可以制造更丰富的视觉宇宙；它追求的是视觉表现，不是业务判断。",
+        "status": "supported",
+        "sourceRefs": [
+          "e-three-idea",
+          "e-three-multi"
+        ]
+      },
+      {
+        "id": "c-three-cost",
+        "text": "多 Pass 是性能与画质取舍，需要释放 RenderTarget、避免过度渲染。",
+        "status": "supported",
+        "sourceRefs": [
+          "e-three-cost"
+        ]
+      },
+      {
+        "id": "c-flow",
+        "text": "先定判断标准与取舍，再由 AI 并行实现，人逐条验收；可迁移的是分工与验收方式。",
+        "status": "supported",
+        "sourceRefs": [
+          "e-flow-method",
+          "e-flow-team"
+        ]
+      },
+      {
+        "id": "c-numbers",
+        "text": "本地构建 68/68、首页 10.1 kB、First Load JS 114 kB；同机桌面 60fps / 12 blocks / 2 draw calls。这些只代表本机环境。",
+        "status": "supported",
+        "sourceRefs": [
+          "e-flow-numbers"
+        ]
+      },
+      {
+        "id": "c-limits",
+        "text": "验证范围限于个人站点、本地构建，没有线上流量与真实访客反馈，不能直接当成团队流程结论。",
+        "status": "supported",
+        "sourceRefs": [
+          "e-flow-limits"
+        ]
+      },
+      {
+        "id": "c-conflict",
+        "text": "大屏要求克制、服务判断；Three.js 鼓励更绚烂的视觉宇宙。两篇文章并置后存在张力，但原文没有直接互相评价。",
+        "status": "unknown",
+        "sourceRefs": [
+          "e-dash-hook",
+          "e-three-idea"
+        ]
+      },
+      {
+        "id": "c-main",
+        "text": "三篇文章给出三种视觉价值取向：大屏要服务判断，Three.js 可以追求视觉宇宙，首页改版用标准与验收把 AI 实现拉回可核对范围；它们可以并置，但不能被合并成一条设计原则。",
+        "status": "inferred",
+        "reason": "这是对三篇原文的跨文档综合，不是任何一篇单独声明的结论。",
+        "sourceRefs": [
+          "e-dash-hook",
+          "e-three-idea",
+          "e-flow-team"
+        ]
+      },
+      {
+        "id": "c-reconcile",
+        "text": "用‘标准先行 + 可观察验收’可以把视觉表现与可用性放在同一张验收表上。",
+        "status": "inferred",
+        "reason": "由 flow 的标准/验收主张与 dashboard 的判断目标推断；三篇文章没有共同声明这条和解路径。",
+        "sourceRefs": [
+          "e-flow-method",
+          "e-flow-team",
+          "e-dash-conclusion"
+        ]
+      }
+    ],
+    "metrics": [
+      {
+        "id": "m-pages",
+        "label": "静态页面",
+        "value": 68,
+        "unit": "个",
+        "sourceRefs": [
+          "e-flow-numbers"
+        ]
+      },
+      {
+        "id": "m-home",
+        "label": "首页体积",
+        "value": 10.1,
+        "unit": "kB",
+        "sourceRefs": [
+          "e-flow-numbers"
+        ]
+      },
+      {
+        "id": "m-first-load",
+        "label": "First Load JS",
+        "value": 114,
+        "unit": "kB",
+        "sourceRefs": [
+          "e-flow-numbers"
+        ]
+      },
+      {
+        "id": "m-fps",
+        "label": "帧率",
+        "value": 60,
+        "unit": "fps",
+        "sourceRefs": [
+          "e-flow-numbers"
+        ]
+      },
+      {
+        "id": "m-draw",
+        "label": "draw calls",
+        "value": 2,
+        "unit": "calls",
+        "sourceRefs": [
+          "e-flow-numbers"
+        ]
+      }
+    ],
+    "unknowns": [
+      {
+        "id": "u-reader",
+        "text": "三篇文章都没有真实访客或用户测试数据，无法判断哪种视觉策略更有效。",
+        "status": "unknown",
+        "lineStyle": "dashed",
+        "sourceRefs": [
+          "e-flow-limits"
+        ]
+      },
+      {
+        "id": "u-production",
+        "text": "Three.js 多 Pass 的线上性能未验证；首页改版也还没有发布到线上。",
+        "status": "unknown",
+        "lineStyle": "dashed",
+        "sourceRefs": [
+          "e-three-cost",
+          "e-flow-limits"
+        ]
+      },
+      {
+        "id": "u-scope",
+        "text": "两篇文章的受众不同；张力是否适用于同一产品场景未知。",
+        "status": "unknown",
+        "lineStyle": "dashed",
+        "sourceRefs": [
+          "e-dash-scene",
+          "e-three-multi"
+        ]
+      },
+      {
+        "id": "u-ai",
+        "text": "AI 并行实现的质量、回滚边界与团队协作规范没有团队数据。",
+        "status": "unknown",
+        "lineStyle": "dashed",
+        "sourceRefs": [
+          "e-flow-team"
+        ]
+      }
+    ],
+    "inferences": [
+      {
+        "id": "i-reconcile",
+        "text": "视觉表现可以作为‘理解’的服务层，用验收条件约束，而不是目标本身。",
+        "status": "inferred",
+        "reason": "三篇文章分别给出判断目标、视觉手段和验收方法；这条组合是推断。",
+        "sourceRefs": [
+          "e-dash-conclusion",
+          "e-three-multi",
+          "e-flow-team"
+        ]
+      },
+      {
+        "id": "i-context",
+        "text": "张力主要来自受众与场景差异，不是技术本身互斥。",
+        "status": "inferred",
+        "reason": "大屏面向远距/高压判断，Three.js 面向视觉实验；原文没有说两者不能共存。",
+        "sourceRefs": [
+          "e-dash-scene",
+          "e-three-multi"
+        ]
+      }
+    ],
+    "levels": []
+  },
+  "acceptance": [
+    {
+      "id": "q1",
+      "question": "三篇文章各自主张什么？",
+      "answer": "大屏要服务判断；Three.js 可以追求视觉宇宙；首页改版用标准与验收把 AI 实现拉回可核对范围。",
+      "answerRefs": [
+        "c-dashboard",
+        "c-three",
+        "c-flow"
+      ],
+      "visibleRefs": [
+        "lane-value",
+        "state-utility",
+        "state-impact",
+        "state-reconcile"
+      ]
+    },
+    {
+      "id": "q2",
+      "question": "哪条冲突不能被合并？",
+      "answer": "大屏要求克制、服务判断；Three.js 鼓励更绚烂的视觉宇宙。它们可以并置，但不能合并成一条设计原则；冲突是分析者并置后的张力。",
+      "answerRefs": [
+        "c-conflict",
+        "c-main"
+      ],
+      "visibleRefs": [
+        "state-utility",
+        "state-impact",
+        "note-scope"
+      ]
+    },
+    {
+      "id": "q3",
+      "question": "哪些结论只是推断或未知？",
+      "answer": "标准验收的和解路径是推断；真实读者反馈、线上性能、张力是否同场景都是未知。",
+      "answerRefs": [
+        "c-reconcile",
+        "u-reader",
+        "u-production",
+        "u-scope"
+      ],
+      "visibleRefs": [
+        "note-reader",
+        "note-production",
+        "note-scope",
+        "state-inferred"
+      ]
+    }
+  ],
+  "view": {
+    "grammar": "state",
+    "focus": "c-main",
+    "lanes": [
+      {
+        "id": "lane-value",
+        "title": "视觉价值",
+        "ref": "dimension-value",
+        "tone": "teal",
+        "states": [
+          {
+            "ref": "st-utility",
+            "label": "服务判断"
+          },
+          {
+            "ref": "st-impact",
+            "label": "视觉冲击"
+          },
+          {
+            "ref": "st-reconcile",
+            "label": "标准验收"
+          }
+        ]
+      },
+      {
+        "id": "lane-evidence",
+        "title": "证据强度",
+        "ref": "dimension-evidence",
+        "tone": "teal",
+        "states": [
+          {
+            "ref": "st-observed",
+            "label": "原文事实"
+          },
+          {
+            "ref": "st-inferred",
+            "label": "推断"
+          },
+          {
+            "ref": "st-unknown",
+            "label": "未知"
+          }
+        ]
+      },
+      {
+        "id": "lane-scope",
+        "title": "适用场景",
+        "ref": "dimension-scope",
+        "tone": "amber",
+        "states": [
+          {
+            "ref": "st-dashboard",
+            "label": "运维大屏"
+          },
+          {
+            "ref": "st-art",
+            "label": "图形实验"
+          },
+          {
+            "ref": "st-personal",
+            "label": "个人站点"
+          }
+        ]
+      },
+      {
+        "id": "lane-risk",
+        "title": "风险",
+        "ref": "dimension-risk",
+        "tone": "amber",
+        "states": [
+          {
+            "ref": "st-overdraw",
+            "label": "过度渲染"
+          },
+          {
+            "ref": "st-no-test",
+            "label": "无验证"
+          },
+          {
+            "ref": "st-scope-creep",
+            "label": "场景外推"
+          }
+        ]
+      }
+    ],
+    "loop": {
+      "id": "loop-claims",
+      "title": "从原文到主张",
+      "ref": "c-main",
+      "steps": [
+        {
+          "id": "loop-collect",
+          "ref": "step-collect",
+          "label": "收集原文"
+        },
+        {
+          "id": "loop-extract",
+          "ref": "step-extract",
+          "label": "抽取主张"
+        },
+        {
+          "id": "loop-cross",
+          "ref": "step-cross",
+          "label": "交叉核对"
+        },
+        {
+          "id": "loop-mark",
+          "ref": "step-mark",
+          "label": "标状态"
+        },
+        {
+          "id": "loop-cite",
+          "ref": "step-cite",
+          "label": "绑证据"
+        },
+        {
+          "id": "loop-review",
+          "ref": "step-review",
+          "label": "人工复核"
+        }
+      ],
+      "feedback": {
+        "ref": "r-feedback",
+        "from": "loop-review",
+        "to": "loop-extract",
+        "label": "缺口回补抽取"
+      }
+    },
+    "edge": {
+      "id": "edge-corpus",
+      "ref": "edge-scope",
+      "label": "三篇原文",
+      "tasks": [
+        "独立来源",
+        "原文行号",
+        "不合并冲突",
+        "快照 SHA"
+      ]
+    },
+    "notes": [
+      {
+        "id": "note-reader",
+        "ref": "u-reader",
+        "label": "未知：真实读者反馈"
+      },
+      {
+        "id": "note-production",
+        "ref": "u-production",
+        "label": "未知：线上性能"
+      },
+      {
+        "id": "note-scope",
+        "ref": "u-scope",
+        "label": "未知：张力是否同场景"
+      }
+    ],
+    "elements": [
+      {
+        "id": "lane-value",
+        "kind": "lane",
+        "ref": "dimension-value",
+        "status": "supported"
+      },
+      {
+        "id": "lane-evidence",
+        "kind": "lane",
+        "ref": "dimension-evidence",
+        "status": "supported"
+      },
+      {
+        "id": "lane-scope",
+        "kind": "lane",
+        "ref": "dimension-scope",
+        "status": "supported"
+      },
+      {
+        "id": "lane-risk",
+        "kind": "lane",
+        "ref": "dimension-risk",
+        "status": "supported"
+      },
+      {
+        "id": "state-utility",
+        "kind": "state",
+        "ref": "st-utility",
+        "status": "supported"
+      },
+      {
+        "id": "state-impact",
+        "kind": "state",
+        "ref": "st-impact",
+        "status": "supported"
+      },
+      {
+        "id": "state-reconcile",
+        "kind": "state",
+        "ref": "st-reconcile",
+        "status": "inferred",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "state-observed",
+        "kind": "state",
+        "ref": "st-observed",
+        "status": "supported"
+      },
+      {
+        "id": "state-inferred",
+        "kind": "state",
+        "ref": "st-inferred",
+        "status": "supported"
+      },
+      {
+        "id": "state-unknown",
+        "kind": "state",
+        "ref": "st-unknown",
+        "status": "supported"
+      },
+      {
+        "id": "state-dashboard",
+        "kind": "state",
+        "ref": "st-dashboard",
+        "status": "supported"
+      },
+      {
+        "id": "state-art",
+        "kind": "state",
+        "ref": "st-art",
+        "status": "supported"
+      },
+      {
+        "id": "state-personal",
+        "kind": "state",
+        "ref": "st-personal",
+        "status": "supported"
+      },
+      {
+        "id": "state-overdraw",
+        "kind": "state",
+        "ref": "st-overdraw",
+        "status": "inferred",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "state-no-test",
+        "kind": "state",
+        "ref": "st-no-test",
+        "status": "supported"
+      },
+      {
+        "id": "state-scope-creep",
+        "kind": "state",
+        "ref": "st-scope-creep",
+        "status": "inferred",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "loop-collect",
+        "kind": "node",
+        "ref": "step-collect",
+        "status": "supported"
+      },
+      {
+        "id": "loop-extract",
+        "kind": "node",
+        "ref": "step-extract",
+        "status": "supported"
+      },
+      {
+        "id": "loop-cross",
+        "kind": "node",
+        "ref": "step-cross",
+        "status": "supported"
+      },
+      {
+        "id": "loop-mark",
+        "kind": "node",
+        "ref": "step-mark",
+        "status": "supported"
+      },
+      {
+        "id": "loop-cite",
+        "kind": "node",
+        "ref": "step-cite",
+        "status": "supported"
+      },
+      {
+        "id": "loop-review",
+        "kind": "node",
+        "ref": "step-review",
+        "status": "supported"
+      },
+      {
+        "id": "edge-corpus",
+        "kind": "note",
+        "ref": "edge-scope",
+        "status": "supported"
+      },
+      {
+        "id": "note-reader",
+        "kind": "unknown",
+        "ref": "u-reader",
+        "status": "unknown",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "note-production",
+        "kind": "unknown",
+        "ref": "u-production",
+        "status": "unknown",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "note-scope",
+        "kind": "unknown",
+        "ref": "u-scope",
+        "status": "unknown",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "claim-main",
+        "kind": "claim",
+        "ref": "c-main",
+        "status": "inferred",
+        "lineStyle": "dashed"
+      }
+    ]
+  },
+  "copy": {
+    "title": "三种视觉价值\n不必合并成一条原则",
+    "subtitle": "大屏判断 · 视觉宇宙 · 标准验收",
+    "series": "研究主张 · 三篇原文",
+    "index": "D3 / 03",
+    "parameters": "state · 1200 × 675 · seed 20261124",
+    "mobileConclusion": "三种视觉价值可以并置，\n但不能合并成一条原则。"
+  }
+}

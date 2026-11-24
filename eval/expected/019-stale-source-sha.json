@@ -1,0 +1,19 @@
+{
+  "id": "019-stale-source-sha",
+  "category": "stale-source",
+  "base": "pr",
+  "expect": {
+    "rule": "sourceSha256",
+    "path": "source.sha256"
+  },
+  "repair": [
+    {
+      "op": "rehash-source"
+    }
+  ],
+  "source_mutation": {
+    "op": "append",
+    "value": "\n"
+  },
+  "max_calls": 2
+}

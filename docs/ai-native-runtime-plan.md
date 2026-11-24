@@ -14,12 +14,19 @@
 - `tools/mcp-server.mjs`：stdio JSON-RPC，暴露 `visual_validate / visual_compile / visual_query`。
 - 两份真实文章样本已通过 validate + compile + query；桌面/移动 artifact hash 与既有构建一致。
 - `scene.json` 增加 `viewElementId`，把逻辑元素 id 和绘制元素 id 分开，查询不再靠猜。
+- 多来源 `sources[]`：`visual_validate` 逐来源校验 sha256 / locator textHash；`visual_compile` 用多来源预校验报告，不要求把多文档拼成单文件。
+
+已完成：
+
+- PR 变更解释 demo：真实 commit `94c3a63`，9 证据、19 可见元素。
+- 事故状态投影 demo：本机真实中断日志 + demo runbook，14 证据、29 可见元素；删除恢复日志触发 `sourceSha256` + `supportedEvidence` 失败。
+- 研究主张图 demo：三篇独立原文、18 证据、27 可见元素；改来源结论后旧 claim 失效。
+- 30 个 eval fixture：30/30 通过；无来源 supported 4/4 捕获；stale 4/4 拒绝；确定性修复 28/28。
 
 尚未做：
 
-- 三个集成 demo 的真实数据与专用样例。
-- 30 个 eval fixture、Agent 自修复报告。
 - 独立 `visual_diff`（按计划放到三 demo 之后）。
+- 真实 LLM Agent 的自修复实测（当前是确定性 patch harness，不是模型）。
 - `next-blog` 页面集成（用户明确要求全部开发完成后再做）。
 
 ## 1. 三条产品线，不是三个孤立 demo
@@ -79,9 +86,9 @@
 - [x] `visual_query`
 - [x] stdio MCP server
 - [x] 两份样本跑通
-- [ ] 协议文档 / JSON Schema 审稿
-- [ ] 负向测试：非法 grammar、过期 hash、实线 unknown、无来源 supported、文字越界
-- [ ] 两轮 Agent 自修复演示
+- [x] 协议文档 / JSON Schema 审稿
+- [x] 负向测试：非法 grammar、过期 hash、实线 unknown、无来源 supported、文字越界
+- [x] 两轮修复演示（确定性 patch harness；真实 LLM 待补）
 
 **退出标准**：两份样本 validate 12/12；compile hash 与既有构建一致；MCP `initialize / tools/list / tools/call` 全通；至少 3 类故意错误能在诊断里定位到 `path/ref/rule`。
 
@@ -89,22 +96,22 @@
 
 按 A → B → C 的顺序，不并行堆三个半成品。
 
-- [ ] A1 找到真实 PR：跨 API / 队列 / DB / 部署配置，保存 diff、测试、文档来源。
-- [ ] A2 写 `demos/pr-change/` 的 v0.2 spec、source locator、acceptance。
-- [ ] A3 跑 validate / compile / query；记录 Agent 第一次修复路径。
-- [ ] B1 找到真实日志 + runbook；没有真实素材就暂停 B，不用假日志。
-- [ ] B2 写 `demos/incident-state/`；重点验证“删一条日志 → 关系降级”。
-- [ ] C1 用现有两篇文章 + 第三篇真实文章，写 `demos/research-claims/`。
-- [ ] C2 验证冲突主张不被合并；来源更新后旧 claim 失效。
+- [x] A1 找到真实 PR：commit `94c3a63`，只改 `siteMetadata.js` 与 `next.config.js`，保存 diff。
+- [x] A2 写 `demos/pr-change/` 的 v0.2 spec、source locator、acceptance。
+- [x] A3 跑 validate / compile / query；记录主路径、风险分支与证据。
+- [x] B1 找到真实日志 + runbook：本机复现服务中断，11 行日志 + 明确标注的 demo runbook；没有冒充生产。
+- [x] B2 写 `demos/incident-state/`；验证“删一条恢复日志 → 构建失败”。
+- [x] C1 用三篇真实文章，写 `demos/research-claims/`；多来源独立校验。
+- [x] C2 验证冲突主张不被合并；改来源结论后旧 claim 失效。
 
 **退出标准**：三个 demo 共用同一套 MCP 工具，零专用工具；每个 demo 有 SVG、scene、evidence index、semantic report；至少一个 demo 触发并修复一次真实 unknown。
 
 ### Phase 2：eval 与自修复（2 周）
 
-- [ ] 30 个 fixture：sequence / state / 失败分支 / unknown / 过期来源 / 布局冲突 / 非法 grammar / 无来源 supported。
-- [ ] `tools/eval/run-eval.mjs`：批量 validate + compile + query，输出通过率和失败分类。
-- [ ] Agent 自修复报告：每类错误最多两次工具调用，记录修复前后 spec diff。
-- [ ] 指标：自修复成功率 ≥80%；证据保真率 100%；过期来源拒绝率 100%。
+- [x] 30 个 fixture：sequence 5 / state 6 / 失败分支 4 / unknown 3 / 过期来源 4 / 布局 4 / 非法 grammar 2 / 无来源 supported 2。
+- [x] `eval/run-eval.mjs`：批量 validate + 基线 compile + 确定性修复，输出通过率、分类和修复率。
+- [x] 修复报告：每类错误最多两次工具调用；当前 harness 为确定性 patch，不是 LLM。
+- [x] 指标：fixture 30/30；无来源 supported 4/4；过期来源 4/4；确定性修复 28/28（100%）。
 
 **退出标准**：30/30 fixture 有预期结果；至少 24/30 能在两次调用内自修；失败能指出是补证据、改状态、改 grammar 还是改布局。
 

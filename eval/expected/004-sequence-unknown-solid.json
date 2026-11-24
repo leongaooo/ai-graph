@@ -1,0 +1,24 @@
+{
+  "id": "004-sequence-unknown-solid",
+  "category": "sequence",
+  "base": "pr",
+  "expect": {
+    "rule": "unknownNotSolid",
+    "path": "unknowns[0].lineStyle",
+    "ref": "u-cache"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "semantic",
+        "unknowns",
+        0,
+        "lineStyle"
+      ],
+      "value": "dashed"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

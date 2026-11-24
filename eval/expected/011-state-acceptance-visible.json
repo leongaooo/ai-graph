@@ -1,0 +1,23 @@
+{
+  "id": "011-state-acceptance-visible",
+  "category": "state",
+  "base": "incident",
+  "expect": {
+    "rule": "acceptanceVisibleRefs",
+    "path": "acceptance[0].visibleRefs"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "acceptance",
+        0,
+        "visibleRefs",
+        0
+      ],
+      "value": "lane-evidence"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

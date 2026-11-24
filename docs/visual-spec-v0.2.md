@@ -1,6 +1,6 @@
 # VisualSpec v0.2：给 AI Agent 的证据约束视觉投影协议
 
-> 状态：v0.1 运行时已落地（validate / compile / query + stdio MCP），协议 v0.2 作为 AI 调用面冻结。
+> 状态：v0.2 运行时已落地（validate / compile / query + stdio MCP + 多来源），三个 demo 与 30 eval 已跑通；协议 v0.2 作为 AI 调用面冻结。
 > 目标不是“让 AI 画图”，而是让 AI 在一个可校验、可查询、可复现的结构化场景上工作；SVG 只是给人看的投影。
 
 ## 1. 四区块
@@ -58,7 +58,8 @@
 ### sources
 
 - `uri`：来源地址。本地可以是绝对路径或 `file://`；远程可以是 URL；运行时只读取可读的本地文件，或由调用方传入 `sourceText`。
-- `sha256`：整篇来源的 SHA-256。来源变化后旧 artifact 必须失效。
+- `sources[]` 可以是多个独立文档；每个 source 有自己的 `sha256` 和 `locators`。`visual_validate` 逐来源校验，research demo 使用三篇独立原文，不把多文档拼成单文件。
+- `sha256`：该来源整篇文本的 SHA-256。任一来源变化后，引用它的 supported 项与旧 artifact 必须失效。
 - `locators[]`：证据定位。每个 locator 有 `lineStart`、`lineEnd`、`textHash`、`excerpt`。`textHash` 是行范围文本的 SHA-256，不是整篇哈希。
 
 ### semantic
@@ -111,7 +112,7 @@
 `tools/runtime/protocol.mjs` 会在读入时做一次归一化：
 
 - `source` → `sources[0]`
-- `evidence` → `sources[0].locators`
+- `evidence` → `sources[0].locators`；v0.2 多来源使用 `sources[].locators`，不再合并成单来源
 - `entities/relations/claims/metrics/unknowns/inferences/levels` → `semantic.*`
 - `question/mainConclusion/intent` → `intent.*`
 - `view/acceptance/copy` 原样保留
@@ -128,7 +129,7 @@
 | `*.mobile.svg` | 移动 390×860 投影；独立排版，不是桌面缩放 |
 | `*.scene.json` | SceneArtifact：每个可见元素的 `id`、`viewElementId`、`ref`、`kind`、`status`、`lineStyle`、`bbox` |
 | `*.semantic-report.json` | 12 条门禁的逐项结果与错误 |
-| `artifact hash` | `scene.svg.sha1`；同 spec、同 source hash、同 profile 必须一致 |
+| `artifact hash` | `scene.svg.sha1`；同 spec、同全部 source hash、同 profile 必须一致 |
 | `evidence index` | `visual_compile` 返回的元素 → 语义 ref → 来源定位索引 |
 
 `scene.json` 里的 `viewElementId` 是**逻辑元素 id**（例如 `edge-r-body-fail`），`id` 是**绘制元素 id**（例如 `arrow-r-body-fail`）。查询按两者都能命中；AI 不需要自己猜绘制 id。

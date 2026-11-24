@@ -1,0 +1,23 @@
+{
+  "id": "013-relation-to",
+  "category": "failure-branch",
+  "base": "incident",
+  "expect": {
+    "rule": "edgeEndpoints",
+    "path": "relations[0].to"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "semantic",
+        "relations",
+        0,
+        "to"
+      ],
+      "value": "st-down"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

@@ -1,0 +1,686 @@
+{
+  "protocol": "ai-graph/visual-spec@0.2",
+  "version": "0.2",
+  "id": "pr-change-umami-csp",
+  "seed": 20261122,
+  "intent": {
+    "text": "解释 next-blog 真实提交 94c3a63：把 Umami 脚本地址从 analytics.umami.is 改为 cloud.umami.is，并在 CSP 的 script-src 中同时保留两个域名。图要说明谁受影响、风险在哪、哪些点没有运行时证据。",
+    "question": "这次 PR 改了哪两层配置，最终影响哪个服务？如果只改脚本地址不改 CSP 会怎样？",
+    "audience": "代码 Agent、代码审查 Agent、站点维护者",
+    "constraints": [
+      "只使用真实 diff，不补写 PR 没说的运行时结果",
+      "每条主链边必须能回指 diff 行",
+      "没有运行时验证的点标为 unknown 或 inferred"
+    ],
+    "mainConclusion": {
+      "claimRef": "c-main",
+      "text": "这次变更的核心不是换一个域名，而是让脚本地址和 CSP 允许列表同时对齐：脚本改走 cloud.umami.is，CSP 仍保留旧域名以覆盖缓存引用。"
+    }
+  },
+  "sources": [
+    {
+      "id": "source-pr",
+      "uri": "sources/pr.diff",
+      "title": "next-blog commit 94c3a63：fix(analytics): umami 脚本改走 cloud 域名并放行 CSP",
+      "date": "2026-11-22",
+      "sha256": "b8811be3a3d09502597f2f9b66d440041fb4d7edabea77312bbc1474c8b9d544",
+      "locators": [
+        {
+          "id": "e-commit",
+          "lineStart": 1,
+          "lineEnd": 4,
+          "textHash": "716e54d5044a3d8f5689f9cd8153147a285b211b79d58daffffe98afccd53185",
+          "excerpt": "commit 94c3a63c8d1aa2da14d1cee70f06f9ca9abe39d1\nAuthor: Min888888 <616436112@qq.com>\nDate: 2026-11-22 17:12:15 +0800\nSubject: fix(analytics): umami 脚本改走 cloud 域名并放行 CSP"
+        },
+        {
+          "id": "e-files",
+          "lineStart": 7,
+          "lineEnd": 9,
+          "textHash": "646c30c1d5b13baffff2e6b66607fe66e23bbb9fa54c9ceb003a6e7c7264e7aa",
+          "excerpt": " data/siteMetadata.js | 6 +++---\n next.config.js       | 2 +-\n 2 files changed, 4 insertions(+), 4 deletions(-)"
+        },
+        {
+          "id": "e-umami-object",
+          "lineStart": 19,
+          "lineEnd": 21,
+          "textHash": "c0c54f600d35bc477cd193add1e3d6659e19ea0de522efa3543545ea0f01ac7a",
+          "excerpt": "     umamiAnalytics: {\n       // We use an env variable for this site to avoid other users cloning our analytics ID\n       umamiWebsiteId: process.env.NEXT_UMAMI_ID, // e.g. 123e4567-e89b-12d3-a456-426614174000"
+        },
+        {
+          "id": "e-umami-src",
+          "lineStart": 25,
+          "lineEnd": 27,
+          "textHash": "a67684894dc154e455e3ea925081086b98cfa3c6cf793ba1900de61f60294fa0",
+          "excerpt": "+      // analytics.umami.is 会 301 跳到 cloud.umami.is，直接写最终地址少一次跳转，\n+      // 两个域名都要留在 CSP 的 script-src 里（老地址仍可能被缓存引用）。\n+      src: 'https://cloud.umami.is/script.js',"
+        },
+        {
+          "id": "e-cache-note",
+          "lineStart": 26,
+          "lineEnd": 26,
+          "textHash": "2aa26e663dced475d95ddcd2807948940fbaae46a67c83e51b7a129d6a91aa09",
+          "excerpt": "+      // 两个域名都要留在 CSP 的 script-src 里（老地址仍可能被缓存引用）。"
+        },
+        {
+          "id": "e-csp-context",
+          "lineStart": 42,
+          "lineEnd": 44,
+          "textHash": "d3f8517557dbca6e073be24b1e70db9f2947a0fe935b26eb28a9ff1378535137",
+          "excerpt": " // You might need to insert additional domains in script-src if you are using external services\n const ContentSecurityPolicy = `\n   default-src 'self';"
+        },
+        {
+          "id": "e-csp-old",
+          "lineStart": 45,
+          "lineEnd": 45,
+          "textHash": "43e4cb2fe4f2abe09606e21f247847521a223422d0efa03d2d0fc5b279bacb0d",
+          "excerpt": "-  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is;"
+        },
+        {
+          "id": "e-csp-new",
+          "lineStart": 46,
+          "lineEnd": 46,
+          "textHash": "2f100fc91b6fcd05ddeca1f4ff5ee905dce48ba120841b0469a44d171d6362aa",
+          "excerpt": "+  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is cloud.umami.is;"
+        },
+        {
+          "id": "e-config-context",
+          "lineStart": 38,
+          "lineEnd": 40,
+          "textHash": "1797be12ba5f4cc45cf11a23da8bff637e2ef4807e62ab48333e17c868f564b7",
+          "excerpt": "@@ -5,13 +5,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({\n   enabled: process.env.ANALYZE === 'true',\n })"
+        }
+      ]
+    }
+  ],
+  "semantic": {
+    "entities": [
+      {
+        "id": "pr-diff",
+        "label": "PR 94c3a63",
+        "kind": "artifact",
+        "status": "supported",
+        "sourceRefs": [
+          "e-commit",
+          "e-files"
+        ],
+        "role": "两个文件 +4/−4"
+      },
+      {
+        "id": "site-metadata",
+        "label": "siteMetadata",
+        "kind": "config",
+        "status": "supported",
+        "sourceRefs": [
+          "e-umami-object",
+          "e-umami-src"
+        ],
+        "role": "Umami src 配置面"
+      },
+      {
+        "id": "next-config",
+        "label": "next.config CSP",
+        "kind": "config",
+        "status": "supported",
+        "sourceRefs": [
+          "e-config-context",
+          "e-csp-context"
+        ],
+        "role": "CSP 配置面"
+      },
+      {
+        "id": "csp-script-src",
+        "label": "CSP script-src",
+        "kind": "control",
+        "status": "supported",
+        "sourceRefs": [
+          "e-csp-old",
+          "e-csp-new"
+        ],
+        "role": "允许 cloud 与旧域名"
+      },
+      {
+        "id": "cloud-umami",
+        "label": "cloud.umami",
+        "kind": "service",
+        "status": "supported",
+        "sourceRefs": [
+          "e-umami-src",
+          "e-csp-new"
+        ],
+        "role": "脚本最终地址"
+      },
+      {
+        "id": "legacy-umami",
+        "label": "analytics.umami",
+        "kind": "boundary",
+        "status": "supported",
+        "sourceRefs": [
+          "e-umami-src",
+          "e-cache-note"
+        ],
+        "role": "301 到 cloud，仍保留"
+      },
+      {
+        "id": "browser",
+        "label": "访客浏览器",
+        "kind": "actor",
+        "status": "inferred",
+        "reason": "PR 只展示配置；浏览器加载脚本是 CSP 的运行时结果，PR 没有附抓包或响应头证据。",
+        "sourceRefs": [
+          "e-csp-new"
+        ],
+        "role": "加载脚本的运行时"
+      },
+      {
+        "id": "blocked-script",
+        "label": "CSP 缺失拦截",
+        "kind": "failure",
+        "status": "inferred",
+        "reason": "script-src 是浏览器允许列表；未列出 cloud.umami.is 时标准行为是拦截，但 PR 没有附拦截实测。",
+        "sourceRefs": [
+          "e-csp-new"
+        ],
+        "role": "CSP 漏掉 cloud 时"
+      },
+      {
+        "id": "cached-client",
+        "label": "旧缓存客户端",
+        "kind": "failure",
+        "status": "unknown",
+        "sourceRefs": [
+          "e-cache-note"
+        ],
+        "role": "缓存引用比例未知",
+        "lineStyle": "solid"
+      },
+      {
+        "id": "umami-events",
+        "label": "Umami 事件",
+        "kind": "result",
+        "status": "inferred",
+        "reason": "脚本地址指向 Umami 服务，事件采集是产品用途；PR 没有附采集验证。",
+        "sourceRefs": [
+          "e-umami-object",
+          "e-umami-src"
+        ],
+        "role": "采集结果未验证"
+      }
+    ],
+    "relations": [
+      {
+        "id": "r-diff-metadata",
+        "from": "pr-diff",
+        "to": "site-metadata",
+        "type": "修改",
+        "status": "supported",
+        "sourceRefs": [
+          "e-umami-src"
+        ],
+        "label": "修改"
+      },
+      {
+        "id": "r-diff-csp",
+        "from": "pr-diff",
+        "to": "next-config",
+        "type": "修改",
+        "status": "supported",
+        "sourceRefs": [
+          "e-csp-new"
+        ],
+        "label": "修改"
+      },
+      {
+        "id": "r-same-pr",
+        "from": "site-metadata",
+        "to": "next-config",
+        "type": "同一 PR 的两个配置面",
+        "status": "supported",
+        "sourceRefs": [
+          "e-commit",
+          "e-files"
+        ],
+        "label": "同一 PR"
+      },
+      {
+        "id": "r-csp-script",
+        "from": "next-config",
+        "to": "csp-script-src",
+        "type": "下发允许列表",
+        "status": "supported",
+        "sourceRefs": [
+          "e-csp-context",
+          "e-csp-new"
+        ],
+        "label": "下发"
+      },
+      {
+        "id": "r-allow-cloud",
+        "from": "csp-script-src",
+        "to": "cloud-umami",
+        "type": "允许加载",
+        "status": "supported",
+        "sourceRefs": [
+          "e-csp-new"
+        ],
+        "label": "允许"
+      },
+      {
+        "id": "r-umami-src",
+        "from": "site-metadata",
+        "to": "cloud-umami",
+        "type": "设置 src",
+        "status": "supported",
+        "sourceRefs": [
+          "e-umami-src"
+        ],
+        "label": "设置"
+      },
+      {
+        "id": "r-legacy-redirect",
+        "from": "legacy-umami",
+        "to": "cloud-umami",
+        "type": "301 跳转",
+        "status": "supported",
+        "sourceRefs": [
+          "e-umami-src"
+        ],
+        "label": "301"
+      },
+      {
+        "id": "r-browser-load",
+        "from": "browser",
+        "to": "cloud-umami",
+        "type": "加载脚本",
+        "status": "inferred",
+        "reason": "CSP 允许且页面引用该地址时浏览器加载脚本；PR 没有附运行时抓包。",
+        "sourceRefs": [
+          "e-csp-new",
+          "e-umami-src"
+        ],
+        "label": "加载"
+      },
+      {
+        "id": "r-events",
+        "from": "cloud-umami",
+        "to": "umami-events",
+        "type": "采集事件",
+        "status": "inferred",
+        "reason": "脚本地址指向 Umami 服务；PR 没有附事件上报验证。",
+        "sourceRefs": [
+          "e-umami-object",
+          "e-umami-src"
+        ],
+        "label": "采集"
+      },
+      {
+        "id": "r-block",
+        "from": "csp-script-src",
+        "to": "blocked-script",
+        "type": "缺失时拦截",
+        "status": "inferred",
+        "reason": "CSP 的 script-src 是浏览器允许列表；PR 没有附拦截实测。",
+        "sourceRefs": [
+          "e-csp-new"
+        ],
+        "label": "缺失"
+      },
+      {
+        "id": "r-cache",
+        "from": "cached-client",
+        "to": "legacy-umami",
+        "type": "仍引用旧地址",
+        "status": "unknown",
+        "lineStyle": "dashed",
+        "sourceRefs": [
+          "e-cache-note"
+        ],
+        "label": "旧缓存"
+      }
+    ],
+    "claims": [
+      {
+        "id": "c-main",
+        "text": "这次变更的核心不是换一个域名，而是让脚本地址和 CSP 允许列表同时对齐：脚本改走 cloud.umami.is，CSP 仍保留旧域名以覆盖缓存引用。",
+        "status": "supported",
+        "sourceRefs": [
+          "e-umami-src",
+          "e-csp-new"
+        ]
+      },
+      {
+        "id": "c-csp",
+        "text": "script-src 同时保留 analytics.umami.is 与 cloud.umami.is，旧地址仍可被缓存引用时加载。",
+        "status": "supported",
+        "sourceRefs": [
+          "e-csp-new",
+          "e-cache-note"
+        ]
+      },
+      {
+        "id": "c-redirect",
+        "text": "analytics.umami.is 会 301 跳到 cloud.umami.is。",
+        "status": "supported",
+        "sourceRefs": [
+          "e-umami-src"
+        ]
+      },
+      {
+        "id": "c-scope",
+        "text": "本次只改两个配置文件，没有改页面组件或 API 路由。",
+        "status": "supported",
+        "sourceRefs": [
+          "e-files"
+        ]
+      },
+      {
+        "id": "c-browser-block",
+        "text": "如果只改脚本地址、不把 cloud.umami.is 加进 script-src，新脚本会被浏览器拦截。",
+        "status": "inferred",
+        "reason": "CSP script-src 是浏览器允许列表；PR 没有附拦截实测。",
+        "sourceRefs": [
+          "e-csp-new"
+        ]
+      },
+      {
+        "id": "c-no-test",
+        "text": "PR 没有附 CSP 响应头或脚本加载的自动化测试。",
+        "status": "unknown",
+        "sourceRefs": [
+          "e-files"
+        ]
+      }
+    ],
+    "metrics": [
+      {
+        "id": "m-files",
+        "label": "变更文件",
+        "value": 2,
+        "unit": "个",
+        "sourceRefs": [
+          "e-files"
+        ]
+      },
+      {
+        "id": "m-changes",
+        "label": "增删行",
+        "value": 4,
+        "unit": "行",
+        "sourceRefs": [
+          "e-files"
+        ]
+      }
+    ],
+    "unknowns": [
+      {
+        "id": "u-cache",
+        "text": "老地址被缓存引用的比例和缓存时长没有数据。",
+        "status": "unknown",
+        "lineStyle": "dashed",
+        "sourceRefs": [
+          "e-cache-note"
+        ]
+      },
+      {
+        "id": "u-runtime",
+        "text": "没有运行时证据证明 CSP 响应头已下发、cloud 脚本已加载。",
+        "status": "unknown",
+        "lineStyle": "dashed",
+        "sourceRefs": [
+          "e-csp-new",
+          "e-umami-src"
+        ]
+      },
+      {
+        "id": "u-umami-id",
+        "text": "NEXT_UMAMI_ID 的实际配置和采集结果未在 PR 中给出。",
+        "status": "unknown",
+        "lineStyle": "dashed",
+        "sourceRefs": [
+          "e-umami-object"
+        ]
+      }
+    ],
+    "inferences": [
+      {
+        "id": "i-impact",
+        "text": "这次配置变更的直接影响面是脚本加载与 CSP 允许列表，而不是页面组件或 API。",
+        "status": "inferred",
+        "reason": "diff 只改 data/siteMetadata.js 与 next.config.js；运行时影响需从配置语义推断。",
+        "sourceRefs": [
+          "e-files",
+          "e-csp-new"
+        ]
+      },
+      {
+        "id": "i-risk",
+        "text": "如果 CSP 没有 cloud.umami.is，最大风险是新脚本被拦截，而不是 301 多一跳。",
+        "status": "inferred",
+        "reason": "CSP script-src 是允许列表；PR 没有附拦截实测。",
+        "sourceRefs": [
+          "e-csp-new"
+        ]
+      }
+    ],
+    "levels": [
+      {
+        "id": "level-change",
+        "label": "变更面",
+        "members": [
+          "pr-diff",
+          "site-metadata",
+          "next-config",
+          "csp-script-src"
+        ]
+      },
+      {
+        "id": "level-runtime",
+        "label": "运行时",
+        "members": [
+          "cloud-umami",
+          "legacy-umami",
+          "browser",
+          "umami-events"
+        ]
+      },
+      {
+        "id": "level-risk",
+        "label": "风险与未知",
+        "members": [
+          "blocked-script",
+          "cached-client"
+        ]
+      }
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "q1",
+      "question": "这次 PR 改了哪两层配置，最终影响哪个服务？",
+      "answer": "PR 改 siteMetadata 的 Umami src 与 next.config.js 的 CSP script-src，最终影响 cloud.umami.is 脚本加载。",
+      "answerRefs": [
+        "r-diff-metadata",
+        "r-same-pr",
+        "r-csp-script",
+        "r-allow-cloud"
+      ],
+      "visibleRefs": [
+        "node-pr-diff",
+        "node-site-metadata",
+        "node-next-config",
+        "node-csp-script-src",
+        "node-cloud-umami"
+      ]
+    },
+    {
+      "id": "q2",
+      "question": "如果只改脚本地址、不改 CSP 会怎样？",
+      "answer": "cloud.umami.is 不在 script-src 中，浏览器会拦截新脚本。",
+      "answerRefs": [
+        "r-block",
+        "c-browser-block"
+      ],
+      "visibleRefs": [
+        "edge-r-block",
+        "node-blocked-script"
+      ]
+    },
+    {
+      "id": "q3",
+      "question": "哪些点还没有运行时证据？",
+      "answer": "CSP 响应头是否实际下发、cloud 脚本是否加载、旧缓存引用比例都没有证据。",
+      "answerRefs": [
+        "u-runtime",
+        "u-cache",
+        "u-umami-id"
+      ],
+      "visibleRefs": [
+        "note-u-runtime",
+        "note-u-cache",
+        "note-u-umami-id"
+      ]
+    }
+  ],
+  "view": {
+    "grammar": "sequence",
+    "focus": "c-main",
+    "order": [
+      "pr-diff",
+      "site-metadata",
+      "next-config",
+      "csp-script-src",
+      "cloud-umami"
+    ],
+    "elements": [
+      {
+        "id": "node-pr-diff",
+        "kind": "node",
+        "ref": "pr-diff",
+        "status": "supported"
+      },
+      {
+        "id": "node-site-metadata",
+        "kind": "node",
+        "ref": "site-metadata",
+        "status": "supported"
+      },
+      {
+        "id": "node-next-config",
+        "kind": "node",
+        "ref": "next-config",
+        "status": "supported"
+      },
+      {
+        "id": "node-csp-script-src",
+        "kind": "node",
+        "ref": "csp-script-src",
+        "status": "supported"
+      },
+      {
+        "id": "node-cloud-umami",
+        "kind": "node",
+        "ref": "cloud-umami",
+        "status": "supported"
+      },
+      {
+        "id": "node-legacy-umami",
+        "kind": "node",
+        "ref": "legacy-umami",
+        "status": "supported"
+      },
+      {
+        "id": "node-blocked-script",
+        "kind": "node",
+        "ref": "blocked-script",
+        "status": "inferred",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "node-cached-client",
+        "kind": "node",
+        "ref": "cached-client",
+        "status": "unknown",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "edge-r-diff-metadata",
+        "kind": "edge",
+        "ref": "r-diff-metadata",
+        "status": "supported",
+        "lineStyle": "solid"
+      },
+      {
+        "id": "edge-r-same-pr",
+        "kind": "edge",
+        "ref": "r-same-pr",
+        "status": "supported",
+        "lineStyle": "solid"
+      },
+      {
+        "id": "edge-r-csp-script",
+        "kind": "edge",
+        "ref": "r-csp-script",
+        "status": "supported",
+        "lineStyle": "solid"
+      },
+      {
+        "id": "edge-r-allow-cloud",
+        "kind": "edge",
+        "ref": "r-allow-cloud",
+        "status": "supported",
+        "lineStyle": "solid"
+      },
+      {
+        "id": "edge-r-block",
+        "kind": "edge",
+        "ref": "r-block",
+        "status": "inferred",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "note-u-runtime",
+        "kind": "unknown",
+        "ref": "u-runtime",
+        "status": "unknown",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "note-u-cache",
+        "kind": "unknown",
+        "ref": "u-cache",
+        "status": "unknown",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "note-u-umami-id",
+        "kind": "unknown",
+        "ref": "u-umami-id",
+        "status": "unknown",
+        "lineStyle": "dashed"
+      },
+      {
+        "id": "claim-c-main",
+        "kind": "claim",
+        "ref": "c-main",
+        "status": "supported"
+      },
+      {
+        "id": "metric-m-files",
+        "kind": "metric",
+        "ref": "m-files",
+        "status": "supported"
+      },
+      {
+        "id": "metric-m-changes",
+        "kind": "metric",
+        "ref": "m-changes",
+        "status": "supported"
+      }
+    ]
+  },
+  "copy": {
+    "title": "Umami 域名与 CSP\n一次配置面变更",
+    "subtitle": "脚本地址 · 允许列表 · 缓存引用 · 未知",
+    "series": "真实 PR · 94c3a63",
+    "index": "D1 / 01",
+    "parameters": "sequence · 1200 × 675 · seed 20261122"
+  }
+}

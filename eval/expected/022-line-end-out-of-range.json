@@ -1,0 +1,25 @@
+{
+  "id": "022-line-end-out-of-range",
+  "category": "stale-source",
+  "base": "pr",
+  "expect": {
+    "rule": "supportedEvidence",
+    "path": "evidence.e-commit",
+    "ref": "e-commit"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "sources",
+        0,
+        "locators",
+        0,
+        "lineEnd"
+      ],
+      "value": 4
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

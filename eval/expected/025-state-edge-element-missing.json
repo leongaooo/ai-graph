@@ -1,0 +1,27 @@
+{
+  "id": "025-state-edge-element-missing",
+  "category": "layout",
+  "base": "incident",
+  "expect": {
+    "rule": "stateLayoutRefs",
+    "path": "view.edge.id",
+    "ref": "edge-local"
+  },
+  "repair": [
+    {
+      "op": "append",
+      "path": [
+        "view",
+        "elements"
+      ],
+      "value": {
+        "id": "edge-local",
+        "kind": "note",
+        "ref": "edge-scope",
+        "status": "supported"
+      }
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

@@ -1,0 +1,11 @@
+2026-11-24T13:45:47.246Z service_start pid=52601 port=3199
+2026-11-24T13:45:47.254Z health_probe status=200
+2026-11-24T13:45:48.455Z action=sigterm reason=simulate_process_exit
+2026-11-24T13:45:48.467Z service_exit code=0 signal=null
+2026-11-24T13:45:48.469Z health_probe status=ECONNREFUSED
+2026-11-24T13:45:48.469Z action=restart reason=restore_service
+2026-11-24T13:45:48.560Z service_start pid=52604 port=3199
+2026-11-24T13:45:48.564Z health_probe status=200
+2026-11-24T13:45:48.564Z state=recovered note=one_probe_only
+2026-11-24T13:45:48.865Z action=teardown reason=capture_complete
+2026-11-24T13:45:48.871Z service_exit code=0 signal=null

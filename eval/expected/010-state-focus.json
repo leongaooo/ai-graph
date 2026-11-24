@@ -1,0 +1,21 @@
+{
+  "id": "010-state-focus",
+  "category": "state",
+  "base": "incident",
+  "expect": {
+    "rule": "focusClaim",
+    "path": "view.focus"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "view",
+        "focus"
+      ],
+      "value": "c-main"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

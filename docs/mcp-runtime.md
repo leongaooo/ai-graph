@@ -37,16 +37,20 @@ node tools/mcp-server.mjs
 ```json
 {
   "spec": { "protocol": "ai-graph/visual-spec@0.2", "version": "0.2", "id": "…", "sources": [], "semantic": {}, "view": {} },
-  "sourceText": "整篇来源文本",
+  "sourceText": "单来源整篇文本",
+  "sourceTexts": ["来源 1 文本", "来源 2 文本", "来源 3 文本"],
   "baseDir": "/Users/gaolimin/GitHub/ai-graph"
 }
 ```
+
+多来源 spec 直接用 `specPath` 时，runtime 会按 `sources[].uri` 逐个读取并逐来源校验；也可以传 `sourceTexts` 数组覆盖文件读取。
 
 输出重点：
 
 - `ok`
 - `specId`
-- `source.expectedSha256 / actualSha256 / status`
+- `source.expectedSha256 / actualSha256 / status`（单来源）
+- `sources[]`：多来源时每个 source 的 uri / expectedSha256 / actualSha256 / lines
 - `checks`：12 条门禁逐项布尔值
 - `diagnostics[]`：`rule / path / ref / expected / actual / repairHint`
 - `normalizedSpec`：归一化后的 v0.2 envelope
@@ -70,6 +74,7 @@ node tools/mcp-server.mjs
 - `specId`
 - `grammar`
 - `artifacts.desktop / artifacts.mobile`：`svg`、`scene`、`report`、`hash`、`elementCount`、`textOverflow`
+- `sources[]`：多来源编译时保留全部来源元信息
 - `evidenceIndex`：每个可见元素到语义 ref、来源 locator 的索引
 - `semanticReport`
 - 失败时 `diagnostics[]`，不会产生“半成品成功结果”

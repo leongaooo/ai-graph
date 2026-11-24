@@ -3,7 +3,8 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { build } from '../build-explainer.mjs';
 import { enrichScene } from './artifacts.mjs';
-import { normalizeSpec, sha256, sourceOf } from './protocol.mjs';
+import { validateSpec } from './validate.mjs';
+import { normalizeSpec, sha256, sourceOf, sourcesOf } from './protocol.mjs';
 
 function loadSpec(input) {
   if (input?.spec && typeof input.spec === 'object') {
@@ -81,9 +82,27 @@ export function compileSpec(input = {}) {
     return { ok: false, protocolVersion: '0.2', errors: normalized.errors, diagnostics: normalized.errors, warnings };
   }
 
+  const sources = sourcesOf(normalized.envelope);
   const source = sourceOf(normalized.envelope);
   const legacy = normalized.legacy;
+  const multiSourceValidation = sources.length > 1
+    ? validateSpec({ spec: loaded.raw, baseDir: loaded.baseDir, sourceTexts: input.sourceTexts })
+    : null;
+  if (multiSourceValidation && !multiSourceValidation.ok) {
+    return {
+      ok: false,
+      protocolVersion: '0.2',
+      specId: normalized.envelope.id,
+      errors: multiSourceValidation.errors,
+      diagnostics: multiSourceValidation.diagnostics,
+      warnings: [...warnings, ...(multiSourceValidation.warnings ?? [])]
+    };
+  }
+
   let sourceText = typeof input.sourceText === 'string' ? input.sourceText : null;
+  if (sourceText === null && Array.isArray(input.sourceTexts) && typeof input.sourceTexts[0] === 'string') {
+    sourceText = input.sourceTexts[0];
+  }
   if (sourceText === null) {
     try {
       sourceText = readFileSync(resolve(source.uri), 'utf8');
@@ -112,7 +131,17 @@ export function compileSpec(input = {}) {
 
   let buildResult;
   try {
-    buildResult = build(tempSpecPath, outDir);
+    const semanticReport = multiSourceValidation
+      ? {
+          ok: true,
+          spec: tempSpecPath,
+          source: { sources: multiSourceValidation.sources ?? [] },
+          checks: multiSourceValidation.checks,
+          errors: [],
+          summary: multiSourceValidation.summary
+        }
+      : undefined;
+    buildResult = build(tempSpecPath, outDir, { semanticReport });
     rmSync(tempDir, { recursive: true, force: true });
   } catch (error) {
     rmSync(tempDir, { recursive: true, force: true });
@@ -182,6 +211,7 @@ export function compileSpec(input = {}) {
       actualSha256: sha256(sourceText),
       status: 'valid'
     },
+    sources: multiSourceValidation?.sources ?? [{ uri: source.uri, expectedSha256: legacy.source.sha256, actualSha256: sha256(sourceText) }],
     outDir,
     artifacts,
     hashes: {

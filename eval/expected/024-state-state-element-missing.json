@@ -1,0 +1,27 @@
+{
+  "id": "024-state-state-element-missing",
+  "category": "layout",
+  "base": "incident",
+  "expect": {
+    "rule": "stateLayoutRefs",
+    "path": "view.lanes[0].states[1].ref",
+    "ref": "state-down"
+  },
+  "repair": [
+    {
+      "op": "append",
+      "path": [
+        "view",
+        "elements"
+      ],
+      "value": {
+        "id": "state-down",
+        "kind": "state",
+        "ref": "st-down",
+        "status": "supported"
+      }
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

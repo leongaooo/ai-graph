@@ -1,0 +1,21 @@
+{
+  "id": "028-grammar-missing",
+  "category": "grammar",
+  "base": "incident",
+  "expect": {
+    "rule": "grammarSupported",
+    "path": "view.grammar"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "view",
+        "grammar"
+      ],
+      "value": "state"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

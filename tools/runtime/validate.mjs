@@ -1,8 +1,8 @@
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
-import { lintVisualSpec } from '../visual-spec-lint.mjs';
-import { normalizeSpec, sha256, sourceOf } from './protocol.mjs';
+import { lintVisualSpec, lintVisualSpecObject } from '../visual-spec-lint.mjs';
+import { normalizeSpec, sha256, sourceOf, sourcesOf } from './protocol.mjs';
 
 const repairHints = {
   protocol: '检查 id、sources、semantic、view 四区块的必填字段。',
@@ -25,6 +25,10 @@ function parsePathIndex(path, collection) {
   return match ? Number(match[1]) : null;
 }
 
+function stateElementId(ref) {
+  return `state-${String(ref ?? '').replace(/^st-/, '')}`;
+}
+
 function refForPath(path, legacy) {
   if (!path) return undefined;
   if (path.startsWith('evidence.')) return path.slice('evidence.'.length);
@@ -34,6 +38,19 @@ function refForPath(path, legacy) {
     const items = collection === 'view.elements' ? legacy.view?.elements : legacy[collection];
     return items?.[index]?.id;
   }
+  const laneMatch = /^view\.lanes\[(\d+)\](?:\.states\[(\d+)\])?/u.exec(path);
+  if (laneMatch) {
+    const lane = legacy.view?.lanes?.[Number(laneMatch[1])];
+    if (laneMatch[2] !== undefined) return stateElementId(lane?.states?.[Number(laneMatch[2])]?.ref);
+    return lane?.id;
+  }
+  const stepMatch = /^view\.loop\.steps\[(\d+)\]/u.exec(path);
+  if (stepMatch) return legacy.view?.loop?.steps?.[Number(stepMatch[1])]?.id;
+  if (path.startsWith('view.loop.feedback')) return legacy.view?.loop?.id;
+  if (path.startsWith('view.edge')) return legacy.view?.edge?.id;
+  const noteMatch = /^view\.notes\[(\d+)\]/u.exec(path);
+  if (noteMatch) return legacy.view?.notes?.[Number(noteMatch[1])]?.id;
+  if (path === 'view.focus') return legacy.view?.focus;
   return undefined;
 }
 
@@ -104,8 +121,62 @@ export function validateSpec(input = {}) {
     };
   }
 
+  const sources = sourcesOf(normalized.envelope);
   const source = sourceOf(normalized.envelope);
   const legacy = normalized.legacy;
+
+  if (sources.length > 1) {
+    const sourceTexts = Array.isArray(input.sourceTexts) ? input.sourceTexts : [];
+    const prepared = [];
+    const sourceLinesByEvidence = new Map();
+    for (const [index, item] of sources.entries()) {
+      let text = typeof sourceTexts[index] === 'string' ? sourceTexts[index] : null;
+      if (text === null) {
+        try {
+          text = readFileSync(resolve(item.uri), 'utf8');
+        } catch (error) {
+          return {
+            ok: false,
+            protocolVersion: '0.2',
+            specId: normalized.envelope.id,
+            source: { uri: item.uri, status: 'unreadable' },
+            errors: [{ rule: 'sourceSha256', path: `sources[${index}].uri`, message: `无法读取来源：${error.message}` }],
+            diagnostics: [{
+              severity: 'error',
+              rule: 'sourceSha256',
+              path: `sources[${index}].uri`,
+              ref: item.id,
+              message: `无法读取来源：${error.message}`,
+              expected: '提供 sourceTexts，或把 source.uri 指向可读文件',
+              actual: error.message,
+              repairHint: '提供 sourceTexts，或把 source.uri 指向可读文件'
+            }],
+            warnings
+          };
+        }
+      }
+      const lines = text.split(/\r?\n/u);
+      const actual = sha256(text);
+      if (!item.sha256) warnings.push({ code: 'source-sha256-filled', message: `sources[${index}] 未提供 sha256，已按文件计算；请写回 spec 以固定来源。` });
+      for (const locator of item.locators ?? []) sourceLinesByEvidence.set(locator.id, lines);
+      prepared.push({ uri: item.uri, title: item.title, expectedSha256: item.sha256 || actual, text });
+    }
+    const report = lintVisualSpecObject(legacy, { sources: prepared, sourceLinesByEvidence });
+    const diagnostics = report.errors.map(error => diagnosticOf(error, legacy));
+    return {
+      ok: report.ok,
+      protocolVersion: '0.2',
+      specId: normalized.envelope.id,
+      sources: report.source?.sources ?? [],
+      checks: report.checks,
+      summary: report.summary,
+      errors: report.errors,
+      diagnostics,
+      warnings,
+      normalizedSpec: normalized.envelope
+    };
+  }
+
   let sourceText = typeof input.sourceText === 'string' ? input.sourceText : null;
   if (sourceText === null) {
     try {

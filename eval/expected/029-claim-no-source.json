@@ -1,0 +1,27 @@
+{
+  "id": "029-claim-no-source",
+  "category": "no-source",
+  "base": "pr",
+  "expect": {
+    "rule": "supportedEvidence",
+    "path": "claims[0]",
+    "ref": "c-main"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "semantic",
+        "claims",
+        0,
+        "sourceRefs"
+      ],
+      "value": [
+        "e-umami-src",
+        "e-csp-new"
+      ]
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

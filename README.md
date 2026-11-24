@@ -23,10 +23,19 @@
 
 ```bash
 cd /Users/gaolimin/GitHub/ai-graph
-npm run runtime:test
-npm run runtime:validate -- art/agent-delivery-gate.visual.json
-npm run runtime:compile -- art/automation-equipment-state.visual.json /tmp/ai-graph-out both
+npm run runtime:test        # 15/15，含多来源 validate/compile
+npm run eval:run            # 30/30 fixture；28/28 两次调用内修复
 npm run mcp:start
+
+# 三个真实 demo
+node tools/runtime/cli.mjs validate demos/pr-change/spec.json
+node tools/runtime/cli.mjs compile demos/pr-change/spec.json out/demos/pr-change both
+
+node tools/runtime/cli.mjs validate demos/incident-state/spec.json
+node demos/incident-state/verify-downgrade.mjs
+
+node tools/runtime/cli.mjs validate demos/research-claims/spec.json
+node demos/research-claims/verify-stale.mjs
 ```
 
 文档：
@@ -34,6 +43,8 @@ npm run mcp:start
 - 协议：[`docs/visual-spec-v0.2.md`](docs/visual-spec-v0.2.md)
 - MCP：[`docs/mcp-runtime.md`](docs/mcp-runtime.md)
 - 整体计划：[`docs/ai-native-runtime-plan.md`](docs/ai-native-runtime-plan.md)
+- 三个 demo：[`demos/README.md`](demos/README.md)
+- 30 eval：[`eval/README.md`](eval/README.md)
 - JSON Schema：[`schema/visual-spec.v0.2.schema.json`](schema/visual-spec.v0.2.schema.json)
 
 ### 当前状态（2026-11-24）
@@ -41,9 +52,12 @@ npm run mcp:start
 - [x] v0.2 四区块协议与 v0.1 归一化
 - [x] `visual_validate` / `visual_compile` / `visual_query`
 - [x] stdio MCP server
+- [x] 多来源 `sources[]`：逐来源 sha256 / locator textHash；compile 使用多来源预校验报告
 - [x] 两份真实文章样本 validate 12/12；compile hash 与既有构建一致
-- [ ] 三个真实 demo：PR 变更解释 / 事故状态投影 / 研究主张图
-- [ ] 30 个 eval fixture 与 Agent 自修复报告
+- [x] PR 变更解释 demo：真实 commit `94c3a63`，9 证据、19 可见元素
+- [x] 事故状态投影 demo：本机真实中断日志 + runbook，14 证据、29 可见元素；删除恢复日志会触发构建失败
+- [x] 研究主张图 demo：三篇独立原文、18 证据、27 可见元素；来源更新后旧 claim 失效
+- [x] 30 个 eval fixture：30/30 通过；无来源 supported 4/4 捕获；stale 4/4 拒绝；确定性修复 28/28
 - [ ] 全部完成后接入 `next-blog`
 
 ---

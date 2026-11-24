@@ -28,7 +28,7 @@ const sourceRefsOf = item => {
   return [];
 };
 
-function createReport(specPath) {
+function createReport(specPath, options = {}) {
   const errors = [];
   const checks = Object.fromEntries(rules.map(rule => [rule, true]));
   const fail = (rule, path, message) => {
@@ -37,26 +37,45 @@ function createReport(specPath) {
   };
 
   let spec;
-  try {
-    spec = JSON.parse(readFileSync(specPath, 'utf8'));
-  } catch (error) {
-    fail('idUnique', '$', `无法读取或解析 spec：${error.message}`);
-    return { ok: false, spec: specPath, checks, errors };
+  if (options.spec && isObject(options.spec)) {
+    spec = options.spec;
+  } else {
+    try {
+      spec = JSON.parse(readFileSync(specPath, 'utf8'));
+    } catch (error) {
+      fail('idUnique', '$', `无法读取或解析 spec：${error.message}`);
+      return { ok: false, spec: specPath, checks, errors };
+    }
   }
 
   const source = isObject(spec.source) ? spec.source : {};
   let sourceText = '';
   let sourceLines = [];
   let actualSourceHash = null;
-  try {
-    sourceText = readFileSync(resolve(source.path), 'utf8');
-    sourceLines = sourceText.split(/\r?\n/u);
-    actualSourceHash = hash(sourceText);
-    if (actualSourceHash !== source.sha256) {
-      fail('sourceSha256', 'source.sha256', `源文件 sha256 不一致，spec=${source.sha256 ?? '(missing)'}，actual=${actualSourceHash}`);
+  const sourceLinesByEvidence = options.sourceLinesByEvidence ?? null;
+  let sourceReport = null;
+  if (sourceLinesByEvidence) {
+    sourceReport = [];
+    for (const [index, item] of asArray(options.sources).entries()) {
+      const text = typeof item?.text === 'string' ? item.text : '';
+      const lines = typeof item?.text === 'string' ? item.text.split(/\r?\n/u) : asArray(item?.lines);
+      const actual = hash(text);
+      if (actual !== item?.expectedSha256) {
+        fail('sourceSha256', `sources[${index}].sha256`, `源文件 sha256 不一致，spec=${item?.expectedSha256 ?? '(missing)'}，actual=${actual}`);
+      }
+      sourceReport.push({ uri: item?.uri, expectedSha256: item?.expectedSha256, actualSha256: actual, lines: lines.length });
     }
-  } catch (error) {
-    fail('sourceSha256', 'source.path', `无法读取源文件：${error.message}`);
+  } else {
+    try {
+      sourceText = readFileSync(resolve(source.path), 'utf8');
+      sourceLines = sourceText.split(/\r?\n/u);
+      actualSourceHash = hash(sourceText);
+      if (actualSourceHash !== source.sha256) {
+        fail('sourceSha256', 'source.sha256', `源文件 sha256 不一致，spec=${source.sha256 ?? '(missing)'}，actual=${actualSourceHash}`);
+      }
+    } catch (error) {
+      fail('sourceSha256', 'source.path', `无法读取源文件：${error.message}`);
+    }
   }
 
   const evidenceById = new Map();
@@ -92,15 +111,16 @@ function createReport(specPath) {
 
   for (const [id, evidence] of evidenceById) {
     const path = `evidence.${id}`;
+    const lines = sourceLinesByEvidence?.get(id) ?? sourceLines;
     if (!Number.isInteger(evidence.lineStart) || !Number.isInteger(evidence.lineEnd) || evidence.lineStart < 1 || evidence.lineEnd < evidence.lineStart) {
       fail('supportedEvidence', path, 'lineStart/lineEnd 必须是有效的正整数范围');
       continue;
     }
-    if (!sourceLines.length || evidence.lineEnd > sourceLines.length) {
+    if (!lines.length || evidence.lineEnd > lines.length) {
       fail('supportedEvidence', path, `行号超出源文件范围：${evidence.lineStart}-${evidence.lineEnd}`);
       continue;
     }
-    const excerpt = sourceLines.slice(evidence.lineStart - 1, evidence.lineEnd).join('\n');
+    const excerpt = lines.slice(evidence.lineStart - 1, evidence.lineEnd).join('\n');
     const actualTextHash = hash(excerpt);
     if (actualTextHash !== evidence.textHash) {
       fail('supportedEvidence', path, `证据 textHash 不一致，spec=${evidence.textHash ?? '(missing)'}，actual=${actualTextHash}`);
@@ -251,7 +271,7 @@ function createReport(specPath) {
   return {
     ok: errors.length === 0,
     spec: specPath,
-    source: { path: source.path, expectedSha256: source.sha256, actualSha256: actualSourceHash },
+    source: sourceReport ? { sources: sourceReport } : { path: source.path, expectedSha256: source.sha256, actualSha256: actualSourceHash },
     checks,
     errors,
     summary: {
@@ -267,6 +287,10 @@ function createReport(specPath) {
 
 export function lintVisualSpec(specPath) {
   return createReport(resolve(specPath));
+}
+
+export function lintVisualSpecObject(spec, options = {}) {
+  return createReport(options.specPath ?? '(object)', { ...options, spec });
 }
 
 const input = process.argv[2];

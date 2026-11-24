@@ -1,0 +1,24 @@
+{
+  "id": "015-duplicate-view-id",
+  "category": "failure-branch",
+  "base": "incident",
+  "expect": {
+    "rule": "idUnique",
+    "path": "view.elements[1].id",
+    "ref": "lane-service"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "view",
+        "elements",
+        1,
+        "id"
+      ],
+      "value": "lane-signal"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

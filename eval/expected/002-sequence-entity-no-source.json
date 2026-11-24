@@ -1,0 +1,27 @@
+{
+  "id": "002-sequence-entity-no-source",
+  "category": "sequence",
+  "base": "pr",
+  "expect": {
+    "rule": "supportedEvidence",
+    "path": "entities[1]",
+    "ref": "site-metadata"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "semantic",
+        "entities",
+        1,
+        "sourceRefs"
+      ],
+      "value": [
+        "e-umami-object",
+        "e-umami-src"
+      ]
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

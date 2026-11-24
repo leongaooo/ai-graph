@@ -18,7 +18,8 @@ const tools = [
       properties: {
         spec: { type: 'object', description: 'VisualSpec v0.2 envelope 或兼容的扁平 v0.1 spec。' },
         specPath: { type: 'string', description: 'spec 文件路径；与 spec 二选一。' },
-        sourceText: { type: 'string', description: '来源全文；不传则读取 sources[0].uri。' },
+        sourceText: { type: 'string', description: '单来源全文；不传则读取 sources[].uri。' },
+        sourceTexts: { type: 'array', items: { type: 'string' }, description: '多来源全文数组；按 sources[] 顺序覆盖文件读取。' },
         baseDir: { type: 'string', description: '解析相对路径的基准目录。' }
       }
     }
@@ -32,7 +33,8 @@ const tools = [
       properties: {
         spec: { type: 'object', description: 'VisualSpec v0.2 envelope 或兼容的扁平 v0.1 spec。' },
         specPath: { type: 'string', description: 'spec 文件路径；与 spec 二选一。' },
-        sourceText: { type: 'string', description: '来源全文；不传则读取 sources[0].uri。' },
+        sourceText: { type: 'string', description: '单来源全文；不传则读取 sources[].uri。' },
+        sourceTexts: { type: 'array', items: { type: 'string' }, description: '多来源全文数组；按 sources[] 顺序覆盖文件读取。' },
         baseDir: { type: 'string', description: '解析相对路径的基准目录。' },
         outDir: { type: 'string', description: '产物目录，默认 out。' },
         profile: { type: 'string', enum: ['both', 'desktop', 'mobile'], description: '输出 profile，默认 both。' }
