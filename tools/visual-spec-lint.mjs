@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const rules = [
   'idUnique',
@@ -269,11 +270,13 @@ export function lintVisualSpec(specPath) {
 }
 
 const input = process.argv[2];
-if (input) {
-  const report = lintVisualSpec(input);
-  console.log(JSON.stringify(report, null, 2));
-  if (!report.ok) process.exitCode = 1;
-} else {
-  console.error('Usage: node tools/visual-spec-lint.mjs <art/*.visual.json>');
-  process.exitCode = 2;
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+  if (input) {
+    const report = lintVisualSpec(input);
+    console.log(JSON.stringify(report, null, 2));
+    if (!report.ok) process.exitCode = 1;
+  } else {
+    console.error('Usage: node tools/visual-spec-lint.mjs <art/*.visual.json>');
+    process.exitCode = 2;
+  }
 }

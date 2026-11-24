@@ -1,8 +1,58 @@
 # ai-graph
 
-## AI Graph 2.0：从场景插画到语义解释图
+## AI-native：给 Agent 调用的证据约束视觉投影运行时
 
-当前主线不是“让插画更好看”，而是“让图承担信息职责”。
+当前主线不是“让 AI 看图”，而是让 AI 在一个可校验、可查询、可复现的结构化场景上工作。
+
+```text
+来源（source + locator + sha256）
+  → 语义（实体 / 关系 / 主张 / 指标 / unknown / inference）
+  → 视图（sequence / state + 逻辑元素 + acceptance）
+  → MCP：visual_validate → visual_compile → visual_query
+  → SceneArtifact / evidence index / semantic report / 确定性 SVG
+```
+
+- **事实源是 spec，不是 SVG**：SVG 只是同一份语义数据给人看的投影。
+- **AI 不猜坐标**：布局由布局器生成；AI 只改语义和视图约束。
+- **每条 supported 项必须能回指来源行号与文本哈希**；没有证据的内容只能标 `inferred` 或 `unknown`。
+- **失败返回结构化诊断**：`path / ref / rule / expected / actual / repairHint`，AI 按诊断修 spec，不靠猜。
+- **三个 MCP 工具**：`visual_validate`、`visual_compile`、`visual_query`；MCP 层不包含布局规则。
+- **先本地、后集成**：runtime 与三个 demo 全部跑通后，再接入 `next-blog` 的 `/projects/ai-graph`。
+
+快速验证：
+
+```bash
+cd /Users/gaolimin/GitHub/ai-graph
+npm run runtime:test
+npm run runtime:validate -- art/agent-delivery-gate.visual.json
+npm run runtime:compile -- art/automation-equipment-state.visual.json /tmp/ai-graph-out both
+npm run mcp:start
+```
+
+文档：
+
+- 协议：[`docs/visual-spec-v0.2.md`](docs/visual-spec-v0.2.md)
+- MCP：[`docs/mcp-runtime.md`](docs/mcp-runtime.md)
+- 整体计划：[`docs/ai-native-runtime-plan.md`](docs/ai-native-runtime-plan.md)
+- JSON Schema：[`schema/visual-spec.v0.2.schema.json`](schema/visual-spec.v0.2.schema.json)
+
+### 当前状态（2026-11-24）
+
+- [x] v0.2 四区块协议与 v0.1 归一化
+- [x] `visual_validate` / `visual_compile` / `visual_query`
+- [x] stdio MCP server
+- [x] 两份真实文章样本 validate 12/12；compile hash 与既有构建一致
+- [ ] 三个真实 demo：PR 变更解释 / 事故状态投影 / 研究主张图
+- [ ] 30 个 eval fixture 与 Agent 自修复报告
+- [ ] 全部完成后接入 `next-blog`
+
+---
+
+## 基线：AI Graph 2.0 解释图引擎
+
+以下内容保留为现有引擎与两条真实样本的基线；新方向在其上增加 AI 调用面，不废弃已有产物。
+
+AI Graph 2.0 阶段的主线不是“让插画更好看”，而是“让图承担信息职责”。
 
 ```text
 Brief → VisualSpec（实体/关系/证据/unknown）
@@ -16,7 +66,7 @@ Brief → VisualSpec（实体/关系/证据/unknown）
 - **每条 supported 关系必须能回指文章行号与文本哈希**；没有证据的内容只能标 `inferred` 或 `unknown`，不能画成事实。
 - **门禁不通过就不构建**：证据哈希、单位来源、可见元素回指、unknown 线型、验收问题映射、图法支持、state 布局引用，12 条任一失败直接退出。
 - **同一份 spec 同时出桌面与移动两套图**：移动版不是把桌面图缩小，而是重新排版。
-- **页面入口**：第一条 `sequence` 切片已接入 `leongao.me/projects/ai-graph` 的首屏；第二条 `state` 切片目前只在仓库，尚未上页面；旧 01/02/03 场景降级为“样式实验”。
+- **页面入口**：第一条 `sequence` 与第二条 `state` 切片都已接入 `leongao.me/projects/ai-graph`；runtime 的新集成等三个 demo 与 eval 全部完成后再做；旧 01/02/03 场景降级为“样式实验”。
 
 ### 第一条纵向切片（sequence）
 
@@ -76,12 +126,15 @@ node tools/build-explainer.mjs art/automation-equipment-state.visual.json out
 
 字段、status 语义和门禁规则见 [`docs/visual-spec.md`](docs/visual-spec.md)；30 分钟上手见 [`docs/quickstart.md`](docs/quickstart.md)。
 
-### 下一步
+### 下一步（AI-native runtime）
 
-1. 按 `docs/quickstart.md` 找一名外部开发者做 30 分钟实测：从干净 clone 到 lint + build + 看到两张图，记录卡点。
-2. 3–5 名目标读者只看图回答验收问题；任一人失败先改图，不扩图法。
-3. 把第二样本接入 `/projects/ai-graph`，让页面同时展示 `sequence` 与 `state`，而不是只有一条切片。
-4. 第三样本或把 `sequence` 从固定模板改成数据驱动；在此之前不声称“通用布局引擎”。
+1. 按 [`docs/ai-native-runtime-plan.md`](docs/ai-native-runtime-plan.md) 先做代码 Agent 的 PR 变更解释 demo，用真实 diff / 测试 / 文档；不编造代码变更。
+2. 再做事故响应 Agent 的状态投影 demo；没有真实日志 + runbook 就暂停，不用假日志。
+3. 复用现有两篇文章 + 第三篇真实文章，做研究 Agent 的主张与证据图。
+4. 三个 demo 共用同一套 MCP 工具；之后补 30 个 eval fixture 与 Agent 自修复报告。
+5. 全部完成后再接入 `/projects/ai-graph`；在此之前不改线上页面。
+
+现有两条切片仍作为引擎基线保留，不删除。外部开发者实测与读者理解测试暂时让位于 runtime 开发；没有真实反馈前不写“商业可用 / 行业可用”。
 
 ---
 

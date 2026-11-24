@@ -1,5 +1,7 @@
 # VisualSpec 最小契约
 
+> 本文是现有引擎的扁平 v0.1 契约。AI Agent 调用面已升级为 v0.2 四区块，见 [`visual-spec-v0.2.md`](visual-spec-v0.2.md)；runtime 会自动把 v0.1 归一化为 v0.2，不需要立刻重写样本。
+
 Last updated: 2026-11-24
 
 VisualSpec 是 AI Graph 2.0 的主产物。它先回答“图要表达什么关系、哪些是文中事实、哪些只是推断、哪些文章没说”，再交给布局器出图。

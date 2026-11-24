@@ -10,6 +10,11 @@
     "visual:build": "node tools/build-explainer.mjs",
     "visual:evidence": "node tools/evidence-hash.mjs",
     "visual:build:all": "node tools/build-explainer.mjs art/agent-delivery-gate.visual.json out && node tools/build-explainer.mjs art/automation-equipment-state.visual.json out",
-    "visual:check:all": "npm run visual:lint -- art/agent-delivery-gate.visual.json && npm run visual:lint -- art/automation-equipment-state.visual.json"
+    "visual:check:all": "npm run visual:lint -- art/agent-delivery-gate.visual.json && npm run visual:lint -- art/automation-equipment-state.visual.json",
+    "runtime:validate": "node tools/runtime/cli.mjs validate",
+    "runtime:compile": "node tools/runtime/cli.mjs compile",
+    "runtime:query": "node tools/runtime/cli.mjs query",
+    "runtime:test": "node tools/runtime/test.mjs",
+    "mcp:start": "node tools/mcp-server.mjs"
   }
 }

@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-graph.local/schema/visual-spec.v0.2.schema.json",
+  "title": "AI Graph VisualSpec v0.2",
+  "description": "给 AI Agent 调用的证据约束视觉投影协议。sources 固定来源与定位，semantic 存事实/推断/未知，view 只描述投影，intent 记录问题与输出约束。",
+  "type": "object",
+  "required": ["protocol", "version", "id", "sources", "semantic", "view"],
+  "properties": {
+    "protocol": { "const": "ai-graph/visual-spec@0.2" },
+    "version": { "const": "0.2" },
+    "id": { "type": "string", "minLength": 1 },
+    "seed": { "type": ["integer", "string"] },
+    "intent": {
+      "type": ["object", "string"],
+      "properties": {
+        "text": { "type": "string" },
+        "question": { "type": "string" },
+        "audience": { "type": "string" },
+        "constraints": { "type": "array", "items": { "type": "string" } },
+        "mainConclusion": {
+          "type": ["object", "string", "null"],
+          "properties": {
+            "claimRef": { "type": "string" },
+            "text": { "type": "string" }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "semantic": { "$ref": "#/$defs/semantic" },
+    "view": { "$ref": "#/$defs/view" },
+    "acceptance": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/acceptance" }
+    },
+    "copy": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "source": {
+      "type": "object",
+      "required": ["uri", "sha256", "locators"],
+      "properties": {
+        "id": { "type": "string" },
+        "uri": { "type": "string", "minLength": 1 },
+        "title": { "type": "string" },
+        "date": { "type": "string" },
+        "sha256": { "$ref": "#/$defs/hash" },
+        "locators": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/locator" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "locator": {
+      "type": "object",
+      "required": ["id", "lineStart", "lineEnd", "textHash"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "lineStart": { "type": "integer", "minimum": 1 },
+        "lineEnd": { "type": "integer", "minimum": 1 },
+        "textHash": { "$ref": "#/$defs/hash" },
+        "excerpt": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "semanticItem": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "enum": ["supported", "inferred", "unknown"] },
+        "sourceRefs": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "semantic": {
+      "type": "object",
+      "required": ["entities", "relations", "claims", "metrics", "unknowns", "inferences"],
+      "properties": {
+        "entities": { "type": "array", "items": { "$ref": "#/$defs/semanticItem" } },
+        "relations": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              { "$ref": "#/$defs/semanticItem" },
+              {
+                "type": "object",
+                "required": ["from", "to"],
+                "properties": {
+                  "from": { "type": "string" },
+                  "to": { "type": "string" },
+                  "type": { "type": "string" }
+                }
+              }
+            ]
+          }
+        },
+        "claims": { "type": "array", "items": { "$ref": "#/$defs/semanticItem" } },
+        "metrics": { "type": "array", "items": { "$ref": "#/$defs/semanticItem" } },
+        "unknowns": { "type": "array", "items": { "$ref": "#/$defs/semanticItem" } },
+        "inferences": { "type": "array", "items": { "$ref": "#/$defs/semanticItem" } },
+        "levels": { "type": "array", "items": { "$ref": "#/$defs/semanticItem" } }
+      },
+      "additionalProperties": true
+    },
+    "viewElement": {
+      "type": "object",
+      "required": ["id", "ref", "kind"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "ref": { "type": "string", "minLength": 1 },
+        "kind": { "type": "string" },
+        "status": { "type": "string", "enum": ["supported", "inferred", "unknown"] },
+        "lineStyle": { "type": "string", "enum": ["solid", "dashed"] }
+      },
+      "additionalProperties": true
+    },
+    "view": {
+      "type": "object",
+      "required": ["grammar", "focus", "elements"],
+      "properties": {
+        "grammar": { "type": "string", "enum": ["sequence", "state"] },
+        "focus": { "type": "string" },
+        "order": { "type": "array", "items": { "type": "string" } },
+        "elements": { "type": "array", "items": { "$ref": "#/$defs/viewElement" } },
+        "lanes": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+        "loop": { "type": "object", "additionalProperties": true },
+        "edge": { "type": "object", "additionalProperties": true },
+        "notes": { "type": "array", "items": { "type": "object", "additionalProperties": true } }
+      },
+      "additionalProperties": true
+    },
+    "acceptance": {
+      "type": "object",
+      "required": ["id", "question", "answer", "visibleRefs"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "question": { "type": "string" },
+        "answer": { "type": "string" },
+        "answerRefs": { "type": "array", "items": { "type": "string" } },
+        "visibleRefs": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    }
+  }
+}
