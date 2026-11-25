@@ -1,0 +1,25 @@
+name: Validate specs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  json:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse every tracked JSON file
+        run: |
+          set -euo pipefail
+          count=0
+          while read -r f; do
+            echo "checking $f"
+            python3 -m json.tool "$f" > /dev/null
+            count=$((count + 1))
+          done < <(git ls-files '*.json')
+          echo "validated $count json files"
