@@ -16,6 +16,8 @@
     "runtime:query": "node tools/runtime/cli.mjs query",
     "runtime:test": "node tools/runtime/test.mjs",
     "mcp:start": "node tools/mcp-server.mjs",
-    "eval:run": "node eval/run-eval.mjs"
+    "eval:run": "node eval/run-eval.mjs",
+    "evidence:viewer": "node tools/evidence-viewer.mjs",
+    "evidence:viewer:demo": "node tools/evidence-viewer.mjs demos/incident-timeline/spec.json out/incident-timeline"
   }
 }

@@ -99,7 +99,7 @@ npm run visual:build -- art/my-topic.visual.json out
 | `inferredReason` | `inferred` 没写 `reason` | 补一句为什么是推断 |
 | `unknownNotSolid` | unknown 用了实线 | 改成 `lineStyle: "dashed"` |
 | `visibleRefs` | `view.elements[].ref` 不存在 | 改成语义集合里的 id |
-| `grammarSupported` | `view.grammar` 不是 `sequence/state` | 改成支持值 |
+| `grammarSupported` | `view.grammar` 不是 `sequence/state/timeline` | 改成支持值 |
 | `stateLayoutRefs` | state 缺 lane/state/step/edge/note，或 `view.elements` 漏项 | 按报错补 id |
 | `acceptanceVisibleRefs` | 验收问题引用了不存在的 view element id | 改成 `view.elements[].id` |
 
@@ -110,6 +110,20 @@ npm run visual:build -- art/my-topic.visual.json out
 - 桌面/移动 `textOverflow: 0`；
 - 3 个验收问题只看图能答，且答案能回指 `data-ref`；
 - 不改坐标、不手调 SVG；如果布局失败，先改 spec 或报告布局器缺口。
+
+## 5.5 看图核对（证据查看器）
+
+编译产物可以变成一张能点的页面，用来回答“这根线凭什么画出来”：
+
+```bash
+node tools/runtime/cli.mjs compile demos/incident-timeline/spec.json out/incident-timeline both
+node tools/evidence-viewer.mjs demos/incident-timeline/spec.json out/incident-timeline
+# 产出 out/incident-timeline/<id>.evidence.html，可直接用浏览器打开
+```
+
+- 点图上任一元素，右侧给出：语义对象（claim / unknown / inference / metric / entity）、来源文件与行号、原文、`textHash` 复算是否一致；
+- 底部汇总 `N 条来源定位`，全部复算通过才 `ok: true`；出现 `elementsWithoutSource` 或 `mismatches` 非 0 就说明有元素画了却无法追溯；
+- 地址后加 `?sel=3` 可深链到第 4 个元素（编号与图左上角小字一致）。
 
 ## 6. 当前不要做的事
 
