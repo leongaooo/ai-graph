@@ -656,35 +656,45 @@
         "ref": "st-serving",
         "time": "13:45:47.246",
         "label": "启动 :3199，探活 200",
-        "evidence": "第 2–3 行"
+        "evidence": "第 2–3 行",
+        "lineRef": "L3",
+        "excerpt": "13:45:47.254Z health_probe status=200"
       },
       {
         "id": "tl-exit",
         "ref": "st-down",
         "time": "13:45:48.455",
         "label": "收到 sigterm，进程退出",
-        "evidence": "第 4–5 行"
+        "evidence": "第 4–5 行",
+        "lineRef": "L4",
+        "excerpt": "13:45:48.455Z action=sigterm reason=simulate_process_exit"
       },
       {
         "id": "tl-refused",
         "ref": "st-down",
         "time": "13:45:48.469",
         "label": "探活 ECONNREFUSED",
-        "evidence": "第 6 行"
+        "evidence": "第 6 行",
+        "lineRef": "L6",
+        "excerpt": "13:45:48.469Z health_probe status=ECONNREFUSED"
       },
       {
         "id": "tl-restart",
         "ref": "st-restart",
         "time": "13:45:48.469",
         "label": "执行 restart，重新启动",
-        "evidence": "第 7–8 行"
+        "evidence": "第 7–8 行",
+        "lineRef": "L7",
+        "excerpt": "13:45:48.469Z action=restart reason=restore_service"
       },
       {
         "id": "tl-recovered",
         "ref": "st-recovered",
         "time": "13:45:48.564",
         "label": "单次 200 后标记 recovered",
-        "evidence": "第 9–10 行"
+        "evidence": "第 9–10 行",
+        "lineRef": "L10",
+        "excerpt": "13:45:48.564Z state=recovered note=one_probe_only"
       }
     ],
     "notes": [
@@ -764,6 +774,7 @@
     "subtitle": "启动 · 退出 · 拒绝 · 重启 · 单次 200",
     "series": "本地复现 · 非生产（时间轴版）",
     "index": "D2 / 02",
-    "parameters": "timeline · 1200 × 675 · seed 20261124"
+    "parameters": "timeline · 1200 × 675 · seed 20261124",
+    "mobileConclusion": "确认一次拒绝与一次 200；recovered 仍是推断。"
   }
 }

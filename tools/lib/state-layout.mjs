@@ -345,7 +345,7 @@ function eventStatus(art, event) {
   return { status, dash: status === 'supported' ? '' : '6 4', color: status === 'supported' ? palette.teal : palette.amber };
 }
 
-function timelineCard(art, scope, { draw, event, x, y, width, height, below = false }) {
+function timelineCard(art, scope, { draw, event, x, y, width, height, below = false, withExcerpt = false }) {
   const { status, dash, color } = eventStatus(art, event);
   draw.layer('subject');
   rect(draw, { x, y, width, height, fill: '#FFFFFF', stroke: color, strokeWidth: 1, dash, radius: 2, dataRef: event.ref, status, role: 'timeline-card' });
@@ -362,7 +362,19 @@ function timelineCard(art, scope, { draw, event, x, y, width, height, below = fa
     x: x + 12, y: y + 42, width: width - 24, size: 13, lineHeight: 16, maxChars: 16,
     fill: palette.ink, dataRef: event.ref, status, role: 'timeline-label'
   });
-  if (event.evidence) {
+  if (withExcerpt && event.excerpt) {
+    typeBlock(draw, event.lineRef ?? '', {
+      x: x + 12, y: y + height - 30, width: 60, size: 7.5, maxChars: 6, fill: palette.tone,
+      dataRef: event.ref, status, role: 'timeline-line-ref'
+    });
+    typeBlock(draw, event.excerpt, {
+      x: x + 12, y: y + height - 18, width: width - 22, size: 7, lineHeight: 8.5, maxChars: 42, kind: 'mono',
+      fill: palette.ink, dataRef: event.ref, status, role: 'timeline-excerpt'
+    });
+    scope.add({ id: event.id, kind: 'state', bbox: [x, y, x + width, y + height], lineStyle: status === 'supported' ? 'solid' : 'dashed', label: event.label });
+    return { x: x + width / 2, y: below ? y : y + height };
+  }
+  if (event.evidence && !event.excerpt) {
     typeBlock(draw, event.evidence, {
       x: x + 12, y: y + height - 12, width: width - 24,
       size: 8.5, maxChars: textMax(width - 24, 8.5, 30), fill: palette.tone,
@@ -397,37 +409,46 @@ function renderTimelineDesktop(art, outDir, semanticReport) {
     x: 52, y: 190, width: 520, size: 12, maxChars: 26, fill: palette.ink, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'axis-title'
   });
 
-  const axisX = 140;
-  const axisRight = 1060;
-  const axisY = 330;
   const cardWidth = 206;
-  const cardHeight = 96;
-  const step = (axisRight - axisX) / Math.max(1, events.length - 1);
+  const gapX = 6;
+  const axisX = 52;
+  const axisY = 330;
+  const cardHeight = 78;
+  const step = cardWidth + gapX;
+  const axisRight = axisX + step * (events.length - 1) + cardWidth;
 
   draw.layer('subject');
-  line(draw, { points: [[axisX - 10, axisY], [axisRight + 10, axisY]], color: palette.teal, width: 1.6, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'timeline-axis' });
-  arrowHead(draw, { x: axisRight + 10, y: axisY, direction: 'right', color: palette.teal, dataRef: art.mainConclusion.claimRef, status: 'supported' });
+  line(draw, { points: [[axisX - 6, axisY], [axisRight + 6, axisY]], color: palette.teal, width: 1.6, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'timeline-axis' });
+  arrowHead(draw, { x: axisRight + 6, y: axisY, direction: 'right', color: palette.teal, dataRef: art.mainConclusion.claimRef, status: 'supported' });
 
+  const cardY = axisY - 22 - cardHeight;
   events.forEach((event, index) => {
-    const tickX = axisX + step * index;
-    const below = index % 2 === 1;
-    const cardX = tickX - cardWidth / 2;
-    const cardY = below ? axisY + 20 : axisY - 20 - cardHeight;
-    tickDot(draw, { x: tickX, y: axisY, r: 4.5, color: palette.ink, dataRef: event.ref, status: eventStatus(art, event).status });
-    const anchor = timelineCard(art, scope, { draw, event, x: cardX, y: cardY, width: cardWidth, height: cardHeight, below });
+    const cardX = axisX + step * index;
+    const tickX = cardX + cardWidth / 2;
+    const { status, dash, color } = eventStatus(art, event);
+    tickDot(draw, { x: tickX, y: axisY, r: 4.5, color: palette.ink, dataRef: event.ref, status });
+    timelineCard(art, scope, { draw, event, x: cardX, y: cardY, width: cardWidth, height: cardHeight, below: false });
     draw.layer('subject');
-    line(draw, {
-      points: [[tickX, axisY], [tickX, below ? cardY : cardY + cardHeight]],
-      color: eventStatus(art, event).color, width: 1,
-      dash: eventStatus(art, event).dash, dataRef: event.ref, status: eventStatus(art, event).status, role: 'timeline-stem'
-    });
-    void anchor;
+    line(draw, { points: [[tickX, axisY], [tickX, cardY + cardHeight]], color, width: 1, dash, dataRef: event.ref, status, role: 'timeline-stem' });
+
+    // 原文条：把支撑这个时刻的那一行直接搬到图上
+    if (event.excerpt) {
+      draw.layer('type');
+      typeBlock(draw, event.lineRef ?? '', {
+        x: cardX + 2, y: axisY + 38, width: 40, size: 8, maxChars: 5,
+        fill: palette.tone, dataRef: event.ref, status, role: 'timeline-line-ref'
+      });
+      typeBlock(draw, event.excerpt, {
+        x: cardX + 2, y: axisY + 52, width: cardWidth - 6, size: 7.6, lineHeight: 9, maxChars: 40,
+        kind: 'mono', fill: palette.ink, dataRef: event.ref, status, role: 'timeline-excerpt'
+      });
+    }
   });
 
-  renderNotes(art, scope, { draw, notes: art.view.notes, x: 52, y: 470, width: 340, height: 42, gap: 17 });
-  renderConclusion(art, scope, { draw, x: 52, y: 556, width: 1095, maxChars: 70 });
-  renderSource(art, { draw, x: 52, y: 646, width: 680 });
-  renderLegend({ draw, x: 850, y: 646, width: 300 });
+  renderNotes(art, scope, { draw, notes: art.view.notes, x: 52, y: 442, width: 340, height: 42, gap: 17 });
+  renderConclusion(art, scope, { draw, x: 52, y: 512, width: 1095, maxChars: 70 });
+  renderSource(art, { draw, x: 52, y: 624, width: 680 });
+  renderLegend({ draw, x: 850, y: 624, width: 300 });
 
   draw.layer('texture');
   draw.emit(stock.grain);
@@ -493,10 +514,10 @@ function renderTimelineMobile(art, outDir, semanticReport) {
   });
 
   const axisX = 34;
-  const firstY = 186;
-  const step = 86;
+  const firstY = 172;
+  const step = 106;
   const cardWidth = 300;
-  const cardHeight = 78;
+  const cardHeight = 104;
 
   draw.layer('subject');
   line(draw, { points: [[axisX, firstY - 12], [axisX, firstY + step * (events.length - 1) + 12]], color: palette.teal, width: 1.4, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'timeline-axis' });
@@ -506,16 +527,16 @@ function renderTimelineMobile(art, outDir, semanticReport) {
     const cardY = tickY;
     tickDot(draw, { x: axisX, y: tickY, r: 4, color: palette.ink, dataRef: event.ref, status: eventStatus(art, event).status });
     line(draw, { points: [[axisX, tickY], [axisX + 18, cardY + cardHeight / 2]], color: eventStatus(art, event).color, width: 1, dash: eventStatus(art, event).dash, dataRef: event.ref, status: eventStatus(art, event).status, role: 'timeline-stem' });
-    timelineCard(art, scope, { draw, event, x: axisX + 18, y: cardY, width: cardWidth, height: cardHeight, below: false });
+    timelineCard(art, scope, { draw, event, x: axisX + 18, y: cardY, width: cardWidth, height: cardHeight, below: false, withExcerpt: true });
   });
 
-  renderNotes(art, scope, { draw, notes: art.view.notes, x: 16, y: firstY + step * (events.length - 1) + cardHeight + 16, width: 358, height: 15, gap: 3, stacked: true });
+  renderNotes(art, scope, { draw, notes: art.view.notes, x: 16, y: firstY + step * (events.length - 1) + cardHeight + 14, width: 358, height: 15, gap: 3, stacked: true });
   renderConclusion(art, scope, {
-    draw, x: 16, y: 742, width: 358, maxChars: 34,
+    draw, x: 16, y: 806, width: 358, maxChars: 30,
     text: art.copy?.mobileConclusion || art.mainConclusion.text
   });
-  renderSource(art, { draw, x: 16, y: 812, width: 170, compact: true });
-  renderLegend({ draw, x: 200, y: 812, width: 174, compact: true });
+  renderSource(art, { draw, x: 16, y: 844, width: 170, compact: true });
+  renderLegend({ draw, x: 200, y: 844, width: 174, compact: true });
 
   draw.layer('texture');
   draw.emit(`<rect width="${width}" height="${height}" fill="${palette.paper}" filter="url(#paper-grain)" opacity="0.032"/>`);
