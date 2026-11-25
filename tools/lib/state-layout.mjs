@@ -348,7 +348,9 @@ function eventStatus(art, event) {
 function timelineCard(art, scope, { draw, event, x, y, width, height, below = false, withExcerpt = false }) {
   const { status, dash, color } = eventStatus(art, event);
   draw.layer('subject');
-  rect(draw, { x, y, width, height, fill: '#FFFFFF', stroke: color, strokeWidth: 1, dash, radius: 2, dataRef: event.ref, status, role: 'timeline-card' });
+  rect(draw, { x, y, width, height, fill: '#FFFFFF', dataRef: event.ref, status, role: 'timeline-card' });
+  rect(draw, { x, y, width: 2.6, height, fill: color, dataRef: event.ref, status, role: 'timeline-card-bar' });
+  line(draw, { points: [[x, y + height], [x + width, y + height]], color, width: 0.7, dash, dataRef: event.ref, status, role: 'timeline-card-rule' });
   draw.layer('type');
   typeBlock(draw, event.time ?? '', {
     x: x + 12, y: y + 18, width: 84, size: 8.5, kind: 'mono', fill: palette.tone,
@@ -364,7 +366,7 @@ function timelineCard(art, scope, { draw, event, x, y, width, height, below = fa
   });
   if (withExcerpt && event.excerpt) {
     typeBlock(draw, event.lineRef ?? '', {
-      x: x + 12, y: y + height - 30, width: 60, size: 7.5, maxChars: 6, fill: palette.tone,
+      x: x + 12, y: y + height - 30, width: 60, size: 7.5, maxChars: 6, fill: color,
       dataRef: event.ref, status, role: 'timeline-line-ref'
     });
     typeBlock(draw, event.excerpt, {
@@ -391,64 +393,181 @@ function renderTimelineDesktop(art, outDir, semanticReport) {
   const width = canvas.width;
   const height = canvas.height;
   const events = art.view.events ?? [];
+  const left = 52;
+  const right = 1148;
 
   draw.layer('paper');
   draw.emit(stock.base);
 
+  // ---- 页眉：标题 + 右侧读数条 ----
   draw.layer('type');
   typeBlock(draw, `技术文章解释图 · ${art.source.date}`, {
-    x: 52, y: 48, width: 300, size: 9.5, maxChars: 30, fill: palette.tone, dataRef: 'c-main', status: 'supported', role: 'eyebrow'
+    x: left, y: 46, width: 360, size: 9.5, maxChars: 42, fill: palette.mist, dataRef: 'c-main', status: 'supported', role: 'eyebrow'
   });
   typeBlock(draw, art.copy.title, {
-    x: 52, y: 82, width: 760, size: 30, lineHeight: 34, maxChars: 24, kind: 'title', fill: palette.ink, dataRef: 'c-main', status: 'supported', role: 'title'
+    x: left, y: 88, width: 720, size: 32, lineHeight: 38, spacing: 0.6, maxChars: 22, kind: 'title', fill: palette.ink, dataRef: 'c-main', status: 'supported', role: 'title'
   });
   typeBlock(draw, art.copy.subtitle, {
-    x: 54, y: 150, width: 760, size: 13, maxChars: 30, fill: palette.teal, dataRef: 'c-main', status: 'supported', role: 'subtitle'
+    x: left, y: 162, width: 620, size: 12.5, maxChars: 40, fill: palette.teal, dataRef: 'c-main', status: 'supported', role: 'subtitle'
   });
+
+  // 读数条：只放 spec 里已有的数，不编造
+  const metrics = art.metrics ?? [];
+  const restarts = metrics.find(m => /重启/.test(m.label));
+  const toSec = t => {
+    const m = /(\d{2}):(\d{2}):(\d{2})\.(\d{3})/.exec(t ?? '');
+    return m ? Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3]) + Number(m[4]) / 1000 : null;
+  };
+  const first = toSec(events[0]?.time);
+  const last = toSec(events[events.length - 1]?.time);
+  const span = first !== null && last !== null ? Math.max(0, last - first) : null;
+  const readings = [
+    span !== null ? { value: span.toFixed(1), unit: '秒', label: '全过程' } : null,
+    { value: String(events.length), unit: '个', label: '主要时刻' },
+    restarts ? { value: String(restarts.value), unit: restarts.unit ?? '次', label: restarts.label } : null
+  ].filter(Boolean);
+  const cellW = 86;
+  const cellGap = 20;
+  const totalW = readings.length * cellW + (readings.length - 1) * cellGap;
+  const readX = right - totalW;
+  readings.forEach((r, i) => {
+    const x = readX + i * (cellW + cellGap);
+    typeBlock(draw, r.value, {
+      x, y: 96, width: cellW, size: 24, maxChars: 4, kind: 'title', fill: palette.ink, dataRef: 'c-main', status: 'supported', role: 'reading-value'
+    });
+    typeBlock(draw, `${r.unit} · ${r.label}`, {
+      x, y: 118, width: cellW, size: 8.5, maxChars: 12, fill: palette.mist, dataRef: 'c-main', status: 'supported', role: 'reading-label'
+    });
+    if (i > 0) {
+      draw.layer('grid');
+      line(draw, { points: [[x - cellGap / 2, 76], [x - cellGap / 2, 120]], color: '#CFCCC2', width: 0.7, dataRef: 'c-main', status: 'supported', role: 'reading-rule' });
+      draw.layer('type');
+    }
+  });
+
+  draw.layer('grid');
+  line(draw, { points: [[left, 184], [right, 184]], color: '#CFCCC2', width: 0.7, dataRef: 'c-main', status: 'supported', role: 'header-rule' });
+
+  draw.layer('type');
   typeBlock(draw, art.view.axisTitle, {
-    x: 52, y: 190, width: 520, size: 12, maxChars: 26, fill: palette.ink, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'axis-title'
+    x: left, y: 208, width: 560, size: 12.5, maxChars: 28, fill: palette.ink, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'axis-title'
   });
+
+  // ---- 图区：浅色底带，把五个时刻托起来 ----
+  const bandTop = 224;
+  const bandH = 202;
+  draw.layer('env');
+  rect(draw, { x: left, y: bandTop, width: right - left, height: bandH, fill: '#F3F1E9', dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'timeline-band' });
+  draw.layer('grid');
+  line(draw, { points: [[left, bandTop], [right, bandTop]], color: '#D9D5C8', width: 0.7, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'band-rule' });
+  line(draw, { points: [[left, bandTop + bandH], [right, bandTop + bandH]], color: '#D9D5C8', width: 0.7, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'band-rule' });
+
 
   const cardWidth = 206;
   const gapX = 6;
-  const axisX = 52;
-  const axisY = 330;
-  const cardHeight = 78;
+  const axisX = left;
+  const axisY = 358;
+  const cardHeight = 84;
+  const cardY = 236;
   const step = cardWidth + gapX;
   const axisRight = axisX + step * (events.length - 1) + cardWidth;
 
   draw.layer('subject');
-  line(draw, { points: [[axisX - 6, axisY], [axisRight + 6, axisY]], color: palette.teal, width: 1.6, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'timeline-axis' });
-  arrowHead(draw, { x: axisRight + 6, y: axisY, direction: 'right', color: palette.teal, dataRef: art.mainConclusion.claimRef, status: 'supported' });
+  line(draw, { points: [[axisX - 4, axisY], [axisRight + 4, axisY]], color: palette.teal, width: 1.4, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'timeline-axis' });
+  arrowHead(draw, { x: axisRight + 4, y: axisY, direction: 'right', color: palette.teal, dataRef: art.mainConclusion.claimRef, status: 'supported' });
 
-  const cardY = axisY - 22 - cardHeight;
   events.forEach((event, index) => {
     const cardX = axisX + step * index;
     const tickX = cardX + cardWidth / 2;
     const { status, dash, color } = eventStatus(art, event);
-    tickDot(draw, { x: tickX, y: axisY, r: 4.5, color: palette.ink, dataRef: event.ref, status });
-    timelineCard(art, scope, { draw, event, x: cardX, y: cardY, width: cardWidth, height: cardHeight, below: false });
-    draw.layer('subject');
-    line(draw, { points: [[tickX, axisY], [tickX, cardY + cardHeight]], color, width: 1, dash, dataRef: event.ref, status, role: 'timeline-stem' });
 
-    // 原文条：把支撑这个时刻的那一行直接搬到图上
+    // 卡：白底 + 左侧色条 + 底部细线，轻一点
+    draw.layer('subject');
+    rect(draw, { x: cardX, y: cardY, width: cardWidth, height: cardHeight, fill: '#FFFFFF', dataRef: event.ref, status, role: 'timeline-card' });
+    rect(draw, { x: cardX, y: cardY, width: 2.6, height: cardHeight, fill: color, dataRef: event.ref, status, role: 'timeline-card-bar' });
+    line(draw, { points: [[cardX, cardY + cardHeight], [cardX + cardWidth, cardY + cardHeight]], color, width: 0.7, dash, dataRef: event.ref, status, role: 'timeline-card-rule' });
+
+    draw.layer('type');
+    typeBlock(draw, event.time ?? '', {
+      x: cardX + 12, y: cardY + 20, width: 92, size: 8.5, kind: 'mono', maxChars: 14, fill: palette.mist,
+      dataRef: event.ref, status, role: 'timeline-time'
+    });
+    typeBlock(draw, status === 'supported' ? '事实' : status === 'inferred' ? '推断' : '未知', {
+      x: cardX + cardWidth - 44, y: cardY + 20, width: 32, size: 8.5, maxChars: 4, fill: color,
+      dataRef: event.ref, status, role: 'timeline-status'
+    });
+    typeBlock(draw, event.label, {
+      x: cardX + 12, y: cardY + 52, width: cardWidth - 22, size: 14, lineHeight: 17, maxChars: 15,
+      fill: palette.ink, dataRef: event.ref, status, role: 'timeline-label'
+    });
+
+    // 轴点：外环 + 实心
+    draw.layer('subject');
+    tickDot(draw, { x: tickX, y: axisY, r: 5.2, color: status === 'supported' ? palette.teal : palette.amber, dataRef: event.ref, status });
+    tickDot(draw, { x: tickX, y: axisY, r: 2.1, color: '#FFFFFF', dataRef: event.ref, status });
+    line(draw, { points: [[tickX, axisY], [tickX, cardY + cardHeight]], color, width: 0.7, dash, dataRef: event.ref, status, role: 'timeline-stem' });
+
+    // 原文条：每列一块浅色底，行号 + 原文
     if (event.excerpt) {
+      const exY = 378;
+      const exH = 42;
+      draw.layer('env');
+      rect(draw, { x: cardX, y: exY, width: cardWidth, height: exH, fill: '#FFFFFF', dataRef: event.ref, status, role: 'timeline-excerpt-block' });
       draw.layer('type');
       typeBlock(draw, event.lineRef ?? '', {
-        x: cardX + 2, y: axisY + 38, width: 40, size: 8, maxChars: 5,
-        fill: palette.tone, dataRef: event.ref, status, role: 'timeline-line-ref'
+        x: cardX + 8, y: exY + 13, width: 42, size: 7.5, maxChars: 5, fill: color, dataRef: event.ref, status, role: 'timeline-line-ref'
       });
       typeBlock(draw, event.excerpt, {
-        x: cardX + 2, y: axisY + 52, width: cardWidth - 6, size: 7.6, lineHeight: 9, maxChars: 40,
-        kind: 'mono', fill: palette.ink, dataRef: event.ref, status, role: 'timeline-excerpt'
+        x: cardX + 8, y: exY + 27, width: cardWidth - 14, size: 7.2, lineHeight: 8.6, maxChars: 38,
+        kind: 'mono', fill: palette.tone, dataRef: event.ref, status, role: 'timeline-excerpt'
       });
+      scope.add({ id: event.id, kind: 'state', bbox: [cardX, cardY, cardX + cardWidth, exY + exH], lineStyle: status === 'supported' ? 'solid' : 'dashed', label: event.label });
+    } else {
+      scope.add({ id: event.id, kind: 'state', bbox: [cardX, cardY, cardX + cardWidth, cardY + cardHeight], lineStyle: status === 'supported' ? 'solid' : 'dashed', label: event.label });
     }
   });
 
-  renderNotes(art, scope, { draw, notes: art.view.notes, x: 52, y: 442, width: 340, height: 42, gap: 17 });
-  renderConclusion(art, scope, { draw, x: 52, y: 512, width: 1095, maxChars: 70 });
-  renderSource(art, { draw, x: 52, y: 624, width: 680 });
-  renderLegend({ draw, x: 850, y: 624, width: 300 });
+  // ---- 缺证据三处：一个虚线容器，三段并列 ----
+  const notes = art.view.notes ?? [];
+  if (notes.length) {
+    const noteY = 444;
+    const noteH = 52;
+    draw.layer('env');
+    rect(draw, { x: left, y: noteY, width: right - left, height: noteH, fill: 'none', stroke: palette.amber, strokeWidth: 0.7, dash: '6 4', dataRef: notes[0].ref, status: 'unknown', role: 'notes-band' });
+    draw.layer('type');
+    const colW = (right - left) / notes.length;
+    notes.forEach((note, i) => {
+      const colX = left + colW * i;
+      if (i > 0) {
+        draw.layer('grid');
+        line(draw, { points: [[colX, noteY + 8], [colX, noteY + noteH - 8]], color: palette.amber, width: 0.7, dataRef: note.ref, status: 'unknown', role: 'notes-sep' });
+        draw.layer('type');
+      }
+      typeBlock(draw, note.label ?? '', {
+        x: colX + 14, y: noteY + 26, width: colW - 26, size: 9.5, lineHeight: 13, maxChars: 26,
+        fill: palette.amber, dataRef: note.ref, status: 'unknown', role: 'note'
+      });
+      scope.add({ id: note.id, kind: 'unknown', bbox: [colX, noteY, colX + colW, noteY + noteH], lineStyle: 'dashed', label: note.label });
+    });
+  }
+
+  // ---- 结论：左侧色条 + 更大的字 ----
+  const conclusionY = 516;
+  draw.layer('env');
+  rect(draw, { x: left, y: conclusionY, width: right - left, height: 56, fill: '#F3F1E9', dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'conclusion-band' });
+  rect(draw, { x: left, y: conclusionY, width: 3, height: 56, fill: palette.teal, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'conclusion-bar' });
+  draw.layer('type');
+  typeBlock(draw, art.mainConclusion.text, {
+    x: left + 18, y: conclusionY + 32, width: 1060, size: 15, lineHeight: 20, maxChars: 62,
+    fill: palette.ink, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'conclusion'
+  });
+  const claimEl = (art.view.elements ?? []).find(e => e.ref === art.mainConclusion.claimRef);
+  scope.add({ id: claimEl?.id ?? art.mainConclusion.claimRef, kind: 'claim', bbox: [left, conclusionY, right, conclusionY + 56], lineStyle: 'solid', label: art.mainConclusion.text });
+
+  draw.layer('grid');
+  line(draw, { points: [[left, 596], [right, 596]], color: '#CFCCC2', width: 0.7, dataRef: 'c-main', status: 'supported', role: 'footer-rule' });
+  renderSource(art, { draw, x: left, y: 624, width: 680 });
+  renderLegend({ draw, x: 880, y: 624, width: 268 });
 
   draw.layer('texture');
   draw.emit(stock.grain);
