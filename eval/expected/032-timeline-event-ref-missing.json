@@ -1,0 +1,23 @@
+{
+  "id": "032-timeline-event-ref-missing",
+  "category": "timeline",
+  "base": "incident",
+  "expect": {
+    "rule": "timelineLayoutRefs",
+    "path": "view.events[1].ref"
+  },
+  "repair": [
+    {
+      "op": "set",
+      "path": [
+        "view",
+        "events",
+        1,
+        "ref"
+      ],
+      "value": "st-down"
+    }
+  ],
+  "source_mutation": null,
+  "max_calls": 2
+}

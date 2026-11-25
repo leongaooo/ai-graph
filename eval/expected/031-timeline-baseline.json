@@ -1,0 +1,11 @@
+{
+  "id": "031-timeline-baseline",
+  "category": "timeline",
+  "base": "incident",
+  "expect": {
+    "ok": true
+  },
+  "repair": [],
+  "source_mutation": null,
+  "max_calls": 2
+}

@@ -94,6 +94,11 @@ function arrowHead(draw, { x, y, direction = 'right', color = palette.teal, data
   draw.poly(points.map(point => screenPoint(...point)), { fill: color, dataRef, status, role: 'arrowhead' });
 }
 
+function tickDot(draw, { x, y, r = 4, color = palette.ink, dataRef, status = 'supported' }) {
+  draw.layer('subject');
+  draw.emit(`<circle cx="${x}" cy="${y}" r="${r}" fill="${color}" data-ref="${esc(dataRef)}" data-status="${esc(status)}" data-role="timeline-tick"/>`);
+}
+
 function toneColor(tone) {
   return tone === 'amber' ? palette.amber : palette.teal;
 }
@@ -335,6 +340,216 @@ function renderLegend({ draw, x, y, width, compact = false }) {
   });
 }
 
+function eventStatus(art, event) {
+  const status = semanticStatus(art, event.ref);
+  return { status, dash: status === 'supported' ? '' : '6 4', color: status === 'supported' ? palette.teal : palette.amber };
+}
+
+function timelineCard(art, scope, { draw, event, x, y, width, height, below = false }) {
+  const { status, dash, color } = eventStatus(art, event);
+  draw.layer('subject');
+  rect(draw, { x, y, width, height, fill: '#FFFFFF', stroke: color, strokeWidth: 1, dash, radius: 2, dataRef: event.ref, status, role: 'timeline-card' });
+  draw.layer('type');
+  typeBlock(draw, event.time ?? '', {
+    x: x + 12, y: y + 18, width: 84, size: 8.5, kind: 'mono', fill: palette.tone,
+    dataRef: event.ref, status, role: 'timeline-time'
+  });
+  typeBlock(draw, status === 'supported' ? '事实' : status === 'inferred' ? '推断' : '未知', {
+    x: x + width - 46, y: y + 18, width: 34, size: 8.5, fill: color,
+    dataRef: event.ref, status, role: 'timeline-status'
+  });
+  typeBlock(draw, event.label, {
+    x: x + 12, y: y + 42, width: width - 24, size: 13, lineHeight: 16, maxChars: 16,
+    fill: palette.ink, dataRef: event.ref, status, role: 'timeline-label'
+  });
+  if (event.evidence) {
+    typeBlock(draw, event.evidence, {
+      x: x + 12, y: y + height - 12, width: width - 24,
+      size: 8.5, maxChars: textMax(width - 24, 8.5, 30), fill: palette.tone,
+      dataRef: event.ref, status, role: 'timeline-evidence'
+    });
+  }
+  scope.add({ id: event.id, kind: 'state', bbox: [x, y, x + width, y + height], lineStyle: status === 'supported' ? 'solid' : 'dashed', label: event.label });
+  return { x: x + width / 2, y: below ? y : y + height };
+}
+
+function renderTimelineDesktop(art, outDir, semanticReport) {
+  const { draw, stock } = makeDraw(art);
+  const scope = makeScope(art);
+  const width = canvas.width;
+  const height = canvas.height;
+  const events = art.view.events ?? [];
+
+  draw.layer('paper');
+  draw.emit(stock.base);
+
+  draw.layer('type');
+  typeBlock(draw, `技术文章解释图 · ${art.source.date}`, {
+    x: 52, y: 48, width: 300, size: 9.5, maxChars: 30, fill: palette.tone, dataRef: 'c-main', status: 'supported', role: 'eyebrow'
+  });
+  typeBlock(draw, art.copy.title, {
+    x: 52, y: 82, width: 760, size: 30, lineHeight: 34, maxChars: 24, kind: 'title', fill: palette.ink, dataRef: 'c-main', status: 'supported', role: 'title'
+  });
+  typeBlock(draw, art.copy.subtitle, {
+    x: 54, y: 150, width: 760, size: 13, maxChars: 30, fill: palette.teal, dataRef: 'c-main', status: 'supported', role: 'subtitle'
+  });
+  typeBlock(draw, art.view.axisTitle, {
+    x: 52, y: 190, width: 520, size: 12, maxChars: 26, fill: palette.ink, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'axis-title'
+  });
+
+  const axisX = 140;
+  const axisRight = 1060;
+  const axisY = 330;
+  const cardWidth = 206;
+  const cardHeight = 96;
+  const step = (axisRight - axisX) / Math.max(1, events.length - 1);
+
+  draw.layer('subject');
+  line(draw, { points: [[axisX - 10, axisY], [axisRight + 10, axisY]], color: palette.teal, width: 1.6, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'timeline-axis' });
+  arrowHead(draw, { x: axisRight + 10, y: axisY, direction: 'right', color: palette.teal, dataRef: art.mainConclusion.claimRef, status: 'supported' });
+
+  events.forEach((event, index) => {
+    const tickX = axisX + step * index;
+    const below = index % 2 === 1;
+    const cardX = tickX - cardWidth / 2;
+    const cardY = below ? axisY + 20 : axisY - 20 - cardHeight;
+    tickDot(draw, { x: tickX, y: axisY, r: 4.5, color: palette.ink, dataRef: event.ref, status: eventStatus(art, event).status });
+    const anchor = timelineCard(art, scope, { draw, event, x: cardX, y: cardY, width: cardWidth, height: cardHeight, below });
+    draw.layer('subject');
+    line(draw, {
+      points: [[tickX, axisY], [tickX, below ? cardY : cardY + cardHeight]],
+      color: eventStatus(art, event).color, width: 1,
+      dash: eventStatus(art, event).dash, dataRef: event.ref, status: eventStatus(art, event).status, role: 'timeline-stem'
+    });
+    void anchor;
+  });
+
+  renderNotes(art, scope, { draw, notes: art.view.notes, x: 52, y: 470, width: 340, height: 42, gap: 17 });
+  renderConclusion(art, scope, { draw, x: 52, y: 556, width: 1095, maxChars: 70 });
+  renderSource(art, { draw, x: 52, y: 646, width: 680 });
+  renderLegend({ draw, x: 850, y: 646, width: 300 });
+
+  draw.layer('texture');
+  draw.emit(stock.grain);
+
+  const textOverflow = draw.text.filter(item => item.box[0] < 32 || item.box[1] < 24 || item.box[2] > width - 12 || item.box[3] > height - 5 || item.box[2] - item.box[0] > item.width + 0.01);
+  if (textOverflow.length) throw new Error(`timeline 文字超框：${textOverflow.map(item => item.text).join('、')}`);
+  const contrast = {
+    ink: contrastRatio(palette.ink, palette.paper),
+    tone: contrastRatio(palette.tone, palette.paper),
+    teal: contrastRatio(palette.teal, palette.paper),
+    amberText: contrastRatio(palette.amber, palette.paper)
+  };
+  if (contrast.ink < 4.5 || contrast.tone < 4.5 || contrast.teal < 4.5) throw new Error(`timeline 文字对比度不足：${JSON.stringify(contrast)}`);
+
+  assertCoverage(art, scope.elements);
+
+  const format = entries => entries.map(entry => `    ${entry}`).join('\n');
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="scene-title scene-desc" xml:lang="zh-CN">
+  <title id="scene-title">${esc(art.source.title)}</title>
+  <desc id="scene-desc">${esc(art.intent)}</desc>
+  <defs>${stock.defs}</defs>
+${layers.map(layer => `  <g id="${layer}">\n${format(draw.groups[layer])}\n  </g>`).join('\n')}
+</svg>\n`;
+  const scene = {
+    version: 2,
+    id: art.id,
+    grammar: art.view.grammar,
+    seed: art.seed,
+    canvas: { width, height, viewBox: `0 0 ${width} ${height}` },
+    source: art.source,
+    focus: art.view.focus,
+    elements: scope.elements,
+    metrics: { textCount: draw.text.length, textOverflow, contrast, evidenceCount: art.evidence.length, maxContentY: Math.max(...draw.text.map(item => item.box[3]), ...scope.elements.map(item => item.bbox[3])) },
+    svg: { file: `${art.id}.svg`, bytes: Buffer.byteLength(svg), sha1: sha1(svg) }
+  };
+  mkdirSync(outDir, { recursive: true });
+  writeFileSync(join(outDir, `${art.id}.svg`), svg);
+  writeFileSync(join(outDir, `${art.id}.scene.json`), `${JSON.stringify(scene, null, 2)}\n`);
+  return scene;
+}
+
+function renderTimelineMobile(art, outDir, semanticReport) {
+  const { draw, stock } = makeDraw(art);
+  const scope = makeScope(art);
+  const width = 390;
+  const height = 860;
+  const events = art.view.events ?? [];
+
+  draw.layer('paper');
+  rect(draw, { x: 0, y: 0, width, height, fill: palette.paper, dataRef: 'c-main', status: 'supported', role: 'background' });
+  draw.layer('type');
+  typeBlock(draw, `技术文章解释图 · ${art.source.date}`, {
+    x: 16, y: 28, width: 280, size: 8, maxChars: 30, fill: palette.tone, dataRef: 'c-main', status: 'supported', role: 'eyebrow'
+  });
+  typeBlock(draw, art.copy.title, {
+    x: 16, y: 58, width: 358, size: 22, lineHeight: 28, maxChars: 18, kind: 'title', fill: palette.ink, dataRef: 'c-main', status: 'supported', role: 'title'
+  });
+  typeBlock(draw, art.copy.subtitle, {
+    x: 16, y: 124, width: 358, size: 10.5, maxChars: 32, fill: palette.teal, dataRef: 'c-main', status: 'supported', role: 'subtitle'
+  });
+  typeBlock(draw, art.view.axisTitle, {
+    x: 16, y: 152, width: 340, size: 10, maxChars: 24, fill: palette.ink, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'axis-title'
+  });
+
+  const axisX = 34;
+  const firstY = 186;
+  const step = 86;
+  const cardWidth = 300;
+  const cardHeight = 78;
+
+  draw.layer('subject');
+  line(draw, { points: [[axisX, firstY - 12], [axisX, firstY + step * (events.length - 1) + 12]], color: palette.teal, width: 1.4, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'timeline-axis' });
+
+  events.forEach((event, index) => {
+    const tickY = firstY + step * index;
+    const cardY = tickY;
+    tickDot(draw, { x: axisX, y: tickY, r: 4, color: palette.ink, dataRef: event.ref, status: eventStatus(art, event).status });
+    line(draw, { points: [[axisX, tickY], [axisX + 18, cardY + cardHeight / 2]], color: eventStatus(art, event).color, width: 1, dash: eventStatus(art, event).dash, dataRef: event.ref, status: eventStatus(art, event).status, role: 'timeline-stem' });
+    timelineCard(art, scope, { draw, event, x: axisX + 18, y: cardY, width: cardWidth, height: cardHeight, below: false });
+  });
+
+  renderNotes(art, scope, { draw, notes: art.view.notes, x: 16, y: firstY + step * (events.length - 1) + cardHeight + 16, width: 358, height: 15, gap: 3, stacked: true });
+  renderConclusion(art, scope, {
+    draw, x: 16, y: 742, width: 358, maxChars: 34,
+    text: art.copy?.mobileConclusion || art.mainConclusion.text
+  });
+  renderSource(art, { draw, x: 16, y: 812, width: 170, compact: true });
+  renderLegend({ draw, x: 200, y: 812, width: 174, compact: true });
+
+  draw.layer('texture');
+  draw.emit(`<rect width="${width}" height="${height}" fill="${palette.paper}" filter="url(#paper-grain)" opacity="0.032"/>`);
+
+  const textOverflow = draw.text.filter(item => item.box[0] < 12 || item.box[1] < 12 || item.box[2] > width - 12 || item.box[3] > height - 2 || item.box[2] - item.box[0] > item.width + 0.01);
+  if (textOverflow.length) throw new Error(`timeline 移动版文字超框：${textOverflow.map(item => item.text).join('、')}`);
+
+  assertCoverage(art, scope.elements);
+
+  const format = entries => entries.map(entry => `    ${entry}`).join('\n');
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="mobile-scene-title mobile-scene-desc" xml:lang="zh-CN">
+  <title id="mobile-scene-title">${esc(art.source.title)}</title>
+  <desc id="mobile-scene-desc">${esc(art.intent)}</desc>
+  <defs>${stock.defs}</defs>
+${layers.map(layer => `  <g id="${layer}">\n${format(draw.groups[layer])}\n  </g>`).join('\n')}
+</svg>\n`;
+  const scene = {
+    version: 2,
+    id: `${art.id}.mobile`,
+    grammar: art.view.grammar,
+    seed: art.seed,
+    canvas: { width, height, viewBox: `0 0 ${width} ${height}` },
+    source: art.source,
+    focus: art.view.focus,
+    elements: scope.elements,
+    metrics: { textCount: draw.text.length, textOverflow, evidenceCount: art.evidence.length, maxContentY: Math.max(...draw.text.map(item => item.box[3]), ...scope.elements.map(item => item.bbox[3])), maxHeight: height, semanticChecks: semanticReport.checks },
+    svg: { file: `${art.id}.mobile.svg`, bytes: Buffer.byteLength(svg), sha1: sha1(svg) }
+  };
+  mkdirSync(outDir, { recursive: true });
+  writeFileSync(join(outDir, `${art.id}.mobile.svg`), svg);
+  writeFileSync(join(outDir, `${art.id}.mobile.scene.json`), `${JSON.stringify(scene, null, 2)}\n`);
+  return scene;
+}
+
 function renderStateDesktop(art, outDir, semanticReport) {
   const { draw, stock } = makeDraw(art);
   const scope = makeScope(art);
@@ -476,6 +691,12 @@ ${layers.map(layer => `  <g id="${layer}">\n${format(draw.groups[layer])}\n  </g
 }
 
 export function buildState(art, outDir, semanticReport) {
+  if (art.view.grammar === 'timeline') {
+    return {
+      desktop: renderTimelineDesktop(art, outDir, semanticReport),
+      mobile: renderTimelineMobile(art, outDir, semanticReport)
+    };
+  }
   return {
     desktop: renderStateDesktop(art, outDir, semanticReport),
     mobile: renderStateMobile(art, outDir, semanticReport)

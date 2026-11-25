@@ -74,7 +74,8 @@
 
 ### view
 
-- `grammar`：当前只支持 `sequence` / `state`。
+- `grammar`：当前只支持 `sequence` / `state` / `timeline`。
+  - `timeline`：按真实时间戳从左到右排事件，事件卡交替落在轴线上下；`view.events[].time` 必须是来源里的真实时间，不允许估算。
 - `focus`：主 claim id。
 - `order`：sequence 的主路径顺序；`visual_query.main_path` 优先使用它。
 - `elements`：每个可见元素的逻辑 id、语义 `ref`、kind、status。布局器必须覆盖全部 elements。

@@ -175,8 +175,8 @@ function createReport(specPath, options = {}) {
   }
 
   const grammar = spec.view?.grammar;
-  if (!['sequence', 'state'].includes(grammar)) {
-    fail('grammarSupported', 'view.grammar', `不支持的图法：${grammar ?? '(missing)'}；当前只支持 sequence / state`);
+  if (!['sequence', 'state', 'timeline'].includes(grammar)) {
+    fail('grammarSupported', 'view.grammar', `不支持的图法：${grammar ?? '(missing)'}；当前只支持 sequence / state / timeline`);
   }
 
   if (grammar === 'state') {
@@ -213,6 +213,17 @@ function createReport(specPath, options = {}) {
     if (spec.view?.edge?.ref && !semanticById.has(spec.view.edge.ref)) {
       fail('stateLayoutRefs', 'view.edge.ref', `edge ref 不存在：${spec.view.edge.ref}`);
     }
+  }
+
+  if (grammar === 'timeline') {
+    const events = asArray(spec.view?.events);
+    if (events.length < 2) fail('timelineLayoutRefs', 'view.events', 'timeline 图法必须提供至少两个事件');
+    for (const [index, event] of events.entries()) {
+      if (!semanticById.has(event?.ref)) fail('timelineLayoutRefs', `view.events[${index}].ref`, `事件 ref 不存在：${event?.ref}`);
+      if (typeof event?.time !== 'string' || event.time.trim() === '') fail('timelineLayoutRefs', `view.events[${index}].time`, '事件必须有真实时间戳');
+      if (typeof event?.label !== 'string' || event.label.trim() === '') fail('timelineLayoutRefs', `view.events[${index}].label`, '事件必须有标签');
+    }
+    if (typeof spec.view?.axisTitle !== 'string' || spec.view.axisTitle.trim() === '') fail('timelineLayoutRefs', 'view.axisTitle', 'timeline 必须提供 axisTitle');
   }
 
   for (const [index, metric] of asArray(spec.metrics).entries()) {
@@ -253,6 +264,18 @@ function createReport(specPath, options = {}) {
       requireElement(step?.id, `view.loop.steps[${index}].id`);
     }
     if (spec.view?.edge) requireElement(spec.view.edge.id, 'view.edge.id');
+    for (const [index, note] of asArray(spec.view?.notes).entries()) {
+      requireElement(note?.id, `view.notes[${index}].id`);
+    }
+  }
+
+  if (grammar === 'timeline') {
+    const requireElement = (id, path) => {
+      if (!viewElementIds.has(id)) fail('timelineLayoutRefs', path, `view.elements 缺少可见元素：${id}`);
+    };
+    for (const [index, event] of asArray(spec.view?.events).entries()) {
+      requireElement(event?.id, `view.events[${index}].id`);
+    }
     for (const [index, note] of asArray(spec.view?.notes).entries()) {
       requireElement(note?.id, `view.notes[${index}].id`);
     }

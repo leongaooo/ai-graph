@@ -391,7 +391,7 @@ export function build(artPath = defaultArt, outDir = defaultOut, options = {}) {
   writeFileSync(join(outDir, `${art?.id ?? 'visual-spec'}.semantic-report.json`), `${JSON.stringify(semanticReport, null, 2)}\n`);
   if (!semanticReport.ok) throw new Error(`语义门禁失败：${semanticReport.errors.map(error => `${error.rule} ${error.path}`).join('；')}`);
   if (!art) throw new Error('spec JSON 解析失败');
-  if (art.view?.grammar === 'state') {
+  if (['state', 'timeline'].includes(art.view?.grammar)) {
     return buildState(art, outDir, semanticReport);
   }
   // 第一份样本保留原有定制构图，避免改变已验证的 artifact hash；
