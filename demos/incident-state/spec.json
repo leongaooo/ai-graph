@@ -992,7 +992,8 @@
         "ref": "c-main",
         "status": "supported"
       }
-    ]
+    ],
+    "axisTitle": "四组状态：每一格都能回落出一条日志行"
   },
   "copy": {
     "title": "本地服务中断\n从连接拒绝到一次恢复",

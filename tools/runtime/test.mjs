@@ -66,8 +66,8 @@ test('sequence compile deterministic hashes', () => {
 test('state compile deterministic hashes', () => {
   const result = compileSpec({ specPath: statePath, outDir });
   assert(result.ok, `compile 失败：${JSON.stringify(result.diagnostics)}`);
-  assert(result.artifacts.desktop.hash === 'fffc6aa607e6943d061eb72045f1eb33c309135b', `desktop hash=${result.artifacts.desktop.hash}`);
-  assert(result.artifacts.mobile.hash === '77e51e57637f3f2a5b4a4385e6f2b4c4cd4b5061', `mobile hash=${result.artifacts.mobile.hash}`);
+  assert(result.artifacts.desktop.hash === 'f6b41d65cce54406c39541898de58f93fbff7e3e', `desktop hash=${result.artifacts.desktop.hash}`);
+  assert(result.artifacts.mobile.hash === '66b4db6ab169f7a020aa3c628a8c1d2b7c1a37a2', `mobile hash=${result.artifacts.mobile.hash}`);
   assert(result.artifacts.mobile.maxContentY <= 860, `mobile maxContentY=${result.artifacts.mobile.maxContentY}`);
 });
 
@@ -116,7 +116,7 @@ test('multi-source compile deterministic hash', () => {
   const researchPath = resolve(root, 'demos/research-claims/spec.json');
   const result = compileSpec({ specPath: researchPath, outDir, profile: 'desktop' });
   assert(result.ok, `compile 失败：${JSON.stringify(result.diagnostics)}`);
-  assert(result.artifacts.desktop.hash === '0c026bc6bf336579d1ad1270927e0849416ca1a6', `desktop hash=${result.artifacts.desktop.hash}`);
+  assert(result.artifacts.desktop.hash === '61dff07c93b636b4a86d4241cdeb1eef971892ad', `desktop hash=${result.artifacts.desktop.hash}`);
   assert(Array.isArray(result.sources) && result.sources.length === 3, `sources=${JSON.stringify(result.sources)}`);
 });
 

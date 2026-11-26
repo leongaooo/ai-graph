@@ -120,34 +120,37 @@ function renderLanes(art, scope, { draw, x, y, width, height, columns, gapX, gap
   for (const { lane, x: laneX, y: laneY } of positions) {
     const color = toneColor(lane.tone);
     draw.layer('subject');
-    rect(draw, { x: laneX, y: laneY, width: laneWidth, height: laneHeight, fill: '#FFFFFF', stroke: palette.ink, strokeWidth: 1, dataRef: lane.ref, status: 'supported', role: 'lane' });
-    rect(draw, { x: laneX, y: laneY, width: laneWidth, height: 4, fill: color, dataRef: lane.ref, status: 'supported', role: 'lane-accent' });
+    rect(draw, { x: laneX, y: laneY, width: laneWidth, height: laneHeight, fill: '#FFFFFF', dataRef: lane.ref, status: 'supported', role: 'lane' });
+    rect(draw, { x: laneX, y: laneY, width: 2.6, height: laneHeight, fill: color, dataRef: lane.ref, status: 'supported', role: 'lane-accent' });
+    line(draw, { points: [[laneX, laneY + laneHeight], [laneX + laneWidth, laneY + laneHeight]], color: '#D9D5C8', width: 0.7, dataRef: lane.ref, status: 'supported', role: 'lane-rule' });
     draw.layer('type');
     typeBlock(draw, lane.title, {
-      x: laneX + 14, y: laneY + 28, width: laneWidth - 28,
-      size: 13, maxChars: textMax(laneWidth - 28, 13, 10),
+      x: laneX + 14, y: laneY + 26, width: laneWidth - 28,
+      size: 12.5, maxChars: textMax(laneWidth - 28, 12.5, 10),
       fill: palette.ink, dataRef: lane.ref, status: 'supported', role: 'lane-title'
     });
     scope.add({ id: lane.id, kind: 'lane', bbox: [laneX, laneY, laneX + laneWidth, laneY + laneHeight], label: lane.title });
 
     const chipWidth = (laneWidth - 36) / 2;
-    const chipHeight = 26;
     lane.states.forEach((state, index) => {
       const column = index % 2;
       const row = Math.floor(index / 2);
-      const chipX = laneX + 14 + column * (chipWidth + 8);
-      const chipY = laneY + 44 + row * 32;
+      const rowX = laneX + 14 + column * (chipWidth + 10);
+      const rowY = laneY + 62 + row * 28;
       const stateStatus = semanticStatus(art, state.ref);
-      const stateDash = stateStatus === 'supported' ? '' : '6 4';
       draw.layer('prop');
-      rect(draw, { x: chipX, y: chipY, width: chipWidth, height: chipHeight, fill: palette.paper, stroke: color, strokeWidth: 1, dash: stateDash, radius: 13, dataRef: state.ref, status: stateStatus, role: 'state-chip' });
+      if (stateStatus === 'supported') {
+        rect(draw, { x: rowX, y: rowY - 7, width: 5, height: 5, fill: color, dataRef: state.ref, status: stateStatus, role: 'state-mark' });
+      } else {
+        rect(draw, { x: rowX, y: rowY - 7, width: 5, height: 5, stroke: color, strokeWidth: 0.8, dash: '3 2', dataRef: state.ref, status: stateStatus, role: 'state-mark' });
+      }
       draw.layer('type');
       typeBlock(draw, state.label, {
-        x: chipX + 10, y: chipY + 18, width: chipWidth - 20,
-        size: 10.5, maxChars: textMax(chipWidth - 20, 10.5, 7),
-        fill: color, dataRef: state.ref, status: stateStatus, role: 'state-label'
+        x: rowX + 11, y: rowY, width: chipWidth - 11,
+        size: 10.5, maxChars: textMax(chipWidth - 11, 10.5, 8),
+        fill: palette.ink, dataRef: state.ref, status: stateStatus, role: 'state-label'
       });
-      scope.add({ id: `state-${state.ref.slice(3)}`, kind: 'state', bbox: [chipX, chipY, chipX + chipWidth, chipY + chipHeight], label: state.label });
+      scope.add({ id: `state-${state.ref.slice(3)}`, kind: 'state', bbox: [rowX - 2, rowY - 16, rowX + chipWidth - 4, rowY + 6], label: state.label });
     });
   }
 }
@@ -171,15 +174,15 @@ function renderLoop(art, scope, { draw, x, y, width, height, columns, gapX, gapY
 
   positions.forEach(({ step, x: stepX, y: stepY }, index) => {
     draw.layer('subject');
-    rect(draw, { x: stepX, y: stepY, width: stepWidth, height: stepHeight, fill: '#FFFFFF', stroke: palette.teal, strokeWidth: 1.2, radius: 2, dataRef: step.ref, status: 'supported', role: 'loop-step' });
+    rect(draw, { x: stepX, y: stepY, width: stepWidth, height: stepHeight, fill: '#FFFFFF', stroke: '#D9D5C8', strokeWidth: 0.7, radius: 0, dataRef: step.ref, status: 'supported', role: 'loop-step' });
     draw.layer('type');
     typeBlock(draw, `${String(index + 1).padStart(2, '0')}`, {
-      x: stepX + 10, y: stepY + 18, width: 28,
-      size: 9, maxChars: 3, kind: 'mono', fill: palette.tone, dataRef: step.ref, status: 'supported', role: 'step-index'
+      x: stepX + 10, y: stepY + 28, width: 26,
+      size: 8.5, maxChars: 3, kind: 'mono', fill: palette.teal, dataRef: step.ref, status: 'supported', role: 'step-index'
     });
     typeBlock(draw, step.label, {
-      x: stepX + 38, y: stepY + 24, width: stepWidth - 48,
-      size: 14, maxChars: textMax(stepWidth - 48, 14, 8),
+      x: stepX + 34, y: stepY + 28, width: stepWidth - 44,
+      size: 12.5, maxChars: textMax(stepWidth - 44, 12.5, 8),
       fill: palette.ink, dataRef: step.ref, status: 'supported', role: 'step-label'
     });
     scope.add({ id: step.id, kind: 'node', bbox: [stepX, stepY, stepX + stepWidth, stepY + stepHeight], label: step.label });
@@ -192,7 +195,7 @@ function renderLoop(art, scope, { draw, x, y, width, height, columns, gapX, gapY
       const startX = current.x + stepWidth;
       const endX = next.x;
       draw.layer('subject');
-      line(draw, { points: [[startX, current.y + stepHeight / 2], [endX, next.y + stepHeight / 2]], color: palette.teal, width: 1.2, dataRef: loop.steps[index + 1].ref, status: 'supported' });
+      line(draw, { points: [[startX, current.y + stepHeight / 2], [endX, next.y + stepHeight / 2]], color: '#C9C5B8', width: 1, dataRef: loop.steps[index + 1].ref, status: 'supported' });
       arrowHead(draw, { x: endX, y: next.y + stepHeight / 2, direction: 'right', dataRef: loop.steps[index + 1].ref, status: 'supported' });
     } else {
       const startY = current.y + stepHeight;
@@ -241,7 +244,12 @@ function renderEdge(art, scope, options) {
   const { draw, compact = false } = options;
   const { x, y, width, height } = options;
   draw.layer('subject');
-  rect(draw, { x, y, width, height, fill: palette.paper, stroke: palette.teal, strokeWidth: 1, radius: 2, dataRef: edge.ref, status: 'supported', role: 'edge-note' });
+  if (compact) {
+    rect(draw, { x, y, width, height, fill: '#FFFFFF', dataRef: edge.ref, status: 'supported', role: 'edge-note' });
+    line(draw, { points: [[x, y + height], [x + width, y + height]], color: '#D9D5C8', width: 0.7, dataRef: edge.ref, status: 'supported', role: 'edge-rule' });
+  } else {
+    rect(draw, { x, y, width, height, fill: 'none', dataRef: edge.ref, status: 'supported', role: 'edge-note' });
+  }
   draw.layer('type');
   if (compact) {
     typeBlock(draw, edge.label, {
@@ -254,21 +262,24 @@ function renderEdge(art, scope, options) {
     });
   } else {
     typeBlock(draw, edge.label, {
-      x: x + 14, y: y + 24, width: 86,
-      size: 12, maxChars: 6, fill: palette.teal, dataRef: edge.ref, status: 'supported', role: 'edge-title'
+      x: x + 14, y: y + (height + 10) / 2, width: 86,
+      size: 10.5, maxChars: 6, fill: palette.teal, dataRef: edge.ref, status: 'supported', role: 'edge-title'
     });
     const tasks = edge.tasks ?? [];
     const gap = 7;
     const available = width - 112 - gap * Math.max(0, tasks.length - 1);
     const taskWidth = Math.floor(available / Math.max(1, tasks.length));
+    draw.layer('grid');
+    line(draw, { points: [[x, y + height], [x + width, y + height]], color: '#D9D5C8', width: 0.7, dataRef: edge.ref, status: 'supported', role: 'edge-rule' });
     tasks.forEach((task, index) => {
-      const taskX = x + 104 + index * (taskWidth + gap);
-      draw.layer('prop');
-      rect(draw, { x: taskX, y: y + 12, width: taskWidth, height: height - 24, fill: '#FFFFFF', stroke: palette.teal, strokeWidth: 1, radius: 12, dataRef: edge.ref, status: 'supported', role: 'edge-task' });
+      const taskX = x + 112 + index * (taskWidth + gap);
+      if (index > 0) {
+        line(draw, { points: [[taskX - gap / 2, y + 8], [taskX - gap / 2, y + height - 8]], color: '#D9D5C8', width: 0.7, dataRef: edge.ref, status: 'supported', role: 'edge-divider' });
+      }
       draw.layer('type');
       typeBlock(draw, task, {
-        x: taskX + 8, y: y + (height + 10) / 2, width: taskWidth - 16,
-        size: 9.5, maxChars: textMax(taskWidth - 16, 9.5, 6), fill: palette.ink, dataRef: edge.ref, status: 'supported', role: 'edge-task-label'
+        x: taskX, y: y + (height + 10) / 2, width: taskWidth,
+        size: 9.5, maxChars: textMax(taskWidth, 9.5, 6), fill: palette.ink, dataRef: edge.ref, status: 'supported', role: 'edge-task-label'
       });
     });
   }
@@ -695,28 +706,117 @@ function renderStateDesktop(art, outDir, semanticReport) {
   const scope = makeScope(art);
   const width = canvas.width;
   const height = canvas.height;
+  const left = 52;
+  const right = 1148;
 
   draw.layer('paper');
   draw.emit(stock.base);
 
+  // ---- 页眉：标题压在上，读数退到右肩 ----
   draw.layer('type');
   typeBlock(draw, `技术文章解释图 · ${art.source.date}`, {
-    x: 52, y: 48, width: 300, size: 9.5, maxChars: 30, fill: palette.tone, dataRef: 'c-main', status: 'supported', role: 'eyebrow'
+    x: left, y: 44, width: 360, size: 9.5, maxChars: 42, fill: palette.mist, dataRef: 'c-main', status: 'supported', role: 'eyebrow'
   });
   typeBlock(draw, art.copy.title, {
-    x: 52, y: 82, width: 760, size: 30, lineHeight: 34, maxChars: 24, kind: 'title', fill: palette.ink, dataRef: 'c-main', status: 'supported', role: 'title'
+    x: left, y: 84, width: 720, size: 32, lineHeight: 38, spacing: 0.6, maxChars: 22, kind: 'title', fill: palette.ink, dataRef: 'c-main', status: 'supported', role: 'title'
   });
   typeBlock(draw, art.copy.subtitle, {
-    x: 54, y: 150, width: 760, size: 13, maxChars: 30, fill: palette.teal, dataRef: 'c-main', status: 'supported', role: 'subtitle'
+    x: left, y: 152, width: 620, size: 12.5, maxChars: 40, fill: palette.teal, dataRef: 'c-main', status: 'supported', role: 'subtitle'
   });
 
-  renderLanes(art, scope, { draw, x: 52, y: 178, width: 240, height: 148, columns: 4, gapX: 20, gapY: 0 });
-  renderLoop(art, scope, { draw, x: 52, y: 398, width: 180, height: 58, columns: 6, gapX: 8, gapY: 0, titleY: 360 });
-  renderEdge(art, scope, { draw, x: 52, y: 478, width: 1095, height: 54 });
-  renderNotes(art, scope, { draw, notes: art.view.notes, x: 52, y: 548, width: 340, height: 42, gap: 17 });
-  renderConclusion(art, scope, { draw, x: 52, y: 626, width: 1095, maxChars: 70 });
-  renderSource(art, { draw, x: 52, y: 656, width: 680 });
-  renderLegend({ draw, x: 850, y: 656, width: 300 });
+  // 读数条：只放 spec 里已有的数与计数，不编造
+  const metrics = art.metrics ?? [];
+  const notes = art.view.notes ?? [];
+  const readings = [
+    ...metrics.map(item => ({ value: String(item.value), unit: item.unit ?? '次', label: item.label })),
+    notes.length ? { value: String(notes.length), unit: '处', label: '未知' } : null
+  ].filter(Boolean);
+  const cellW = 86;
+  const cellGap = 20;
+  const totalW = readings.length * cellW + (readings.length - 1) * cellGap;
+  const readX = right - totalW;
+  readings.forEach((reading, index) => {
+    const x = readX + index * (cellW + cellGap);
+    typeBlock(draw, reading.value, {
+      x, y: 88, width: cellW, size: 24, maxChars: 4, kind: 'title', fill: palette.ink, dataRef: 'c-main', status: 'supported', role: 'reading-value'
+    });
+    const labelText = `${reading.unit} · ${reading.label}`;
+    typeBlock(draw, labelText, {
+      x, y: 110, width: cellW + 12, size: labelText.length > 14 ? 7.2 : 8.5, maxChars: Math.max(18, labelText.length),
+      fill: palette.mist, dataRef: 'c-main', status: 'supported', role: 'reading-label'
+    });
+    if (index > 0) {
+      draw.layer('grid');
+      line(draw, { points: [[x - cellGap / 2, 68], [x - cellGap / 2, 112]], color: '#CFCCC2', width: 0.7, dataRef: 'c-main', status: 'supported', role: 'reading-rule' });
+      draw.layer('type');
+    }
+  });
+
+  draw.layer('grid');
+  line(draw, { points: [[left, 168], [right, 168]], color: '#CFCCC2', width: 0.7, dataRef: 'c-main', status: 'supported', role: 'header-rule' });
+
+  draw.layer('type');
+  typeBlock(draw, art.view.axisTitle ?? art.copy.series, {
+    x: left, y: 190, width: 640, size: 12.5, maxChars: 34, fill: palette.ink, dataRef: 'c-main', status: 'supported', role: 'section-title'
+  });
+
+  // ---- 图区：浅色底带托住四组状态 ----
+  const bandTop = 206;
+  const bandBottom = 362;
+  draw.layer('env');
+  rect(draw, { x: left, y: bandTop, width: right - left, height: bandBottom - bandTop, fill: '#F3F1E9', dataRef: 'c-main', status: 'supported', role: 'state-band' });
+  draw.layer('grid');
+  line(draw, { points: [[left, bandTop], [right, bandTop]], color: '#D9D5C8', width: 0.7, dataRef: 'c-main', status: 'supported', role: 'band-rule' });
+  line(draw, { points: [[left, bandBottom], [right, bandBottom]], color: '#D9D5C8', width: 0.7, dataRef: 'c-main', status: 'supported', role: 'band-rule' });
+
+  const laneWidth = Math.floor((right - left - 3 * 20) / 4);
+  renderLanes(art, scope, { draw, x: left, y: bandTop + 15, width: laneWidth, height: 126, columns: 4, gapX: 20, gapY: 0 });
+
+  // ---- 动作链：单行 6 步 ----
+  const loopTitleY = 384;
+  const stepWidth = Math.floor((right - left - 5 * 8) / 6);
+  renderLoop(art, scope, { draw, x: left, y: 400, width: stepWidth, height: 46, columns: 6, gapX: 8, gapY: 0, titleY: loopTitleY });
+
+  renderEdge(art, scope, { draw, x: left, y: 458, width: right - left, height: 44 });
+
+  // ---- 缺证据：一个虚线容器 + 两段细竖线 + 三列文案 ----
+  const noteTop = 514;
+  const noteH = 38;
+  const colW = (right - left) / Math.max(1, notes.length);
+  draw.layer('prop');
+  rect(draw, { x: left, y: noteTop, width: right - left, height: noteH, fill: 'none', stroke: palette.amber, strokeWidth: 1, dash: '7 5', dataRef: notes[0]?.ref ?? 'c-main', status: 'unknown', role: 'unknown' });
+  notes.forEach((note, index) => {
+    const colX = left + index * colW;
+    if (index > 0) {
+      draw.layer('grid');
+      line(draw, { points: [[colX, noteTop + 6], [colX, noteTop + noteH - 6]], color: '#D9D5C8', width: 0.7, dataRef: note.ref, status: 'unknown', role: 'unknown-rule' });
+    }
+    draw.layer('type');
+    typeBlock(draw, note.label, {
+      x: colX + 14, y: noteTop + 24, width: colW - 28,
+      size: 9.5, maxChars: textMax(colW - 28, 9.5, 34), fill: palette.amber, dataRef: note.ref, status: 'unknown', role: 'unknown-label'
+    });
+    scope.add({ id: note.id, kind: 'unknown', bbox: [colX + 2, noteTop, colX + colW - 2, noteTop + noteH], lineStyle: 'dashed', label: note.label });
+  });
+
+  // ---- 结论：左色条 + 更大的字 ----
+  const conclusionY = 564;
+  const conclusionH = 54;
+  draw.layer('env');
+  rect(draw, { x: left, y: conclusionY, width: right - left, height: conclusionH, fill: '#F3F1E9', dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'conclusion-band' });
+  rect(draw, { x: left, y: conclusionY, width: 3, height: conclusionH, fill: palette.teal, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'conclusion-bar' });
+  draw.layer('type');
+  typeBlock(draw, art.mainConclusion.text, {
+    x: left + 18, y: conclusionY + 31, width: 1060, size: 15, lineHeight: 20, maxChars: 62,
+    fill: palette.ink, dataRef: art.mainConclusion.claimRef, status: 'supported', role: 'conclusion'
+  });
+  const claimEl = (art.view.elements ?? []).find(item => item.ref === art.mainConclusion.claimRef);
+  scope.add({ id: claimEl?.id ?? art.mainConclusion.claimRef, kind: 'claim', bbox: [left, conclusionY, right, conclusionY + conclusionH], lineStyle: 'solid', label: art.mainConclusion.text });
+
+  draw.layer('grid');
+  line(draw, { points: [[left, 630], [right, 630]], color: '#CFCCC2', width: 0.7, dataRef: 'c-main', status: 'supported', role: 'footer-rule' });
+  renderSource(art, { draw, x: left, y: 648, width: 680 });
+  renderLegend({ draw, x: 878, y: 648, width: 270 });
 
   draw.layer('texture');
   draw.emit(stock.grain);
@@ -763,31 +863,120 @@ function renderStateMobile(art, outDir, semanticReport) {
   const scope = makeScope(art);
   const width = 390;
   const height = 860;
+  const left = 16;
+  const right = 374;
+  const notes = art.view.notes ?? [];
 
   draw.layer('paper');
   rect(draw, { x: 0, y: 0, width, height, fill: palette.paper, dataRef: 'c-main', status: 'supported', role: 'background' });
   draw.layer('type');
 
   typeBlock(draw, `技术文章解释图 · ${art.source.date}`, {
-    x: 16, y: 28, width: 280, size: 8, maxChars: 30, fill: palette.tone, dataRef: 'c-main', status: 'supported', role: 'eyebrow'
+    x: left, y: 26, width: 280, size: 8, maxChars: 30, fill: palette.mist, dataRef: 'c-main', status: 'supported', role: 'eyebrow'
   });
   typeBlock(draw, art.copy.title, {
-    x: 16, y: 58, width: 358, size: 22, lineHeight: 28, maxChars: 18, kind: 'title', fill: palette.ink, dataRef: 'c-main', status: 'supported', role: 'title'
+    x: left, y: 56, width: 358, size: 22, lineHeight: 28, spacing: 0.3, maxChars: 18, kind: 'title', fill: palette.ink, dataRef: 'c-main', status: 'supported', role: 'title'
   });
   typeBlock(draw, art.copy.subtitle, {
-    x: 16, y: 128, width: 358, size: 10.5, maxChars: 32, fill: palette.teal, dataRef: 'c-main', status: 'supported', role: 'subtitle'
+    x: left, y: 124, width: 358, size: 10.5, maxChars: 34, fill: palette.teal, dataRef: 'c-main', status: 'supported', role: 'subtitle'
   });
 
-  renderLanes(art, scope, { draw, x: 16, y: 146, width: 174, height: 128, columns: 2, gapX: 10, gapY: 14 });
-  renderLoop(art, scope, { draw, x: 16, y: 450, width: 358, height: 30, columns: 1, gapX: 0, gapY: 4, titleY: 436 });
-  renderEdge(art, scope, { draw, x: 16, y: 664, width: 358, height: 46, compact: true });
-  renderNotes(art, scope, { draw, notes: art.view.notes, x: 16, y: 718, width: 358, height: 14, gap: 2, stacked: true });
-  renderConclusion(art, scope, {
-    draw, x: 16, y: 798, width: 358, maxChars: 34,
-    text: art.copy?.mobileConclusion || art.mainConclusion.text
+  // 读数一行三项，与桌面同一口径
+  const metrics = art.metrics ?? [];
+  const readings = [
+    ...metrics.map(item => ({ value: String(item.value), unit: item.unit ?? '次', label: item.label })),
+    notes.length ? { value: String(notes.length), unit: '处', label: '未知' } : null
+  ].filter(Boolean);
+  const cellW = Math.floor((right - left - (readings.length - 1) * 14) / Math.max(1, readings.length));
+  readings.forEach((reading, index) => {
+    const x = left + index * (cellW + 14);
+    typeBlock(draw, reading.value, {
+      x, y: 150, width: cellW, size: 17, maxChars: 4, kind: 'title', fill: palette.ink, dataRef: 'c-main', status: 'supported', role: 'reading-value'
+    });
+    const labelText = `${reading.unit} · ${reading.label}`;
+    typeBlock(draw, labelText, {
+      x, y: 166, width: cellW + 8, size: labelText.length > 10 ? 7 : 8, maxChars: Math.max(12, labelText.length),
+      fill: palette.mist, dataRef: 'c-main', status: 'supported', role: 'reading-label'
+    });
+    if (index > 0) {
+      draw.layer('grid');
+      line(draw, { points: [[x - 7, 136], [x - 7, 170]], color: '#CFCCC2', width: 0.7, dataRef: 'c-main', status: 'supported', role: 'reading-rule' });
+      draw.layer('type');
+    }
   });
-  renderSource(art, { draw, x: 16, y: 838, width: 170, compact: true });
-  renderLegend({ draw, x: 200, y: 838, width: 174, compact: true });
+
+  draw.layer('grid');
+  line(draw, { points: [[left, 182], [right, 182]], color: '#CFCCC2', width: 0.7, dataRef: 'c-main', status: 'supported', role: 'header-rule' });
+
+  draw.layer('type');
+  typeBlock(draw, art.view.axisTitle ?? art.copy.series, {
+    x: left, y: 202, width: 358, size: 10.5, maxChars: 30, fill: palette.ink, dataRef: 'c-main', status: 'supported', role: 'section-title'
+  });
+
+  // 图区底带
+  draw.layer('env');
+  rect(draw, { x: left, y: 212, width: right - left, height: 250, fill: '#F3F1E9', dataRef: 'c-main', status: 'supported', role: 'state-band' });
+  draw.layer('grid');
+  line(draw, { points: [[left, 212], [right, 212]], color: '#D9D5C8', width: 0.7, dataRef: 'c-main', status: 'supported', role: 'band-rule' });
+  line(draw, { points: [[left, 462], [right, 462]], color: '#D9D5C8', width: 0.7, dataRef: 'c-main', status: 'supported', role: 'band-rule' });
+
+  renderLanes(art, scope, { draw, x: left, y: 222, width: 174, height: 112, columns: 2, gapX: 10, gapY: 10 });
+
+  // 动作链：手机版压成带格线的编号列表
+  const loop = art.view.loop;
+  draw.layer('type');
+  typeBlock(draw, loop.title, {
+    x: left, y: 490, width: 358, size: 12, maxChars: 16, fill: palette.ink, dataRef: loop.ref, status: 'supported', role: 'loop-title'
+  });
+  const stepRows = loop.steps ?? [];
+  stepRows.forEach((step, index) => {
+    const rowY = 512 + index * 21;
+    draw.layer('type');
+    typeBlock(draw, `${String(index + 1).padStart(2, '0')}`, {
+      x: left, y: rowY, width: 22, size: 8, kind: 'mono', maxChars: 2, fill: palette.teal, dataRef: step.ref, status: 'supported', role: 'step-index'
+    });
+    typeBlock(draw, step.label, {
+      x: left + 30, y: rowY, width: 328, size: 11.5, maxChars: 26, fill: palette.ink, dataRef: step.ref, status: 'supported', role: 'step-label'
+    });
+    draw.layer('grid');
+    line(draw, { points: [[left, rowY + 7], [right, rowY + 7]], color: '#E4E0D4', width: 0.6, dataRef: step.ref, status: 'supported', role: 'step-rule' });
+    scope.add({ id: step.id, kind: 'node', bbox: [left, rowY - 13, right, rowY + 8], label: step.label });
+  });
+
+  renderEdge(art, scope, { draw, x: left, y: 640, width: right - left, height: 42, compact: true });
+
+  // 缺证据：一个虚线容器 + 两段细竖线
+  const noteTop = 696;
+  const noteH = 56;
+  draw.layer('prop');
+  rect(draw, { x: left, y: noteTop, width: right - left, height: noteH, fill: 'none', stroke: palette.amber, strokeWidth: 1, dash: '7 5', dataRef: notes[0]?.ref ?? 'c-main', status: 'unknown', role: 'unknown' });
+  notes.forEach((note, index) => {
+    const rowY = noteTop + 17 + index * 16;
+    draw.layer('type');
+    typeBlock(draw, note.label, {
+      x: left + 12, y: rowY, width: right - left - 24, size: 8.5, maxChars: 38, fill: palette.amber, dataRef: note.ref, status: 'unknown', role: 'unknown-label'
+    });
+    scope.add({ id: note.id, kind: 'unknown', bbox: [left + 2, rowY - 12, right - 2, rowY + 4], lineStyle: 'dashed', label: note.label });
+  });
+
+  // 结论
+  const claimRef = art.mainConclusion.claimRef;
+  const claimStatus = semanticStatus(art, claimRef);
+  draw.layer('env');
+  rect(draw, { x: left, y: 764, width: right - left, height: 58, fill: '#F3F1E9', dataRef: claimRef, status: claimStatus, role: 'conclusion-band' });
+  rect(draw, { x: left, y: 764, width: 2.6, height: 46, fill: palette.teal, dataRef: claimRef, status: claimStatus, role: 'conclusion-bar' });
+  draw.layer('type');
+  const conclusionText = art.copy?.mobileConclusion || art.mainConclusion.text;
+  const conclusionLines = typeBlock(draw, conclusionText, {
+    x: left + 12, y: 776, width: 346, size: 13, lineHeight: 17, maxChars: 26, fill: palette.ink,
+    dataRef: claimRef, status: claimStatus, role: 'conclusion'
+  });
+  const claimEl = (art.view.elements ?? []).find(item => item.ref === claimRef);
+  scope.add({ id: claimEl?.id ?? claimRef, kind: 'claim', bbox: [left, 764, right, 776 + (conclusionLines.length - 1) * 17 + 4], lineStyle: 'solid', label: conclusionText });
+
+  const footerY = 776 + (conclusionLines.length - 1) * 17 + 18;
+  renderSource(art, { draw, x: left, y: footerY, width: 358, compact: true });
+  renderLegend({ draw, x: left, y: footerY + 18, width: 358, compact: true });
 
   draw.layer('texture');
   draw.emit(`<rect width="${width}" height="${height}" fill="${palette.paper}" filter="url(#paper-grain)" opacity="0.032"/>`);
