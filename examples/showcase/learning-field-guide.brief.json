@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "version": "0.1",
+    "lang": "zh-CN",
+    "title": "从标本读懂叶脉"
+  },
+  "intent": {
+    "primaryGoal": "guide",
+    "tone": "warm",
+    "audience": "自然科学学习者"
+  },
+  "layout": {
+    "template": "faq-callout",
+    "slots": {
+      "title": "从标本读懂叶脉",
+      "description": "打开的野外笔记上，一枚放大镜照出树叶的主脉与侧脉。",
+      "background": "#142820",
+      "surface": "#223B2F",
+      "muted": "#587365",
+      "primary": "#79A884",
+      "highlight": "#FFF4D8",
+      "accent": "#FFC9A0"
+    }
+  },
+  "story": {
+    "beats": [
+      {
+        "text": "翻开观察手册，用放大镜辨认主脉与侧脉。"
+      }
+    ]
+  },
+  "style": {
+    "brightness": "dark",
+    "contrast": "high",
+    "illustrationStyle": "flat"
+  },
+  "motion": {
+    "plan": "静态插画",
+    "reducedMotionStrategy": "none"
+  },
+  "constraints": {
+    "size": {
+      "width": 960,
+      "height": 600
+    },
+    "maxNodes": 120,
+    "allowImages": false,
+    "allowHumans": false,
+    "brandColor": "#FFC9A0"
+  }
+}

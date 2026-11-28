@@ -1,11 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const repository = fileURLToPath(new URL("../", import.meta.url));
 
 function usage() {
   console.log(
     [
       "Usage:",
-      "  node front-end-effect/tools/inject-motifs.mjs --scene <scene.json> --out <scene.json> [--manifest <motifs.manifest.json>]",
+      "  node tools/inject-motifs.mjs --scene <scene.json> --out <scene.json> [--manifest <motifs.manifest.json>]",
       "",
       "What it does:",
       "  - Reads SceneSpec v0.1 JSON",
@@ -68,7 +71,7 @@ function ensureArray(value) {
 function main() {
   const scenePath = arg("--scene");
   const outPath = arg("--out");
-  const manifestPath = arg("--manifest") || "front-end-effect/assets/motifs/motifs.manifest.json";
+  const manifestPath = arg("--manifest");
 
   if (!scenePath || !outPath) {
     usage();
@@ -77,10 +80,11 @@ function main() {
 
   const sceneAbs = path.resolve(process.cwd(), scenePath);
   const outAbs = path.resolve(process.cwd(), outPath);
-  const manifestAbs = path.resolve(process.cwd(), manifestPath);
+  const manifestAbs = manifestPath
+    ? path.resolve(manifestPath)
+    : path.join(repository, "assets/motifs/motifs.manifest.json");
 
   const scene = readJson(sceneAbs);
-  const manifest = readJson(manifestAbs);
 
   const motifIds = ensureArray(scene?.defs?.motifs);
   if (motifIds.length === 0) {
@@ -89,6 +93,7 @@ function main() {
     return;
   }
 
+  const manifest = readJson(manifestAbs);
   const byId = new Map((manifest?.motifs || []).map((m) => [m.id, m]));
   const missing = [];
   const fileCache = new Map(); // abs path -> content
@@ -100,7 +105,9 @@ function main() {
       missing.push(id);
       continue;
     }
-    const abs = path.resolve(process.cwd(), entry.path);
+    const abs = manifestPath
+      ? path.resolve(entry.path)
+      : path.resolve(repository, entry.path.replace(/^front-end-effect\//, ""));
     if (!fileCache.has(abs)) fileCache.set(abs, readText(abs));
     const svgText = fileCache.get(abs);
     const symbol = extractSymbol(svgText, entry.symbolId);

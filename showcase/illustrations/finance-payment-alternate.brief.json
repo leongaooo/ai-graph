@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "version": "0.1",
+    "lang": "zh-CN",
+    "title": "付款成功"
+  },
+  "intent": {
+    "primaryGoal": "celebrate",
+    "tone": "warm",
+    "audience": "付款用户"
+  },
+  "layout": {
+    "template": "hero-card",
+    "slots": {
+      "title": "付款成功",
+      "description": "一张支付卡靠近刷卡终端，屏幕亮起确认勾。",
+      "background": "#122828",
+      "surface": "#20413E",
+      "muted": "#527875",
+      "primary": "#74CBB9",
+      "highlight": "#E9FFF7",
+      "accent": "#ACEA89"
+    }
+  },
+  "story": {
+    "beats": [
+      {
+        "text": "卡片靠近终端，交易完成后出现确认勾。"
+      }
+    ]
+  },
+  "style": {
+    "brightness": "dark",
+    "contrast": "high",
+    "illustrationStyle": "flat"
+  },
+  "motion": {
+    "plan": "静态插画",
+    "reducedMotionStrategy": "none"
+  },
+  "constraints": {
+    "size": {
+      "width": 960,
+      "height": 600
+    },
+    "maxNodes": 120,
+    "allowImages": false,
+    "allowHumans": false,
+    "brandColor": "#ACEA89"
+  }
+}

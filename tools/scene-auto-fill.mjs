@@ -1,11 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 function usage() {
   console.log(
     [
       "Usage:",
-      "  node front-end-effect/tools/scene-auto-fill.mjs --brief <brief.json> --out <scene-mother.json> [--domain payments|portal|booking] [--style glass|paper|glow] [--seed <int>] [--candidates <n>]",
+      "  node tools/scene-auto-fill.mjs --brief <brief.json> --out <scene-mother.json> [--domain payments|portal|booking] [--style glass|paper|glow] [--seed <int>] [--candidates <n>]",
       "",
       "What it does:",
       "  - Reads BriefSpec v0.1",
@@ -14,7 +15,7 @@ function usage() {
       "  - Outputs a SceneSpec mother with {{slot:kicker/headline/subhead}} and correct layers",
       "",
       "Then render via pipeline:",
-      "  node front-end-effect/tools/pipeline.mjs --brief <brief.json> --scene <scene-mother.json> --outScene <scene.json> --outSvg <render.svg>",
+      "  node tools/pipeline.mjs --brief <brief.json> --scene <scene-mother.json> --outScene <scene.json> --outSvg <render.svg>",
     ].join("\n")
   );
 }
@@ -634,7 +635,7 @@ function main() {
   const outAbs = path.resolve(process.cwd(), outPath);
   const brief = readJson(briefAbs);
 
-  const metaAbs = path.resolve(process.cwd(), "front-end-effect/assets/motifs/motifs.meta.json");
+  const metaAbs = fileURLToPath(new URL("../assets/motifs/motifs.meta.json", import.meta.url));
   const meta = readJson(metaAbs);
   const metaById = metaIndex(meta);
 

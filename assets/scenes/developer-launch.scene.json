@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "version": "0.1",
+    "title": "Developer launch",
+    "lang": "zh-CN"
+  },
+  "canvas": {
+    "width": 960,
+    "height": 600,
+    "viewBox": "0 0 960 600",
+    "bg": "{{slot:background}}"
+  },
+  "theme": {
+    "palette": {
+      "bg": "{{slot:background}}",
+      "fg": "{{slot:highlight}}",
+      "primary": "{{slot:primary}}",
+      "accent": "{{slot:accent}}",
+      "muted": "{{slot:orbit}}"
+    },
+    "typography": {
+      "fontFamily": "system-ui, sans-serif",
+      "baseSize": 16
+    }
+  },
+  "nodes": [
+    {
+      "id": "background",
+      "type": "group",
+      "attrs": {
+        "data-role": "decor",
+        "data-decor-type": "texture",
+        "data-layer": "bg_base"
+      },
+      "children": [
+        {"id": "backdrop", "type": "rect", "attrs": {"x": 0, "y": 0, "width": 960, "height": 600, "fill": "{{slot:background}}", "rx": 0}},
+        {"id": "planet", "type": "circle", "attrs": {"cx": 646, "cy": 255, "r": 213, "fill": "{{slot:surface}}"}},
+        {"id": "planet-rim", "type": "circle", "attrs": {"cx": 646, "cy": 255, "r": 213, "fill": "none", "stroke": "{{slot:orbit}}", "stroke-width": 1.5}},
+        {"id": "orbit-guide", "type": "circle", "attrs": {"cx": 646, "cy": 255, "r": 242, "fill": "none", "stroke": "{{slot:orbit}}", "stroke-width": 1.1, "stroke-dasharray": "2 8"}},
+        {"id": "planet-dark-side", "type": "path", "attrs": {"d": "M691 47C817 73 878 186 855 299C836 389 760 456 672 466C765 423 809 354 808 279C806 176 768 99 691 47Z", "fill": "{{slot:orbit}}", "opacity": ".56"}},
+        {"id": "orbit-rear", "type": "path", "attrs": {"d": "M825 110C958 104 930 208 754 314C581 418 364 468 342 415C325 374 426 288 582 224", "fill": "none", "stroke": "{{slot:primary}}", "stroke-width": 1.2, "opacity": ".47"}},
+        {"id": "bottom-rule", "type": "path", "attrs": {"d": "M63 541H897M63 535V547M897 535V547", "fill": "none", "stroke": "{{slot:orbit}}", "stroke-width": 1}}
+      ]
+    },
+    {
+      "id": "navigation-marks",
+      "type": "group",
+      "attrs": {
+        "data-role": "decor"
+      },
+      "children": [
+        {"id": "spark-large", "type": "path", "attrs": {"d": "M782 114C784 131 789 136 806 138C789 140 784 145 782 162C780 145 775 140 758 138C775 136 780 131 782 114Z", "fill": "{{slot:accent}}"}},
+        {"id": "spark-small", "type": "path", "attrs": {"d": "M854 165l2.5 9.5 9.5 2.5-9.5 2.5-2.5 9.5-2.5-9.5-9.5-2.5 9.5-2.5Z", "fill": "{{slot:primary}}"}},
+        {"id": "guide-crosses", "type": "path", "attrs": {"d": "M124 154h18m-9-9v18m218-73h12m-6-6v12m452 367h18m-9-9v18m-695 4h12m-6-6v12", "fill": "none", "stroke": "{{slot:primary}}", "stroke-width": 1.4, "stroke-linecap": "round", "opacity": ".68"}},
+        {"id": "point-high", "type": "circle", "attrs": {"cx": 464, "cy": 117, "r": 3.8, "fill": "{{slot:accent}}"}},
+        {"id": "point-left", "type": "circle", "attrs": {"cx": 196, "cy": 190, "r": 3, "fill": "{{slot:primary}}"}},
+        {"id": "point-right", "type": "circle", "attrs": {"cx": 875, "cy": 394, "r": 3.4, "fill": "{{slot:highlight}}"}},
+        {"id": "point-low", "type": "circle", "attrs": {"cx": 705, "cy": 498, "r": 4, "fill": "{{slot:accent}}"}},
+        {"id": "point-mid", "type": "circle", "attrs": {"cx": 389, "cy": 200, "r": 2.5, "fill": "{{slot:highlight}}"}}
+      ]
+    },
+    {
+      "id": "editor",
+      "type": "group",
+      "attrs": {
+        "data-role": "prop",
+        "transform": "translate(135 254) rotate(-8 190 146)"
+      },
+      "children": [
+        {"id": "editor-depth", "type": "path", "attrs": {"d": "M0 289H362L386 269V278Q386 307 355 307H29Q8 307 0 289Z", "fill": "{{slot:orbit}}"}},
+        {"id": "editor-frame", "type": "rect", "attrs": {"x": 0, "y": 0, "width": 381, "height": 292, "fill": "{{slot:background}}", "rx": 22, "stroke": "{{slot:primary}}", "stroke-width": 2.2}},
+        {"id": "editor-titlebar", "type": "rect", "attrs": {"x": 1, "y": 1, "width": 379, "height": 56, "fill": "{{slot:surface}}", "rx": 21}},
+        {"id": "editor-divider", "type": "path", "attrs": {"d": "M1 49H380", "fill": "none", "stroke": "{{slot:orbit}}", "stroke-width": 1.3}},
+        {"id": "editor-dot-1", "type": "circle", "attrs": {"cx": 25, "cy": 24, "r": 4.7, "fill": "{{slot:accent}}"}},
+        {"id": "editor-dot-2", "type": "circle", "attrs": {"cx": 42, "cy": 24, "r": 4.7, "fill": "{{slot:primary}}"}},
+        {"id": "editor-dot-3", "type": "circle", "attrs": {"cx": 59, "cy": 24, "r": 4.7, "fill": "{{slot:orbit}}"}},
+        {"id": "toolbar-lines", "type": "path", "attrs": {"d": "M322 25h31m-20-7h20m-11 14h11", "fill": "none", "stroke": "{{slot:primary}}", "stroke-width": 1.6, "stroke-linecap": "round", "opacity": ".7"}},
+        {"id": "editor-gutter", "type": "path", "attrs": {"d": "M50 65V268", "fill": "none", "stroke": "{{slot:orbit}}", "stroke-width": 1.2}},
+        {"id": "gutter-marks", "type": "path", "attrs": {"d": "M21 86h11m-11 27h11m-11 27h11m-11 27h11m-11 27h11m-11 27h11m-11 27h11", "fill": "none", "stroke": "{{slot:orbit}}", "stroke-width": 2, "stroke-linecap": "round"}},
+        {"id": "code-lines", "type": "path", "attrs": {"d": "M70 86h67m12 0h56M85 113h49m-49 27h115m-115 27h66m-81 27h29m-14 27h79m-94 27h42", "fill": "none", "stroke": "{{slot:primary}}", "stroke-width": 4, "stroke-linecap": "round", "opacity": ".63"}},
+        {"id": "code-emphasis", "type": "path", "attrs": {"d": "M146 113h55m-41 54h51m-39 54h36", "fill": "none", "stroke": "{{slot:accent}}", "stroke-width": 4, "stroke-linecap": "round"}},
+        {"id": "code-caret", "type": "path", "attrs": {"d": "M125 248h10", "fill": "none", "stroke": "{{slot:highlight}}", "stroke-width": 3, "stroke-linecap": "round"}}
+      ]
+    },
+    {
+      "id": "trajectory",
+      "type": "group",
+      "attrs": {
+        "data-role": "prop"
+      },
+      "children": [
+        {"id": "exhaust-tail", "type": "path", "attrs": {"d": "M527 371C466 411 413 439 342 450C315 453 291 452 269 444C300 486 413 471 482 445C516 431 546 415 562 392Z", "fill": "{{slot:accent}}"}},
+        {"id": "exhaust-fold", "type": "path", "attrs": {"d": "M292 462C379 476 486 429 539 391L554 400C460 465 350 489 292 462Z", "fill": "{{slot:primary}}"}},
+        {"id": "exhaust-core", "type": "path", "attrs": {"d": "M309 452C398 449 487 410 542 373", "fill": "none", "stroke": "{{slot:highlight}}", "stroke-width": 2.5, "stroke-linecap": "round"}},
+        {"id": "exhaust-speed", "type": "path", "attrs": {"d": "M295 481c80 11 148-12 202-35M255 435l-30-13M271 482l-19-9", "fill": "none", "stroke": "{{slot:primary}}", "stroke-width": 1.5, "stroke-linecap": "round"}},
+        {"id": "orbit-front", "type": "path", "attrs": {"d": "M871 261C836 308 756 360 669 400C509 473 356 500 322 463", "fill": "none", "stroke": "{{slot:primary}}", "stroke-width": 1.3, "opacity": ".57"}},
+        {"id": "orbit-satellite", "type": "circle", "attrs": {"cx": 848, "cy": 287, "r": 9, "fill": "{{slot:accent}}"}},
+        {"id": "orbit-satellite-ring", "type": "circle", "attrs": {"cx": 848, "cy": 287, "r": 15, "fill": "none", "stroke": "{{slot:accent}}", "stroke-width": 1, "opacity": ".5"}}
+      ]
+    },
+    {
+      "id": "rocket",
+      "type": "group",
+      "attrs": {
+        "data-role": "subject",
+        "transform": "translate(567 298) rotate(36)"
+      },
+      "children": [
+        {"id": "wing-left", "type": "path", "attrs": {"d": "M-44 10C-77 38-83 79-79 115L-24 78L-28 12Z", "fill": "{{slot:primary}}", "stroke": "{{slot:background}}", "stroke-width": 3.5, "stroke-linejoin": "round"}},
+        {"id": "wing-right", "type": "path", "attrs": {"d": "M44 10C77 38 83 79 79 115L24 78L28 12Z", "fill": "{{slot:primary}}", "stroke": "{{slot:background}}", "stroke-width": 3.5, "stroke-linejoin": "round"}},
+        {"id": "left-fin-inset", "type": "path", "attrs": {"d": "M-48 34C-63 53-67 76-68 93L-39 74Z", "fill": "{{slot:surface}}"}},
+        {"id": "right-fin-inset", "type": "path", "attrs": {"d": "M48 34C63 53 67 76 68 93L39 74Z", "fill": "{{slot:surface}}"}},
+        {"id": "nozzle-dark", "type": "path", "attrs": {"d": "M-21 79H21L28 99Q0 109-28 99Z", "fill": "{{slot:surface}}", "stroke": "{{slot:background}}", "stroke-width": 3}},
+        {"id": "nozzle-accent", "type": "path", "attrs": {"d": "M-19 93Q0 99 19 93", "fill": "none", "stroke": "{{slot:accent}}", "stroke-width": 2, "stroke-linecap": "round"}},
+        {"id": "hull", "type": "path", "attrs": {"d": "M0-163C42-121 59-82 58-31C57 13 43 55 24 83H-24C-43 55-57 13-58-31C-59-82-42-121 0-163Z", "fill": "{{slot:highlight}}", "stroke": "{{slot:background}}", "stroke-width": 3.5}},
+        {"id": "hull-form", "type": "path", "attrs": {"d": "M0-160C39-118 57-78 56-30C55 19 40 59 23 82H7C32 27 34-23 27-69C22-102 15-133 0-160Z", "fill": "{{slot:primary}}"}},
+        {"id": "hull-seam", "type": "path", "attrs": {"d": "M-47-86Q0-105 47-86M-37 58Q0 72 37 58", "fill": "none", "stroke": "{{slot:surface}}", "stroke-width": 1.4, "opacity": ".78"}},
+        {"id": "nose", "type": "path", "attrs": {"d": "M0-162C20-142 35-121 47-88Q0-105-47-88C-35-121-20-142 0-162Z", "fill": "{{slot:primary}}", "stroke": "{{slot:background}}", "stroke-width": 3, "stroke-linejoin": "round"}},
+        {"id": "nose-highlight", "type": "path", "attrs": {"d": "M-4-148q-16 17-28 42", "fill": "none", "stroke": "{{slot:highlight}}", "stroke-width": 2, "stroke-linecap": "round", "opacity": ".85"}},
+        {"id": "porthole-bezel", "type": "circle", "attrs": {"cx": 0, "cy": -33, "r": 32, "fill": "{{slot:primary}}", "stroke": "{{slot:background}}", "stroke-width": 2.8}},
+        {"id": "porthole-glass", "type": "circle", "attrs": {"cx": 0, "cy": -33, "r": 25, "fill": "{{slot:background}}"}},
+        {"id": "porthole-shine", "type": "path", "attrs": {"d": "M-19-36A19 19 0 0 1 8-48", "fill": "none", "stroke": "{{slot:accent}}", "stroke-width": 3, "stroke-linecap": "round"}},
+        {"id": "porthole-reflection", "type": "circle", "attrs": {"cx": 11, "cy": -44, "r": 2.5, "fill": "{{slot:highlight}}"}},
+        {"id": "hull-mark", "type": "rect", "attrs": {"x": -12, "y": 28, "width": 24, "height": 5, "fill": "{{slot:surface}}", "rx": 2.5}},
+        {"id": "hull-mark-dot", "type": "circle", "attrs": {"cx": 0, "cy": 44, "r": 2, "fill": "{{slot:orbit}}"}}
+      ]
+    }
+  ],
+  "animations": [],
+  "a11y": {
+    "title": "{{slot:title}}",
+    "desc": "{{slot:description}}",
+    "reducedMotion": {
+      "strategy": "none"
+    }
+  }
+}

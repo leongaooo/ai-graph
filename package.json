@@ -6,6 +6,10 @@
     "node": ">=18"
   },
   "scripts": {
+    "illustrate": "node tools/pipeline.mjs",
+    "illustrate:example": "node tools/pipeline.mjs --brief examples/launch/launch.brief.json --scene assets/scenes/developer-launch.scene.json --outScene out/illustrations/launch.scene.json --outSvg out/illustrations/launch.svg",
+    "showcase:build": "node tools/build-illustration-showcase.mjs",
+    "showcase:check": "node tools/build-illustration-showcase.mjs --check",
     "visual:lint": "node tools/visual-spec-lint.mjs",
     "visual:build": "node tools/build-explainer.mjs",
     "visual:evidence": "node tools/evidence-hash.mjs",

@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "version": "0.1",
+    "lang": "zh-CN",
+    "title": "从代码到部署"
+  },
+  "intent": {
+    "primaryGoal": "highlight",
+    "tone": "techy",
+    "audience": "开发者"
+  },
+  "layout": {
+    "template": "hero-illustration",
+    "slots": {
+      "title": "从代码到部署",
+      "description": "一枚火箭从代码窗口升起，橙色轨迹延伸到太空。",
+      "background": "#101C36",
+      "surface": "#1B3052",
+      "orbit": "#395B81",
+      "primary": "#71AFFF",
+      "highlight": "#DDEEFF",
+      "accent": "#FB9E78"
+    }
+  },
+  "story": {
+    "beats": [
+      {
+        "text": "代码从编辑器发布到线上"
+      }
+    ]
+  },
+  "style": {
+    "brightness": "dark",
+    "contrast": "high",
+    "illustrationStyle": "flat"
+  },
+  "motion": {
+    "plan": "静态插画",
+    "reducedMotionStrategy": "none"
+  },
+  "constraints": {
+    "size": {
+      "width": 960,
+      "height": 600
+    },
+    "maxNodes": 120,
+    "allowImages": false,
+    "allowHumans": false,
+    "brandColor": "#FB9E78"
+  }
+}

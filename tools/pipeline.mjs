@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 function usage() {
   console.log(
@@ -7,12 +7,13 @@ function usage() {
       "Scene pipeline (Brief + Scene mother → SceneSpec → render.svg)",
       "",
       "Usage:",
-      "  node front-end-effect/tools/pipeline.mjs --brief <brief.json> --scene <scene-mother.json> --outScene <scene.json> --outSvg <render.svg>",
+      "  node tools/pipeline.mjs --brief <brief.json> --scene <scene-mother.json> --outScene <scene.json> --outSvg <render.svg>",
       "",
       "Steps:",
       "  1) compose: inject brief.layout.slots into the scene mother ({{slot:*}})",
-      "  2) lint: validate SceneSpec v0.1",
-      "  3) render: output static SVG (no runtime JS required)",
+      "  2) inject motifs",
+      "  3) lint: validate structure and visual constraints",
+      "  4) render: output static SVG",
     ].join("\n")
   );
 }
@@ -23,8 +24,9 @@ function arg(name) {
   return process.argv[i + 1] ?? null;
 }
 
-function run(cmd, args) {
-  const res = spawnSync(cmd, args, { stdio: "inherit" });
+function run(script, args) {
+  const tool = fileURLToPath(new URL(script, import.meta.url));
+  const res = spawnSync(process.execPath, [tool, ...args], { stdio: "inherit" });
   if (res.status !== 0) process.exit(res.status ?? 1);
 }
 
@@ -39,18 +41,11 @@ function main() {
     process.exit(2);
   }
 
-  const root = process.cwd();
-  const composeTool = path.join(root, "front-end-effect/tools/compose-scene.mjs");
-  const injectMotifsTool = path.join(root, "front-end-effect/tools/inject-motifs.mjs");
-  const lintTool = path.join(root, "front-end-effect/tools/scene-spec-lint.mjs");
-  const visualLintTool = path.join(root, "front-end-effect/tools/scene-visual-lint.mjs");
-  const renderTool = path.join(root, "front-end-effect/tools/render-scene-svg.mjs");
-
-  run("node", [composeTool, "--brief", brief, "--scene", scene, "--out", outScene]);
-  run("node", [injectMotifsTool, "--scene", outScene, "--out", outScene]);
-  run("node", [lintTool, outScene]);
-  run("node", [visualLintTool, outScene]);
-  run("node", [renderTool, outScene, outSvg]);
+  run("./compose-scene.mjs", ["--brief", brief, "--scene", scene, "--out", outScene]);
+  run("./inject-motifs.mjs", ["--scene", outScene, "--out", outScene]);
+  run("./scene-spec-lint.mjs", [outScene]);
+  run("./scene-visual-lint.mjs", [outScene]);
+  run("./render-scene-svg.mjs", [outScene, outSvg]);
 }
 
 main();

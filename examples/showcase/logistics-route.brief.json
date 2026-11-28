@@ -1,0 +1,21 @@
+{
+  "meta": { "version": "0.1", "lang": "zh-CN", "title": "包裹在路上" },
+  "intent": { "primaryGoal": "guide", "tone": "excited", "audience": "物流运营团队" },
+  "layout": {
+    "template": "process-steps",
+    "slots": {
+      "title": "包裹在路上",
+      "description": "一辆载着包裹的货车，沿着两枚标记之间的路线驶向目的地。",
+      "background": "#10252A",
+      "surface": "#173B40",
+      "muted": "#3B6C6B",
+      "primary": "#59C6B1",
+      "highlight": "#F0FFFA",
+      "accent": "#FFCF5C"
+    }
+  },
+  "story": { "beats": [{ "text": "从起点到终点，路线、车辆和下一站都在同一张图里。" }] },
+  "style": { "brightness": "dark", "contrast": "high", "illustrationStyle": "flat" },
+  "motion": { "plan": "静态插画", "reducedMotionStrategy": "none" },
+  "constraints": { "size": { "width": 960, "height": 600 }, "maxNodes": 120, "allowImages": false, "allowHumans": false, "brandColor": "#FFCF5C" }
+}

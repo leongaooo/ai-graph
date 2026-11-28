@@ -1,0 +1,52 @@
+[
+  {
+    "id": "launch",
+    "industry": "开发工具",
+    "placement": "首页首屏",
+    "label": "从代码到部署",
+    "brief": "examples/launch/launch.brief.json",
+    "scene": "assets/scenes/developer-launch.scene.json",
+    "defaultName": "星轨紫",
+    "alternate": { "name": "深海蓝", "slots": { "background": "#101C36", "surface": "#1B3052", "orbit": "#395B81", "primary": "#71AFFF", "highlight": "#DDEEFF", "accent": "#FB9E78", "description": "一枚火箭从代码窗口升起，橙色轨迹延伸到太空。" } }
+  },
+  {
+    "id": "team-review",
+    "industry": "团队协作",
+    "placement": "功能介绍",
+    "label": "一起审阅改动",
+    "brief": "examples/showcase/team-review.brief.json",
+    "scene": "assets/scenes/team-review.scene.json",
+    "defaultName": "钴蓝",
+    "alternate": { "name": "珊瑚红", "slots": { "background": "#291A29", "surface": "#43283B", "muted": "#795067", "primary": "#EF8BA3", "highlight": "#FFF0EB", "accent": "#FFD67A" } }
+  },
+  {
+    "id": "finance-payment",
+    "industry": "金融",
+    "placement": "应用状态",
+    "label": "付款成功",
+    "brief": "examples/showcase/finance-payment.brief.json",
+    "scene": "assets/scenes/finance-payment.scene.json",
+    "defaultName": "蜂蜜金",
+    "alternate": { "name": "湖水青", "slots": { "background": "#122828", "surface": "#20413E", "muted": "#527875", "primary": "#74CBB9", "highlight": "#E9FFF7", "accent": "#ACEA89" } }
+  },
+  {
+    "id": "logistics-route",
+    "industry": "物流",
+    "placement": "工作流",
+    "label": "包裹在路上",
+    "brief": "examples/showcase/logistics-route.brief.json",
+    "scene": "assets/scenes/logistics-route.scene.json",
+    "defaultName": "公路黄",
+    "alternate": { "name": "夜行蓝", "slots": { "background": "#182039", "surface": "#242F50", "muted": "#4B6386", "primary": "#86A8FC", "highlight": "#EFF2FF", "accent": "#FFC09A" } }
+  },
+  {
+    "id": "learning-field-guide",
+    "industry": "教育",
+    "placement": "文档配图",
+    "label": "从标本读懂叶脉",
+    "brief": "examples/showcase/learning-field-guide.brief.json",
+    "scene": "assets/scenes/learning-field-guide.scene.json",
+    "defaultName": "苔藓绿",
+    "alternate": { "name": "暖陶棕", "slots": { "background": "#2D211F", "surface": "#483229", "muted": "#805D4A", "primary": "#D58A69", "highlight": "#FFF3DB", "accent": "#F8C677" } }
+  }
+]

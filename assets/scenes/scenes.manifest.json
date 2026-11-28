@@ -2,9 +2,54 @@
   "version": "0.1",
   "scenes": [
     {
+      "id": "developer-launch",
+      "format": "SceneSpec",
+      "path": "assets/scenes/developer-launch.scene.json",
+      "tags": ["hero", "illustration", "developer-tools", "deployment"],
+      "slots": ["title", "description", "background", "surface", "orbit", "primary", "highlight", "accent"],
+      "showcase": "launch",
+      "notes": "A rocket launches from the editor. App copy stays in HTML."
+    },
+    {
+      "id": "team-review",
+      "format": "SceneSpec",
+      "path": "assets/scenes/team-review.scene.json",
+      "tags": ["feature", "illustration", "collaboration"],
+      "slots": ["title", "description", "background", "surface", "muted", "primary", "highlight", "accent"],
+      "showcase": "team-review",
+      "notes": "Two teammates point to the same edit during review."
+    },
+    {
+      "id": "finance-payment",
+      "format": "SceneSpec",
+      "path": "assets/scenes/finance-payment.scene.json",
+      "tags": ["app-state", "illustration", "finance"],
+      "slots": ["title", "description", "background", "surface", "muted", "primary", "highlight", "accent"],
+      "showcase": "finance-payment",
+      "notes": "A contactless card meets an approved payment terminal."
+    },
+    {
+      "id": "logistics-route",
+      "format": "SceneSpec",
+      "path": "assets/scenes/logistics-route.scene.json",
+      "tags": ["workflow", "illustration", "logistics"],
+      "slots": ["title", "description", "background", "surface", "muted", "primary", "highlight", "accent"],
+      "showcase": "logistics-route",
+      "notes": "A parcel van follows the route toward its destination."
+    },
+    {
+      "id": "learning-field-guide",
+      "format": "SceneSpec",
+      "path": "assets/scenes/learning-field-guide.scene.json",
+      "tags": ["documentation", "illustration", "education"],
+      "slots": ["title", "description", "background", "surface", "muted", "primary", "highlight", "accent"],
+      "showcase": "learning-field-guide",
+      "notes": "A magnifier reveals veins on a specimen in an open field guide."
+    },
+    {
       "id": "hero-abstract-orbs",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/hero-abstract-orbs.scene.json",
+      "path": "assets/scenes/hero-abstract-orbs.scene.json",
       "tags": ["hero", "illustration", "abstract", "modern", "brandable"],
       "slots": ["kicker", "headline", "subhead", "caption"],
       "notes": "A large abstract background with floating cards; intended to feel like a hero illustration, not a diagram."
@@ -12,7 +57,7 @@
     {
       "id": "hero-flow-pipeline",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/hero-flow-pipeline.scene.json",
+      "path": "assets/scenes/hero-flow-pipeline.scene.json",
       "tags": ["hero", "diagram", "flow", "system"],
       "slots": ["caption"],
       "notes": "Flow nodes connected by lines; good for ops/system explanations."
@@ -20,7 +65,7 @@
     {
       "id": "kpi-ring-spotlight",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/kpi-ring-spotlight.scene.json",
+      "path": "assets/scenes/kpi-ring-spotlight.scene.json",
       "tags": ["kpi", "spotlight", "dashboard", "minimal"],
       "slots": ["kpi", "label", "caption"],
       "notes": "A metric-focused scene with a ring accent; good for KPI sections."
@@ -28,7 +73,7 @@
     {
       "id": "demo-commerce-handshake",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/demo-commerce-handshake.scene.json",
+      "path": "assets/scenes/demo-commerce-handshake.scene.json",
       "tags": ["demo", "commerce", "illustration", "human", "monetization"],
       "slots": ["kicker", "headline", "subhead", "caption"],
       "notes": "Commercialization demo with a handshake motif (human cue)."
@@ -36,7 +81,7 @@
     {
       "id": "commerce-handshake-contract",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/commerce-handshake-contract.scene.json",
+      "path": "assets/scenes/commerce-handshake-contract.scene.json",
       "tags": ["commerce", "illustration", "human", "contract", "framer-like"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "People + handshake + contract motif; meant to read as a scene (not a diagram)."
@@ -44,7 +89,7 @@
     {
       "id": "commerce-handshake-contract-handdrawn",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/commerce-handshake-contract-handdrawn.scene.json",
+      "path": "assets/scenes/commerce-handshake-contract-handdrawn.scene.json",
       "tags": ["commerce", "illustration", "human", "hand-drawn", "sketch"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "Hand-drawn variant: sketchy handshake + contract, subtle scribble texture."
@@ -52,7 +97,7 @@
     {
       "id": "commerce-payments-success-handdrawn",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/commerce-payments-success-handdrawn.scene.json",
+      "path": "assets/scenes/commerce-payments-success-handdrawn.scene.json",
       "tags": ["payments", "commerce", "hand-drawn", "success", "trust"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "Hand-drawn payment scene: card + success badge + people."
@@ -60,7 +105,7 @@
     {
       "id": "ops-dispatch-route-handdrawn",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/ops-dispatch-route-handdrawn.scene.json",
+      "path": "assets/scenes/ops-dispatch-route-handdrawn.scene.json",
       "tags": ["dispatch", "ops", "hand-drawn", "route", "reassign"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "Hand-drawn dispatch scene: pins + route + van + operator."
@@ -68,7 +113,7 @@
     {
       "id": "service-on-site-handdrawn",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/service-on-site-handdrawn.scene.json",
+      "path": "assets/scenes/service-on-site-handdrawn.scene.json",
       "tags": ["service", "on-site", "hand-drawn", "completion"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "Hand-drawn on-site scene: technician + van + pin + completion badge."
@@ -76,7 +121,7 @@
     {
       "id": "team-collaboration-handdrawn",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/team-collaboration-handdrawn.scene.json",
+      "path": "assets/scenes/team-collaboration-handdrawn.scene.json",
       "tags": ["team", "payroll", "hand-drawn", "collaboration"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "Hand-drawn team scene: two people + contract + completion badge."
@@ -84,7 +129,7 @@
     {
       "id": "commerce-handshake-contract-paper",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/commerce-handshake-contract-paper.scene.json",
+      "path": "assets/scenes/commerce-handshake-contract-paper.scene.json",
       "tags": ["commerce", "illustration", "human", "paper", "pencil"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "Paper/pencil variant: paper frame + pencil shading + tape accents; still passes visual lint."
@@ -92,7 +137,7 @@
     {
       "id": "stage-people-roster-handdrawn",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/stage-people-roster-handdrawn.scene.json",
+      "path": "assets/scenes/stage-people-roster-handdrawn.scene.json",
       "tags": ["stage", "people", "hand-drawn", "roster", "diversity"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "Stage demo: 6-person roster (roles + age) with calm doodle decor."
@@ -100,7 +145,7 @@
     {
       "id": "stage-home-services-triangle-handdrawn",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/stage-home-services-triangle-handdrawn.scene.json",
+      "path": "assets/scenes/stage-home-services-triangle-handdrawn.scene.json",
       "tags": ["stage", "home-services", "hand-drawn", "dispatch", "field"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "Stage demo: dispatcher + field tech + customer triangle, with van/pin props."
@@ -108,7 +153,7 @@
     {
       "id": "stage-backoffice-paper",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/stage-backoffice-paper.scene.json",
+      "path": "assets/scenes/stage-backoffice-paper.scene.json",
       "tags": ["stage", "paper", "backoffice", "billing", "team"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "Stage demo: owner/admin/finance with billing props in paper/pencil style."
@@ -116,7 +161,7 @@
     {
       "id": "stage-props-showcase-handdrawn",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/stage-props-showcase-handdrawn.scene.json",
+      "path": "assets/scenes/stage-props-showcase-handdrawn.scene.json",
       "tags": ["stage", "props", "hand-drawn", "objects", "library"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "Stage demo: a calm object library (props grid) for modern SaaS scenes."
@@ -124,7 +169,7 @@
     {
       "id": "stage-customer-portal-paper",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/stage-customer-portal-paper.scene.json",
+      "path": "assets/scenes/stage-customer-portal-paper.scene.json",
       "tags": ["stage", "customer-portal", "paper", "journal", "hand-drawn", "ui"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "Stage demo: customer portal scene (paper/journal container + UI cards + human)."
@@ -132,7 +177,7 @@
     {
       "id": "stage-booking-engine-glass",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/stage-booking-engine-glass.scene.json",
+      "path": "assets/scenes/stage-booking-engine-glass.scene.json",
       "tags": ["stage", "booking", "glass", "framer-like", "ui", "home-services"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "Stage demo: booking engine (time slots/duration/service area/skill match) in a glass container."
@@ -140,7 +185,7 @@
     {
       "id": "stage-payments-stripe-glass",
       "format": "SceneSpec",
-      "path": "front-end-effect/assets/scenes/stage-payments-stripe-glass.scene.json",
+      "path": "assets/scenes/stage-payments-stripe-glass.scene.json",
       "tags": ["stage", "payments", "stripe", "glass", "framer-like", "trust"],
       "slots": ["kicker", "headline", "subhead"],
       "notes": "Stage demo: payments scene (Stripe-style) with trust cues and receipts."

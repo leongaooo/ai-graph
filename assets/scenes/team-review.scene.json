@@ -1,0 +1,237 @@
+{
+  "meta": {
+    "version": "0.1",
+    "title": "Team review",
+    "lang": "zh-CN"
+  },
+  "canvas": {
+    "width": 960,
+    "height": 600,
+    "viewBox": "0 0 960 600",
+    "bg": "{{slot:background}}"
+  },
+  "theme": {
+    "palette": {
+      "bg": "{{slot:background}}",
+      "fg": "{{slot:highlight}}",
+      "primary": "{{slot:primary}}",
+      "accent": "{{slot:accent}}",
+      "muted": "{{slot:muted}}"
+    },
+    "typography": {
+      "fontFamily": "system-ui, sans-serif",
+      "baseSize": 16
+    }
+  },
+  "nodes": [
+    {
+      "id": "background",
+      "type": "group",
+      "attrs": {"data-role": "decor", "data-decor-type": "texture", "data-layer": "bg_base"},
+      "children": [
+        {
+          "id": "backdrop",
+          "type": "rect",
+          "attrs": {"x": 0, "y": 0, "width": 960, "height": 600, "fill": "{{slot:background}}"}
+        },
+        {
+          "id": "halo",
+          "type": "circle",
+          "attrs": {"cx": 630, "cy": 290, "r": 238, "fill": "{{slot:surface}}", "opacity": ".94"}
+        },
+        {
+          "id": "halo-edge",
+          "type": "circle",
+          "attrs": {"cx": 630, "cy": 290, "r": 238, "fill": "none", "stroke": "{{slot:muted}}", "stroke-width": 1.4}
+        },
+        {
+          "id": "grid-line-a",
+          "type": "path",
+          "attrs": {"d": "M66 500H894M66 508H894", "fill": "none", "stroke": "{{slot:muted}}", "stroke-width": 1, "opacity": ".62"}
+        },
+        {
+          "id": "grid-line-b",
+          "type": "path",
+          "attrs": {"d": "M80 120H280M700 126H876", "fill": "none", "stroke": "{{slot:muted}}", "stroke-width": 1, "opacity": ".45"}
+        }
+      ]
+    },
+    {
+      "id": "corner-decor",
+      "type": "group",
+      "attrs": {"data-role": "decor", "data-decor-type": "accent", "data-layer": "bg"},
+      "children": [
+        {
+          "id": "spark-one",
+          "type": "path",
+          "attrs": {"d": "M168 142l7 18 18 7-18 7-7 18-7-18-18-7 18-7Z", "fill": "{{slot:accent}}"}
+        },
+        {
+          "id": "spark-two",
+          "type": "path",
+          "attrs": {"d": "M828 156l4 11 11 4-11 4-4 11-4-11-11-4 11-4Z", "fill": "{{slot:primary}}"}
+        },
+        {
+          "id": "dot-one",
+          "type": "circle",
+          "attrs": {"cx": 104, "cy": 404, "r": 4, "fill": "{{slot:accent}}"}
+        },
+        {
+          "id": "dot-two",
+          "type": "circle",
+          "attrs": {"cx": 864, "cy": 444, "r": 4, "fill": "{{slot:highlight}}"}
+        }
+      ]
+    },
+    {
+      "id": "review-subject",
+      "type": "group",
+      "attrs": {"data-role": "subject", "data-layer": "fg", "transform": "translate(0 0)"},
+      "children": [
+        {
+          "id": "review-board-shadow",
+          "type": "path",
+          "attrs": {"d": "M142 250Q142 226 166 226H534Q558 226 558 250V452Q558 476 534 476H166Q142 476 142 452Z", "fill": "{{slot:muted}}", "opacity": ".7", "transform": "rotate(-5 342 330)"}
+        },
+        {
+          "id": "review-board",
+          "type": "rect",
+          "attrs": {"x": 126, "y": 208, "width": 432, "height": 244, "rx": 26, "fill": "{{slot:background}}", "stroke": "{{slot:highlight}}", "stroke-width": 2.6, "transform": "rotate(-5 342 330)"}
+        },
+        {
+          "id": "board-top",
+          "type": "rect",
+          "attrs": {"x": 127, "y": 209, "width": 430, "height": 54, "rx": 24, "fill": "{{slot:surface}}", "transform": "rotate(-5 342 330)"}
+        },
+        {
+          "id": "board-divider",
+          "type": "path",
+          "attrs": {"d": "M128 263H556", "fill": "none", "stroke": "{{slot:muted}}", "stroke-width": 1.2, "transform": "rotate(-5 342 330)"}
+        },
+        {
+          "id": "board-dot-one",
+          "type": "circle",
+          "attrs": {"cx": 156, "cy": 236, "r": 5, "fill": "{{slot:accent}}", "transform": "rotate(-5 342 330)"}
+        },
+        {
+          "id": "board-dot-two",
+          "type": "circle",
+          "attrs": {"cx": 176, "cy": 236, "r": 5, "fill": "{{slot:primary}}", "transform": "rotate(-5 342 330)"}
+        },
+        {
+          "id": "board-dot-three",
+          "type": "circle",
+          "attrs": {"cx": 196, "cy": 236, "r": 5, "fill": "{{slot:muted}}", "transform": "rotate(-5 342 330)"}
+        },
+        {
+          "id": "review-line-one",
+          "type": "path",
+          "attrs": {"d": "M182 304H402M182 342H460M182 380H348", "fill": "none", "stroke": "{{slot:primary}}", "stroke-width": 6, "stroke-linecap": "round", "opacity": ".8", "transform": "rotate(-5 342 330)"}
+        },
+        {
+          "id": "review-line-two",
+          "type": "path",
+          "attrs": {"d": "M182 418H292M318 418H406", "fill": "none", "stroke": "{{slot:accent}}", "stroke-width": 6, "stroke-linecap": "round", "transform": "rotate(-5 342 330)"}
+        },
+        {
+          "id": "review-marker",
+          "type": "path",
+          "attrs": {"d": "M438 298l18 18 32-38", "fill": "none", "stroke": "{{slot:highlight}}", "stroke-width": 7, "stroke-linecap": "round", "stroke-linejoin": "round", "transform": "rotate(-5 342 330)"}
+        },
+        {
+          "id": "left-person",
+          "type": "path",
+          "attrs": {"d": "M612 420c-2-54 14-103 51-125 27-16 61-8 78 19 19 31 18 71-1 105l-22 40H628c-10 0-15-14-16-39Z", "fill": "{{slot:primary}}", "stroke": "{{slot:background}}", "stroke-width": 4, "stroke-linejoin": "round"}
+        },
+        {
+          "id": "left-head",
+          "type": "circle",
+          "attrs": {"cx": 684, "cy": 255, "r": 33, "fill": "{{slot:highlight}}", "stroke": "{{slot:background}}", "stroke-width": 4}
+        },
+        {
+          "id": "left-arm",
+          "type": "path",
+          "attrs": {"d": "M658 343Q605 366 566 327", "fill": "none", "stroke": "{{slot:highlight}}", "stroke-width": 17, "stroke-linecap": "round"}
+        },
+        {
+          "id": "right-person",
+          "type": "path",
+          "attrs": {"d": "M742 460c9-48 29-86 66-104 34-17 69-2 83 29 13 29 10 54-2 82l-18 34H755c-11 0-16-17-13-41Z", "fill": "{{slot:accent}}", "stroke": "{{slot:background}}", "stroke-width": 4, "stroke-linejoin": "round"}
+        },
+        {
+          "id": "right-head",
+          "type": "circle",
+          "attrs": {"cx": 820, "cy": 318, "r": 34, "fill": "{{slot:highlight}}", "stroke": "{{slot:background}}", "stroke-width": 4}
+        },
+        {
+          "id": "right-arm",
+          "type": "path",
+          "attrs": {"d": "M778 407Q729 378 698 345", "fill": "none", "stroke": "{{slot:highlight}}", "stroke-width": 17, "stroke-linecap": "round"}
+        },
+        {
+          "id": "shared-cursor",
+          "type": "path",
+          "attrs": {"d": "M523 332l14 50 14-17 20 14 8-12-20-15 18-7Z", "fill": "{{slot:highlight}}", "stroke": "{{slot:background}}", "stroke-width": 3, "stroke-linejoin": "round"}
+        },
+        {
+          "id": "check-badge",
+          "type": "circle",
+          "attrs": {"cx": 604, "cy": 180, "r": 34, "fill": "{{slot:accent}}", "stroke": "{{slot:background}}", "stroke-width": 4}
+        },
+        {
+          "id": "check-mark",
+          "type": "path",
+          "attrs": {"d": "M585 181l13 13 27-31", "fill": "none", "stroke": "{{slot:background}}", "stroke-width": 7, "stroke-linecap": "round", "stroke-linejoin": "round"}
+        },
+        {
+          "id": "left-hair",
+          "type": "path",
+          "attrs": {"d": "M651 254q1-38 31-37 34 0 37 34l-14-4-10-11q-11 13-44 18Z", "fill": "{{slot:background}}"}
+        },
+        {
+          "id": "right-hair",
+          "type": "path",
+          "attrs": {"d": "M787 316q-4-37 31-38 36-1 37 42l-13-8-9-14q-14 19-46 18Z", "fill": "{{slot:background}}"}
+        },
+        {
+          "id": "left-expression",
+          "type": "path",
+          "attrs": {"d": "M670 259h3m17 2h3m-17 9q5 4 11 1", "fill": "none", "stroke": "{{slot:background}}", "stroke-width": 2.6, "stroke-linecap": "round", "stroke-linejoin": "round"}
+        },
+        {
+          "id": "right-expression",
+          "type": "path",
+          "attrs": {"d": "M805 324h3m17-2h3m-17 11q6 5 11-1", "fill": "none", "stroke": "{{slot:background}}", "stroke-width": 2.6, "stroke-linecap": "round", "stroke-linejoin": "round"}
+        },
+        {
+          "id": "left-fold",
+          "type": "path",
+          "attrs": {"d": "M632 422q-5-28 5-49", "fill": "none", "stroke": "{{slot:background}}", "stroke-width": 2.7, "stroke-linecap": "round", "stroke-linejoin": "round", "opacity": ".53"}
+        },
+        {
+          "id": "right-fold",
+          "type": "path",
+          "attrs": {"d": "M759 481q2-27 17-49", "fill": "none", "stroke": "{{slot:background}}", "stroke-width": 2.7, "stroke-linecap": "round", "stroke-linejoin": "round", "opacity": ".53"}
+        },
+        {
+          "id": "comment",
+          "type": "path",
+          "attrs": {"d": "M747 173h63q13 0 13 13v24q0 13-13 13h-29l-16 15v-15h-18q-13 0-13-13v-24q0-13 13-13Z", "fill": "{{slot:surface}}", "stroke": "{{slot:highlight}}", "stroke-width": 2}
+        },
+        {
+          "id": "comment-marks",
+          "type": "path",
+          "attrs": {"d": "M750 191h44m-44 13h31", "fill": "none", "stroke": "{{slot:accent}}", "stroke-width": 3, "stroke-linecap": "round", "stroke-linejoin": "round"}
+        }
+      ]
+    }
+  ],
+  "animations": [],
+  "a11y": {
+    "title": "{{slot:title}}",
+    "desc": "{{slot:description}}",
+    "reducedMotion": {
+      "strategy": "none"
+    }
+  }
+}

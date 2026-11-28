@@ -1,0 +1,187 @@
+{
+  "meta": {
+    "version": "0.1",
+    "title": "Logistics route",
+    "lang": "zh-CN"
+  },
+  "canvas": {
+    "width": 960,
+    "height": 600,
+    "viewBox": "0 0 960 600",
+    "bg": "{{slot:background}}"
+  },
+  "theme": {
+    "palette": {
+      "bg": "{{slot:background}}",
+      "fg": "{{slot:highlight}}",
+      "primary": "{{slot:primary}}",
+      "accent": "{{slot:accent}}",
+      "muted": "{{slot:muted}}"
+    },
+    "typography": {
+      "fontFamily": "system-ui, sans-serif",
+      "baseSize": 16
+    }
+  },
+  "nodes": [
+    {
+      "id": "background",
+      "type": "group",
+      "attrs": {"data-role": "decor", "data-decor-type": "texture", "data-layer": "bg_base"},
+      "children": [
+        {
+          "id": "backdrop",
+          "type": "rect",
+          "attrs": {"x": 0, "y": 0, "width": 960, "height": 600, "fill": "{{slot:background}}"}
+        },
+        {
+          "id": "map-field",
+          "type": "path",
+          "attrs": {"d": "M84 152Q184 86 296 126T496 106T704 142T884 108V498H84Z", "fill": "{{slot:surface}}", "opacity": ".9"}
+        },
+        {
+          "id": "map-river",
+          "type": "path",
+          "attrs": {"d": "M116 252C246 170 338 318 450 232S642 156 814 258", "fill": "none", "stroke": "{{slot:muted}}", "stroke-width": 2, "stroke-dasharray": "8 12", "opacity": ".75"}
+        },
+        {
+          "id": "road-a",
+          "type": "path",
+          "attrs": {"d": "M90 468C236 404 330 454 424 386S628 344 872 418", "fill": "none", "stroke": "{{slot:muted}}", "stroke-width": 20, "stroke-linecap": "round", "opacity": ".5"}
+        },
+        {
+          "id": "road-b",
+          "type": "path",
+          "attrs": {"d": "M90 468C236 404 330 454 424 386S628 344 872 418", "fill": "none", "stroke": "{{slot:background}}", "stroke-width": 13, "stroke-linecap": "round"}
+        }
+      ]
+    },
+    {
+      "id": "corner-decor",
+      "type": "group",
+      "attrs": {"data-role": "decor", "data-decor-type": "accent", "data-layer": "bg"},
+      "children": [
+        {
+          "id": "route-cross-one",
+          "type": "path",
+          "attrs": {"d": "M154 180h20m-10-10v20", "fill": "none", "stroke": "{{slot:accent}}", "stroke-width": 1.8, "stroke-linecap": "round"}
+        },
+        {
+          "id": "route-cross-two",
+          "type": "path",
+          "attrs": {"d": "M784 332h18m-9-9v18", "fill": "none", "stroke": "{{slot:primary}}", "stroke-width": 1.6, "stroke-linecap": "round"}
+        },
+        {
+          "id": "route-dot-one",
+          "type": "circle",
+          "attrs": {"cx": 882, "cy": 184, "r": 4, "fill": "{{slot:accent}}"}
+        }
+      ]
+    },
+    {
+      "id": "route-subject",
+      "type": "group",
+      "attrs": {"data-role": "subject", "data-layer": "fg"},
+      "children": [
+        {
+          "id": "route-line",
+          "type": "path",
+          "attrs": {"d": "M170 446C286 388 344 442 452 368S648 322 822 414", "fill": "none", "stroke": "{{slot:accent}}", "stroke-width": 8, "stroke-linecap": "round", "stroke-linejoin": "round"}
+        },
+        {
+          "id": "pin-origin",
+          "type": "path",
+          "attrs": {"d": "M170 446c0-33 27-59 60-59s60 26 60 59c0 44-60 96-60 96s-60-52-60-96Z", "fill": "{{slot:primary}}", "stroke": "{{slot:background}}", "stroke-width": 4}
+        },
+        {
+          "id": "pin-origin-core",
+          "type": "circle",
+          "attrs": {"cx": 230, "cy": 446, "r": 18, "fill": "{{slot:highlight}}"}
+        },
+        {
+          "id": "pin-destination",
+          "type": "path",
+          "attrs": {"d": "M746 356c0-33 27-59 60-59s60 26 60 59c0 44-60 96-60 96s-60-52-60-96Z", "fill": "{{slot:accent}}", "stroke": "{{slot:background}}", "stroke-width": 4}
+        },
+        {
+          "id": "pin-destination-core",
+          "type": "circle",
+          "attrs": {"cx": 806, "cy": 356, "r": 18, "fill": "{{slot:highlight}}"}
+        },
+        {
+          "id": "truck-shadow",
+          "type": "path",
+          "attrs": {"d": "M432 312h176q18 0 18 18v54H432Z", "fill": "{{slot:muted}}", "opacity": ".8"}
+        },
+        {
+          "id": "truck-body",
+          "type": "rect",
+          "attrs": {"x": 414, "y": 268, "width": 188, "height": 106, "rx": 14, "fill": "{{slot:highlight}}", "stroke": "{{slot:background}}", "stroke-width": 4}
+        },
+        {
+          "id": "truck-cab",
+          "type": "path",
+          "attrs": {"d": "M602 290h48l44 60v24h-92Z", "fill": "{{slot:primary}}", "stroke": "{{slot:background}}", "stroke-width": 4, "stroke-linejoin": "round"}
+        },
+        {
+          "id": "truck-window",
+          "type": "path",
+          "attrs": {"d": "M619 301h25l29 40h-54Z", "fill": "{{slot:background}}", "stroke": "{{slot:background}}", "stroke-width": 2}
+        },
+        {
+          "id": "truck-wheel-one",
+          "type": "circle",
+          "attrs": {"cx": 470, "cy": 384, "r": 22, "fill": "{{slot:background}}", "stroke": "{{slot:highlight}}", "stroke-width": 6}
+        },
+        {
+          "id": "truck-wheel-two",
+          "type": "circle",
+          "attrs": {"cx": 632, "cy": 384, "r": 22, "fill": "{{slot:background}}", "stroke": "{{slot:highlight}}", "stroke-width": 6}
+        },
+        {
+          "id": "route-pulse",
+          "type": "circle",
+          "attrs": {"cx": 361, "cy": 411, "r": 10, "fill": "{{slot:accent}}", "stroke": "{{slot:background}}", "stroke-width": 4}
+        },
+        {
+          "id": "truck-cargo",
+          "type": "path",
+          "attrs": {"d": "M447 290l54-10 49 11v55l-49 15-54-15Z", "fill": "{{slot:primary}}", "opacity": ".32"}
+        },
+        {
+          "id": "cargo-mark",
+          "type": "path",
+          "attrs": {"d": "M476 310l28-9 28 9v29l-28 10-28-10Z", "fill": "{{slot:primary}}", "stroke": "{{slot:background}}", "stroke-width": 2.4, "stroke-linejoin": "round"}
+        },
+        {
+          "id": "cargo-fold",
+          "type": "path",
+          "attrs": {"d": "M476 310l28 10 28-10m-28 10v29", "fill": "none", "stroke": "{{slot:background}}", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round"}
+        },
+        {
+          "id": "truck-grille",
+          "type": "path",
+          "attrs": {"d": "M677 361h12", "fill": "none", "stroke": "{{slot:accent}}", "stroke-width": 4, "stroke-linecap": "round", "stroke-linejoin": "round"}
+        },
+        {
+          "id": "motion-lines",
+          "type": "path",
+          "attrs": {"d": "M348 292h48m-23 15h23m-60 15h59", "fill": "none", "stroke": "{{slot:primary}}", "stroke-width": 3, "stroke-linecap": "round", "stroke-linejoin": "round", "opacity": ".7"}
+        },
+        {
+          "id": "route-chevron",
+          "type": "path",
+          "attrs": {"d": "M322 408l13 7-11 10m393-86 14 2-5 13", "fill": "none", "stroke": "{{slot:highlight}}", "stroke-width": 3, "stroke-linecap": "round", "stroke-linejoin": "round", "opacity": ".8"}
+        }
+      ]
+    }
+  ],
+  "animations": [],
+  "a11y": {
+    "title": "{{slot:title}}",
+    "desc": "{{slot:description}}",
+    "reducedMotion": {
+      "strategy": "none"
+    }
+  }
+}

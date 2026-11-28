@@ -2,8 +2,8 @@
 
 Motif = a reusable SVG `<symbol>` (people / objects / backgrounds) referenced via `<use>`.
 
-- Index: `front-end-effect/assets/motifs/motifs.manifest.json`
-- Third-party notices: `front-end-effect/assets/motifs/THIRD_PARTY_NOTICES.md`
+- Index: `assets/motifs/motifs.manifest.json`
+- Third-party notices: `assets/motifs/THIRD_PARTY_NOTICES.md`
 
 ## Use in SceneSpec
 
@@ -46,4 +46,4 @@ People are reusable `<symbol>` busts (Open Peeps derived). Use them as `data-rol
 
 2) Render (inject + lint + svg):
 
-- `node front-end-effect/tools/pipeline.mjs --brief <brief.json> --scene <scene-mother.json> --outScene <scene.json> --outSvg <render.svg>`
+- `node tools/pipeline.mjs --brief <brief.json> --scene <scene-mother.json> --outScene <scene.json> --outSvg <render.svg>`

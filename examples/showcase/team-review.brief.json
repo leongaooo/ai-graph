@@ -1,0 +1,21 @@
+{
+  "meta": { "version": "0.1", "lang": "zh-CN", "title": "一起审阅改动" },
+  "intent": { "primaryGoal": "explain", "tone": "warm", "audience": "产品团队" },
+  "layout": {
+    "template": "feature-grid",
+    "slots": {
+      "title": "一起审阅改动",
+      "description": "两位协作者指向同一块审阅板，旁边亮起确认勾并浮出评论气泡。",
+      "background": "#111A2B",
+      "surface": "#1C2A42",
+      "muted": "#3A4C6D",
+      "primary": "#6F8BFF",
+      "highlight": "#F2F5FF",
+      "accent": "#D4FC69"
+    }
+  },
+  "story": { "beats": [{ "text": "评论、确认、合并，协作过程有一个清楚的收口。" }] },
+  "style": { "brightness": "dark", "contrast": "high", "illustrationStyle": "flat" },
+  "motion": { "plan": "静态插画", "reducedMotionStrategy": "none" },
+  "constraints": { "size": { "width": 960, "height": 600 }, "maxNodes": 120, "allowImages": false, "allowHumans": true, "brandColor": "#D4FC69" }
+}

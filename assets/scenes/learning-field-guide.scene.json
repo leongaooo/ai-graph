@@ -1,0 +1,165 @@
+{
+  "meta": {
+    "version": "0.1",
+    "title": "learning-field-guide",
+    "lang": "zh-CN"
+  },
+  "canvas": {
+    "width": 960,
+    "height": 600,
+    "viewBox": "0 0 960 600",
+    "bg": "{{slot:background}}"
+  },
+  "theme": {
+    "palette": {
+      "bg": "{{slot:background}}",
+      "fg": "{{slot:highlight}}",
+      "primary": "{{slot:primary}}",
+      "accent": "{{slot:accent}}",
+      "muted": "{{slot:muted}}"
+    },
+    "typography": {
+      "fontFamily": "system-ui, sans-serif",
+      "baseSize": 16
+    }
+  },
+  "nodes": [
+    {
+      "id": "backdrop",
+      "type": "group",
+      "attrs": {"data-role": "decor", "data-decor-type": "texture", "data-layer": "bg_base"},
+      "children": [
+        {
+          "id": "canvas",
+          "type": "rect",
+          "attrs": {"x": 0, "y": 0, "width": 960, "height": 600, "fill": "{{slot:background}}"}
+        },
+        {
+          "id": "field",
+          "type": "path",
+          "attrs": {"d": "M0 96C257 132 231 37 454 63s295 144 506 69v468H0Z", "fill": "{{slot:surface}}"}
+        },
+        {
+          "id": "contour-one",
+          "type": "path",
+          "attrs": {"d": "M56 436c113 24 178 94 335 83s242-117 507-92", "fill": "none", "stroke": "{{slot:muted}}", "stroke-width": 1.6, "stroke-linecap": "round", "stroke-linejoin": "round", "opacity": ".76"}
+        },
+        {
+          "id": "contour-two",
+          "type": "path",
+          "attrs": {"d": "M75 459c99 25 182 89 324 78s244-107 488-85", "fill": "none", "stroke": "{{slot:muted}}", "stroke-width": 1.2, "stroke-linecap": "round", "stroke-linejoin": "round", "opacity": ".58"}
+        },
+        {
+          "id": "measurement",
+          "type": "path",
+          "attrs": {"d": "M106 219h94m-94-10v20m94-20v20m536 175h112m-112-10v20m112-20v20", "fill": "none", "stroke": "{{slot:muted}}", "stroke-width": 1.4, "stroke-linecap": "round", "stroke-linejoin": "round"}
+        },
+        {
+          "id": "point-upper",
+          "type": "circle",
+          "attrs": {"cx": 790, "cy": 131, "r": 6, "fill": "{{slot:accent}}"}
+        },
+        {
+          "id": "point-lower",
+          "type": "circle",
+          "attrs": {"cx": 142, "cy": 385, "r": 4, "fill": "{{slot:primary}}"}
+        }
+      ]
+    },
+    {
+      "id": "action",
+      "type": "group",
+      "attrs": {"data-role": "subject"},
+      "children": [
+        {
+          "id": "book-cover",
+          "type": "path",
+          "attrs": {"d": "M166 214c89-64 183-55 296-9 74-43 162-37 276 16l59 208c-110-36-217-44-319 1-116-47-200-34-286-9Z", "fill": "{{slot:muted}}", "stroke": "{{slot:background}}", "stroke-width": 4, "stroke-linejoin": "round"}
+        },
+        {
+          "id": "page-edges",
+          "type": "path",
+          "attrs": {"d": "M170 207c101-54 187-46 292-5 85-50 177-32 273 12l53 197c-110-38-224-38-309 5-97-43-195-36-289-4Z", "fill": "{{slot:primary}}", "stroke": "{{slot:background}}", "stroke-width": 3, "stroke-linejoin": "round"}
+        },
+        {
+          "id": "book-left",
+          "type": "path",
+          "attrs": {"d": "M170 190c98-56 185-45 292 2l13 207c-100-42-198-37-289-1Z", "fill": "{{slot:highlight}}", "stroke": "{{slot:background}}", "stroke-width": 3, "stroke-linejoin": "round"}
+        },
+        {
+          "id": "book-right",
+          "type": "path",
+          "attrs": {"d": "M462 192c84-50 168-37 273 4l43 203c-112-39-219-41-303 0Z", "fill": "{{slot:highlight}}", "stroke": "{{slot:background}}", "stroke-width": 3, "stroke-linejoin": "round"}
+        },
+        {
+          "id": "page-fold",
+          "type": "path",
+          "attrs": {"d": "M434 183l28 9 13 207c-9-5-22-9-33-13-1-75-6-135-8-203Z", "fill": "{{slot:primary}}", "opacity": ".32"}
+        },
+        {
+          "id": "text-left",
+          "type": "path",
+          "attrs": {"d": "M213 243q82-34 170-7m-167 31q85-31 172-5m-168 32q83-28 150-10m-147 38q65-24 120-13", "fill": "none", "stroke": "{{slot:muted}}", "stroke-width": 3, "stroke-linecap": "round", "stroke-linejoin": "round", "opacity": ".65"}
+        },
+        {
+          "id": "text-right",
+          "type": "path",
+          "attrs": {"d": "M533 356q103-21 192 15m-192 2q85-15 159 9", "fill": "none", "stroke": "{{slot:muted}}", "stroke-width": 2.7, "stroke-linecap": "round", "stroke-linejoin": "round", "opacity": ".5"}
+        },
+        {
+          "id": "leaf",
+          "type": "path",
+          "attrs": {"d": "M504 317c33-70 90-100 161-84-11 66-64 114-144 99Z", "fill": "{{slot:primary}}", "stroke": "{{slot:background}}", "stroke-width": 2.6}
+        },
+        {
+          "id": "leaf-stem",
+          "type": "path",
+          "attrs": {"d": "M493 342q48-59 147-99", "fill": "none", "stroke": "{{slot:background}}", "stroke-width": 3, "stroke-linecap": "round", "stroke-linejoin": "round"}
+        },
+        {
+          "id": "leaf-veins",
+          "type": "path",
+          "attrs": {"d": "M542 291l-4-21m8 17 25 23m-4-39 1-21m6 17 28 18m-6-29 6-15m2 12 20 9", "fill": "none", "stroke": "{{slot:background}}", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round", "opacity": ".7"}
+        },
+        {
+          "id": "lens-handle",
+          "type": "path",
+          "attrs": {"d": "M675 220l101-102q11-10 23 2l12 13q10 12-2 21l-110 93Z", "fill": "{{slot:accent}}", "stroke": "{{slot:background}}", "stroke-width": 4, "stroke-linejoin": "round"}
+        },
+        {
+          "id": "lens-shadow",
+          "type": "circle",
+          "attrs": {"cx": 618, "cy": 300, "r": 95, "fill": "{{slot:muted}}", "opacity": ".42"}
+        },
+        {
+          "id": "lens-tint",
+          "type": "circle",
+          "attrs": {"cx": 607, "cy": 286, "r": 85, "fill": "{{slot:accent}}", "opacity": ".18"}
+        },
+        {
+          "id": "lens-rim-deep",
+          "type": "circle",
+          "attrs": {"cx": 607, "cy": 286, "r": 85, "fill": "none", "stroke": "{{slot:background}}", "stroke-width": 15}
+        },
+        {
+          "id": "lens-rim-light",
+          "type": "circle",
+          "attrs": {"cx": 607, "cy": 286, "r": 83, "fill": "none", "stroke": "{{slot:accent}}", "stroke-width": 8}
+        },
+        {
+          "id": "glass-reflection",
+          "type": "path",
+          "attrs": {"d": "M545 279a64 64 0 0 1 48-54", "fill": "none", "stroke": "{{slot:highlight}}", "stroke-width": 5, "stroke-linecap": "round", "stroke-linejoin": "round", "opacity": ".9"}
+        }
+      ]
+    }
+  ],
+  "animations": [],
+  "a11y": {
+    "title": "{{slot:title}}",
+    "desc": "{{slot:description}}",
+    "reducedMotion": {
+      "strategy": "none"
+    }
+  }
+}

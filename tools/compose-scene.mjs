@@ -82,8 +82,16 @@ function main() {
   if (brief?.meta?.lang) out.meta.lang = brief.meta.lang;
   if (brief?.meta?.seed !== undefined) out.meta.seed = brief.meta.seed;
 
+  if (typeof out.canvas?.bg === "string") {
+    out.canvas.bg = replaceSlotsInString(out.canvas.bg, slots);
+  }
+  for (const [key, value] of Object.entries(out.theme?.palette ?? {})) {
+    out.theme.palette[key] = replaceSlotsInString(value, slots);
+  }
   if (out.a11y) {
     if (brief?.layout?.slots?.headline && !out.a11y.title) out.a11y.title = brief.layout.slots.headline;
+    out.a11y.title = replaceSlotsInString(out.a11y.title, slots);
+    out.a11y.desc = replaceSlotsInString(out.a11y.desc, slots);
   }
 
   if (Array.isArray(out.nodes)) out.nodes.forEach((n) => walkNode(n, slots));

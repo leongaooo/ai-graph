@@ -1,8 +1,57 @@
 # ai-graph
 
-## AI-native：给 Agent 调用的证据约束视觉投影运行时
+为软件界面、产品网站和开发文档生成可直接使用的 SVG 插画。用 Brief 描述场景、配色和文字，用 SceneSpec 定义主体与构图。AI Graph 负责组合素材、运行视觉检查并导出独立 SVG。
 
-当前主线不是“让 AI 看图”，而是让 AI 在一个可校验、可查询、可复现的结构化场景上工作。
+![发布场景：一枚火箭从代码编辑器升起](examples/launch/launch.svg)
+
+## 本地场景库与工作台
+
+用 Chrome 直接打开 [showcase/index.html](showcase/index.html)。这是可单独打开的离线页面，包含全部插画、样式和交互。工作台可以切换场景、每个场景的两套品牌色和桌面／手机预览。每次切换配色后，「下载 SVG」「Brief」和页面底部的复现命令都会指向当前版本。单独复制入口文件时，页面中的仓库文档链接仍需从原仓库位置打开。
+
+| 网页用途 | 行业 | 场景与 SVG |
+| --- | --- | --- |
+| 首页首屏 | 开发工具 | [从代码到部署](showcase/illustrations/launch.svg) |
+| 功能介绍 | 团队协作 | [一起审阅改动](showcase/illustrations/team-review.svg) |
+| 应用状态 | 金融 | [付款成功](showcase/illustrations/finance-payment.svg) |
+| 工作流 | 物流 | [包裹在路上](showcase/illustrations/logistics-route.svg) |
+| 文档配图 | 教育 | [从标本读懂叶脉](showcase/illustrations/learning-field-guide.svg) |
+
+安装 Node.js 18+ 后，在仓库根目录可重建全部变体，并从相同输入再构建一遍检查字节是否一致。
+
+```bash
+npm run showcase:build
+npm run showcase:check
+```
+
+[场景配置](showcase/scenes.json) 关联了页面用途、源 Brief、SceneSpec 和第二套配色。页面结构维护在 [index.template.html](showcase/index.template.html)，构建后生成单文件入口。[验收记录](docs/illustration-showcase-review.md) 含实际页面截图和已知边界。
+
+## 跑出第一张插画
+
+在仓库根目录运行。需要 Node.js 18+，使用 Node 自带模块。
+
+```bash
+npm run illustrate:example
+```
+
+打开 `out/illustrations/launch.svg` 查看结果。将 SVG 放进自己项目的图片目录即可使用。
+
+```html
+<img src="/images/launch.svg" width="960" height="600" alt="火箭从代码编辑器升起">
+```
+
+复制 [部署插画 Brief](examples/launch/launch.brief.json)，修改 `layout.slots` 内的品牌色、标题和替代描述，再用自己的 Brief 生成。
+
+```bash
+npm run illustrate -- --brief my.brief.json \
+  --scene assets/scenes/developer-launch.scene.json \
+  --outScene out/my-illustration.scene.json --outSvg out/my-illustration.svg
+```
+
+[插画技能](.agents/skills/ai-graph-illustration/SKILL.md) 包含在其他网页中调用这条流程的步骤。[场景目录](assets/scenes/scenes.manifest.json) 内带 `showcase` 标识的条目是本地演示场景。其余条目供设计实验，部分会触发人物与物件重叠检查。[产品计划](docs/illustration-engine-plan.md) 记录风格、导出和上手验证的后续工作。
+
+## 底层能力：给 Agent 调用的证据约束视觉运行时
+
+AI Graph 的运行时让 Agent 在可校验、可查询、可复现的结构化场景上工作。
 
 ```text
 来源（source + locator + sha256）
@@ -62,7 +111,7 @@ node demos/research-claims/verify-stale.mjs
 
 ---
 
-## 基线：AI Graph 2.0 解释图引擎
+## 信息图与证据投影能力
 
 以下内容保留为现有引擎与两条真实样本的基线；新方向在其上增加 AI 调用面，不废弃已有产物。
 
@@ -152,104 +201,10 @@ node tools/build-explainer.mjs art/automation-equipment-state.visual.json out
 
 ---
 
-## 以下为旧 SceneSpec 场景插画路径（legacy）
+## 插画工具组成
 
-> 2026-11-23 起，以下内容保留为样式实验与历史实现，不再作为 AI Graph 的主成果主张。旧路径证明的是程序化渲染、确定性构建和视觉约束，不是信息理解。
-
-一个面向 **AI 生成页面效果** 的“图文场景插画”工具箱：把用户文案转成 **可控、可复用、可验证** 的 SVG 场景插画（人物 + 物品 + 背景装饰），再交给任意前端技术栈去做滚动进入、hover、打字机、动效编排。
-
-如果你在做落地页/产品页时，觉得“只有文字和卡片不够惊艳”，但又不希望引入重量级图形引擎、也不想让 AI 随机画出不可控的 SVG——这个仓库提供了一条中间路径：**结构化指令 + 素材库 + 质量门禁 + 稳定渲染**。
-
-## 这仓库能为 AI 生成页面带来什么贡献
-
-- **Prompt → SceneSpec(JSON) → Static SVG**：把“插画级场景”变成可版本化的结构化数据，避免纯自然语言生成的不可控。
-- **层级正确**：统一图层 `bg_base → bg → fg → text`，并通过视觉门禁保证“装饰永远不会压在人物/文字上”。
-- **像真实世界**：内置人物（含肤色/方向变体）+ 可识别物品 + 线性 icon（增强可读性与现代感）。
-- **可跨技术栈**：输出是标准 SVG（静态文件），React/Vue/Svelte/原生 HTML 都能直接用；动效可由页面层自由实现。
-- **可回归、可扩展**：同一个 Brief/seed 可重复生成；新增场景只需扩展 motifs 与 scene 模板，不必推倒重来。
-
-## 核心概念
-
-- **BriefSpec**：面向“文案 + 意图 + 风格”的输入（带 slot）。
-- **SceneSpec**：面向“画布 + 节点 + 图层 + defs”的插画结构（可渲染/可 lint）。
-- **Motifs**：以 `<symbol id="motif_*">` 管理的可复用素材（人物/物品/装饰）。
-
-## 项目结构
-
-```
-ai-graph/
-  assets/
-    motifs/                 # 人物/物品/装饰素材（defs + manifest + meta）
-    scenes/                 # 可复用场景模板（SceneSpec mother）
-  tools/
-    pipeline.mjs            # 一键流水线：compose → inject → lint → render
-    compose-scene.mjs       # 文案 slot 注入
-    inject-motifs.mjs       # 只注入用到的 <symbol>（静态 SVG，体积可控）
-    scene-spec-lint.mjs     # 结构校验
-    scene-visual-lint.mjs   # 视觉门禁（防压人/压字/半个头/过度装饰）
-    render-scene-svg.mjs    # SceneSpec → SVG（按图层输出）
-    scene-auto-fill.mjs     # 自动填充：domain/style 选择 + 候选布局打分
-  examples/                 # 生成产物输出目录（默认清空，仅保留 .gitkeep）
-```
-
-## 快速上手（本地）
-
-要求：Node.js 18+
-
-1) 用已有 scene 模板渲染一个 SVG（Brief + scene mother → render）
-
-```bash
-node ai-graph/tools/pipeline.mjs \
-  --brief ai-graph/examples/your.brief.json \
-  --scene ai-graph/assets/scenes/stage-payments-stripe-glass.scene.json \
-  --outScene ai-graph/examples/out.scene.json \
-  --outSvg ai-graph/examples/out.render.svg
-```
-
-2) 让工具“自动填充”一个场景（先产 mother，再走 pipeline）
-
-```bash
-node ai-graph/tools/scene-auto-fill.mjs \
-  --brief ai-graph/examples/your.brief.json \
-  --out ai-graph/examples/auto.scene.mother.json \
-  --domain payments \
-  --style glass \
-  --seed 1 \
-  --candidates 120
-
-node ai-graph/tools/pipeline.mjs \
-  --brief ai-graph/examples/your.brief.json \
-  --scene ai-graph/examples/auto.scene.mother.json \
-  --outScene ai-graph/examples/auto.scene.json \
-  --outSvg ai-graph/examples/auto.render.svg
-```
-
-## “不混乱”的设计约束（为什么它能稳定）
-
-这套系统不是靠“让 AI 自己画得更像”，而是靠 **约束 + 检测**：
-
-- **渲染层级强制**：背景/装饰永远在下，人物/内容永远在上。
-- **视觉 lint 作为质量门禁**：重叠、靠近、裁切、过量装饰等问题直接 fail，让输出保持可用。
-- **静态 SVG 输出**：不依赖运行时注入，不会出现“本地打开空白/渲染不一致”。
-- **素材库复用**：用可识别的图形元素（人物/物品/icon）替代“随机 path 拼装”的生硬感。
-
-## 文档
-
-- `ai-graph/ai-graph.md`：仓库能力与规范说明
-- `ai-graph/user-prompt-to-svg-animate.md`：如何把用户需求变成可控的插画/动效指令
-- `ai-graph/STAGE_SUMMARY.md`：阶段性总结与下一阶段建议
-
-## 未来畅想（Roadmap）
-
-我希望把它做成 AI 生成页面时的“图形能力底座”，让“每个模块都可以选择：流程图 / 结构化图 / 插画级大图 + 文案”：
-
-- **版式模板库**：为每个 domain（Payments/Dispatch/Payroll/Portal/Booking…）提供多种成熟构图（Framer glass / 手绘手帐 / glow）。
-- **更强的布局引擎**：从“打分选最优”升级为“规则驱动 + 约束求解”，支持网格对齐、密度控制、留白节奏。
-- **语义到素材的映射**：把“用户文案理解”落到稳定的 domainTags/intentTags，并自动补齐真实世界物品（合同/发票/地图/工具/设备）。
-- **动效规范化**：输出 SVG 的同时输出动效 DSL（进入、hover、微漂移、骨架生成中），由任意前端框架落地。
-- **更多渲染后端**：SVG 之外，探索 Canvas/WebGL/Lottie 的可选输出，但仍保持同一份 SceneSpec 作为“单一真相源”。
-
----
-
-如果你想把它用在自己的落地页生成器里：你只需要让 AI 产出 BriefSpec + Scene mother（或直接用 auto-fill），然后把最终 SVG 当作组件/图片插入页面即可。
-
+- [BriefSpec](brief-spec.schema.json) 包含内容目标、配色与文案插槽。
+- [SceneSpec](scene-spec.schema.json) 定义画布、图层和图形元素。
+- [素材库](assets/motifs/README.md) 提供可复用的 SVG 人物、物品和装饰。
+- [场景流水线](tools/pipeline.mjs) 负责插槽替换、素材注入、结构和视觉检查，以及 SVG 输出。
+- [自动填充](tools/scene-auto-fill.mjs) 为现有领域和风格生成候选布局。[场景阶段总结](STAGE_SUMMARY.md)
