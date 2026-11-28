@@ -61,6 +61,6 @@ tar -xzf /tmp/ag.tgz -C /tmp/ag && sudo rm -rf /var/www/ai-graph.bak \
 
 ## 排障
 
-- git 走 https 时会命中 `http.proxy=127.0.0.1:7890`，代理没起就整条不通。仓库已改用 SSH 远端（`git@github.com:leongaooo/...`），`ssh -T git@github.com` 通过即可推。
+- git 走 https 时会命中 `http.proxy`，端口必须和终端代理一致（本机默认 `12450`）。终端里的 `proxy on 12450` 现在会同时写 `git config --global http.proxy/https.proxy`，`proxy off` 会一并清掉；仓库里不要再单独设 `--local http.proxy`，否则会盖掉全局设置、留着过期端口。仓库已改用 SSH 远端（`git@github.com:leongaooo/...`），`ssh -T git@github.com` 通过即可推。
 - `EXPORT=1 next build` 会因为 `app/ads.txt`、`app/adx.txt` 缺少 `dynamic = 'force-static'` 报错；Vercel 走的是默认构建，不要用 `EXPORT` 本地复现线上。
 - 页面截断或空白：多为滚动显现动画，headless 截图加 `--force-prefers-reduced-motion` 再看。
